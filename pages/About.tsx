@@ -37,7 +37,7 @@ export const About: React.FC = () => {
           </div>
           <div className="h-[400px] rounded-2xl overflow-hidden shadow-2xl">
             <AIImage
-              prompt="Modern small factory exterior, clean industrial park in China, blue sky, professional building sign, 8k"
+              prompt="High-tech precision manufacturing facility exterior, modern architecture in a clean industrial park, blue metal panels and glass, sunset lighting, professional and corporate atmosphere, 8k"
               alt="Factory Exterior"
               fallbackSrc={ux('1513828583688-c52646db42da', 800)}
               className="w-full h-full"

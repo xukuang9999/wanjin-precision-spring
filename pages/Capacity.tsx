@@ -96,7 +96,7 @@ export const Capacity: React.FC = () => {
           </div>
           <div className="md:w-1/2 h-64 rounded-2xl overflow-hidden shadow-lg">
             <AIImage
-              prompt="Industrial spring manufacturing machine, CNC coiling machine, clean modern factory floor, blue tones, 8k resolution"
+              prompt="High-speed CNC spring coiling machine in operation, precise wire forming, clean modern factory environment, blue and silver tones, 8k resolution"
               alt="Production Line"
               fallbackSrc={px('2760241', 800, 400)}
               className="w-full h-full"
@@ -154,9 +154,9 @@ export const Capacity: React.FC = () => {
 
             <div className="h-48 rounded-xl overflow-hidden">
               <AIImage
-                prompt="Metal shot blasting machine process, industrial surface treatment, cinematic, factory atmosphere"
+                prompt="Industrial shot blasting machine in operation, metal parts being treated with steel grit, sparks and metallic dust, heavy machinery, cinematic lighting, dramatic factory atmosphere, 8k"
                 alt="Shot Blasting"
-                fallbackSrc={ux('1504328345606-18bbc8c9d7d1', 500)}
+                fallbackSrc={px('2760243', 500)}
                 className="w-full h-full"
               />
             </div>
@@ -185,7 +185,7 @@ export const Capacity: React.FC = () => {
 
             <div className="h-48 rounded-xl overflow-hidden">
               <AIImage
-                prompt="Digital spring testing equipment, laboratory setting, precision measurement instrument, clean professional"
+                prompt="Advanced digital spring load testing machine, showing dual digital displays, precision measurement in a high-tech quality control lab, 8k resolution"
                 alt="Testing Equipment"
                 fallbackSrc={px('2280571', 500, 350)}
                 className="w-full h-full"
@@ -205,22 +205,20 @@ export const Capacity: React.FC = () => {
             {equipment.map((eq, idx) => (
               <div
                 key={idx}
-                className={`rounded-2xl p-6 border transition hover:shadow-lg ${
-                  eq.highlight
+                className={`rounded-2xl p-6 border transition hover:shadow-lg ${eq.highlight
                     ? 'border-blue-200 bg-blue-50'
                     : 'border-slate-100 bg-white'
-                }`}
+                  }`}
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="p-2 bg-white rounded-lg shadow-sm border border-slate-100">
                     {eq.icon}
                   </div>
                   <span
-                    className={`text-xs font-bold px-2 py-1 rounded-full ${
-                      eq.highlight
+                    className={`text-xs font-bold px-2 py-1 rounded-full ${eq.highlight
                         ? 'bg-blue-600 text-white'
                         : 'bg-slate-100 text-slate-500'
-                    }`}
+                      }`}
                   >
                     {eq.tag}
                   </span>

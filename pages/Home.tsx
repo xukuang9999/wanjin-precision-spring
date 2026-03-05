@@ -98,22 +98,22 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           {[
             {
               name: "碟形弹簧 Disc Springs",
-              prompt: "Industrial disc springs stacked, metallic steel, clean studio shot",
+              prompt: "Macro photography of high-quality industrial disc springs (Belleville washers) stacked precisely, polished stainless steel material, cinematic lighting, 8k resolution, clean background",
               fallback: px('14452000', 400, 400)
             },
             {
               name: "压缩弹簧 Compression Springs",
-              prompt: "Heavy duty compression spring, stainless steel, mechanical engineering part",
+              prompt: "Macro shot of a heavy duty steel compression spring, industrial manufacturing, clean studio lighting, mechanical engineering precision, 8k",
               fallback: px('2760241', 400, 400)
             },
             {
               name: "热卷弹簧 Hot Coil Springs",
-              prompt: "Large hot coil spring for heavy machinery, industrial manufacturing context",
+              prompt: "Large diameter hot coil spring for heavy machinery, orange-hot metallic texture, industrial manufacturing plant background, professional photography, 8k",
               fallback: px('2760243', 400, 400)
             },
             {
               name: "汽车悬挂 Auto Suspension",
-              prompt: "Automotive suspension spring, red or black powder coated, car parts",
+              prompt: "Modern automotive suspension shock absorber and red coil spring, automotive engineering, high detail, clean professional studio shot, 8k",
               fallback: px('2244746', 400, 400)
             },
           ].map((product, idx) => (
@@ -164,7 +164,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             {/* Logistics */}
             <div className="relative rounded-2xl overflow-hidden shadow-lg group">
               <AIImage
-                prompt="Global logistics shipping container port, export business boxes, industrial atmosphere"
+                prompt="Commercial cargo ship at a modern container port, global export and trade logistics, sunrise lighting, cinematic atmosphere, 8k"
                 alt="Global Logistics"
                 fallbackSrc={px('1267337', 300, 200)}
                 className="w-full h-full"

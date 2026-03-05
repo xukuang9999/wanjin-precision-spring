@@ -16,7 +16,7 @@ const PRODUCT_DATA: Product[] = [
     category: 'Precision',
     description: 'High load capacity, short stroke. Used in heavy machinery and power equipment buffers.',
     features: ['High Load', 'Long Life', 'Compact'],
-    imagePrompt: 'Industrial disc springs, bellville washers, stacked on table, metallic steel, high quality macro',
+    imagePrompt: 'Macro photography of high-quality industrial disc springs (Belleville washers) stacked precisely, polished stainless steel material, cinematic lighting, 8k resolution, clean background',
     fallbackSrc: px('14452000', 400, 300)
   },
   {
@@ -25,7 +25,7 @@ const PRODUCT_DATA: Product[] = [
     category: 'Heavy',
     description: 'Hot coiled for large wire diameters. Used in engineering machinery and railway vehicles.',
     features: ['Large Diameter', 'Fatigue Resistant', 'High Strength'],
-    imagePrompt: 'Large hot coil spring, heavy duty industrial spring, red paint, manufacturing plant background',
+    imagePrompt: 'Large diameter hot coil spring for heavy machinery, orange-hot metallic texture, industrial manufacturing plant background, professional photography, 8k',
     fallbackSrc: px('2760243', 400, 300)
   },
   {
@@ -34,7 +34,7 @@ const PRODUCT_DATA: Product[] = [
     category: 'General',
     description: 'Most common spring type. Used in various mechanisms, auto suspension, and switches.',
     features: ['Various Specs', 'Custom Ends', 'Durable'],
-    imagePrompt: 'Stainless steel compression springs of various sizes, clean composition on white surface',
+    imagePrompt: 'Macro shot of multiple high-quality steel compression springs, industrial manufacturing, clean studio lighting, mechanical engineering precision, 8k',
     fallbackSrc: px('2760241', 400, 300)
   },
   {
@@ -43,8 +43,8 @@ const PRODUCT_DATA: Product[] = [
     category: 'General',
     description: 'Hooks on both ends to withstand axial tension. Used in medical, fitness, and industrial doors.',
     features: ['Custom Hooks', 'Good Resilience', 'Anti-rust'],
-    imagePrompt: 'Extension springs with hooks, metal steel, industrial parts, detailed focus',
-    fallbackSrc: px('2244746', 400, 300)
+    imagePrompt: 'Industrial extension springs with large closed hooks on ends, galvanized steel wire, professional studio shot on technical drawing background, 8k',
+    fallbackSrc: px('3760529', 400, 300)
   },
   {
     id: '5',
@@ -52,8 +52,8 @@ const PRODUCT_DATA: Product[] = [
     category: 'General',
     description: 'Uses torque for clamping mechanisms, hinges, and automotive locks.',
     features: ['Precise Angle', 'Stable Torque', 'Complex Form'],
-    imagePrompt: 'Complex torsion springs, metal wire forming, engineering parts',
-    fallbackSrc: ux('1504328345606-18bbc8c9d7d1', 400)
+    imagePrompt: 'Close up of industrial torsion springs with long straight legs, made of galvanized steel wire, arranged neatly on an engineering blueprint, professional lighting, technical atmosphere, 8k',
+    fallbackSrc: ux('1513828583688-c52646db42da', 400)
   },
   {
     id: '6',
@@ -61,7 +61,7 @@ const PRODUCT_DATA: Product[] = [
     category: 'Precision',
     description: 'Rectangular section for stamping dies, high rigidity and durability.',
     features: ['Rectangular', 'Color Coded', 'High Impact'],
-    imagePrompt: 'Colorful die springs, rectangular wire spring, blue red and green, industrial mold parts',
+    imagePrompt: 'A collection of industrial die springs in bright red, blue, and green, rectangular wire section, neatly arranged on a metal workbench, modern factory lighting, high resolution, 8k',
     fallbackSrc: ux('1597484661973-ee6cd0b6482c', 400)
   },
   {
@@ -70,7 +70,7 @@ const PRODUCT_DATA: Product[] = [
     category: 'Custom',
     description: 'Non-standard springs and wire forms tailored to specific needs.',
     features: ['Complex', 'Blueprint Custom', 'Special Alloy'],
-    imagePrompt: 'Complex wire forms, bent metal wire, custom shaped springs, engineering blueprint background',
+    imagePrompt: 'Complex custom-shaped wire forms and non-standard springs, intricate metal bending, industrial design prototypes, macro photography on blueprint, 8k',
     fallbackSrc: px('3760529', 400, 300)
   },
   {
@@ -79,7 +79,7 @@ const PRODUCT_DATA: Product[] = [
     category: 'Machining',
     description: 'General mechanical parts, auto accessories, and electrical components beyond springs.',
     features: ['CNC', 'High Precision', 'Small Batch'],
-    imagePrompt: 'CNC machined metal parts, aluminum and steel components, precision engineering',
+    imagePrompt: 'CNC machined high-precision metal parts, aluminum and steel components, shining metallic surfaces, engineering laboratory context, 8k',
     fallbackSrc: px('3825581', 400, 300)
   }
 ];
@@ -121,11 +121,10 @@ export const Products: React.FC = () => {
               <button
                 key={cat}
                 onClick={() => setFilter(cat)}
-                className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-                  filter === cat
+                className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${filter === cat
                     ? 'bg-slate-900 text-white'
                     : 'bg-white text-slate-600 hover:bg-slate-100'
-                }`}
+                  }`}
               >
                 {cat}
               </button>
