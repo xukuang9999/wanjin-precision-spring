@@ -1,12 +1,6 @@
 import React from 'react';
-import { AIImage } from '../components/AIImage';
 import { Award, TrendingUp, Users, History } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-
-const px = (id: string, w = 800, h = 600) =>
-  `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}&h=${h}&dpr=1`;
-const ux = (id: string, w = 800) =>
-  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=80`;
 
 export const About: React.FC = () => {
   const { t } = useLanguage();
@@ -18,7 +12,7 @@ export const About: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold mb-4">{t('about_title')}</h1>
           <p className="text-slate-400 max-w-2xl">
-            Xi'an Wanjin Precision Spring Co., Ltd. is committed to becoming a leader in the field of precision elastic element manufacturing. We manufacture not just springs, but reliability.
+            {t('about_desc')}
           </p>
         </div>
       </div>
@@ -35,12 +29,13 @@ export const About: React.FC = () => {
               <p>{t('about_para3')}</p>
             </div>
           </div>
-          <div className="h-[400px] rounded-2xl overflow-hidden shadow-2xl">
-            <AIImage
-              prompt="High-tech precision manufacturing facility exterior, modern architecture in a clean industrial park, blue metal panels and glass, sunset lighting, professional and corporate atmosphere, 8k"
-              alt="Factory Exterior"
-              fallbackSrc={ux('1513828583688-c52646db42da', 800)}
-              className="w-full h-full"
+          <div className="h-[400px] rounded-2xl overflow-hidden shadow-2xl group">
+            <img
+              src="/factory/about-company.jpeg"
+              alt="Wanjin Manufacturing Facility"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              loading="lazy"
+              decoding="async"
             />
           </div>
         </div>
@@ -59,7 +54,7 @@ export const About: React.FC = () => {
           </div>
           <div className="text-center p-6 bg-slate-50 rounded-xl">
             <Award className="w-8 h-8 mx-auto text-blue-600 mb-3" />
-            <div className="text-3xl font-bold text-slate-900 mb-1">ISO+GJB</div>
+            <div className="text-3xl font-bold text-slate-900 mb-1">ISO 9001</div>
             <div className="text-sm text-slate-500">{t('stat_certifications')}</div>
           </div>
           <div className="text-center p-6 bg-slate-50 rounded-xl">

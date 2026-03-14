@@ -1,0 +1,151 @@
+{
+  "company_name": "Xi'an Wanjin Precision Spring Co., Ltd.",
+  "brand_name": "Wanjin Precision Spring",
+  "website": "https://wanjinspring.com/",
+  "email": "sales@wanjinspring.com",
+  "phone": "+86 187 2938 3359",
+  "founded_year_original": 1982,
+  "reincorporated_date": "2018-04-24",
+  "registered_capital_rmb": 10000000,
+  "address": {
+    "street": "No. 2368, Zhenxing North Road, Fengjing Industrial Park",
+    "city": "Xi'an",
+    "region": "Shaanxi",
+    "country": "China"
+  },
+  "facility": {
+    "total_area_sqm": 11122,
+    "workshop_area_sqm": 7000
+  },
+  "quality_metrics": {
+    "production_pass_rate": ">=99%",
+    "customer_satisfaction": "98%"
+  },
+  "certifications": [
+    "ISO 9001:2015",
+    "ISO 9001"
+  ],
+  "standards_reference": [
+    "GB",
+    "ISO",
+    "JIS"
+  ],
+  "business_type": "Industrial spring manufacturer",
+  "service_model": [
+    "Standard spring manufacturing",
+    "Custom spring production from drawings and samples",
+    "Prototype support",
+    "Batch production",
+    "Assembly and sub-assembly support"
+  ],
+  "core_capabilities": [
+    "Medium-frequency induction hot coiling",
+    "CNC cold coiling",
+    "Precision spring forming",
+    "Double-end grinding",
+    "Shot peening",
+    "Magnetic particle inspection",
+    "Load and displacement testing",
+    "Custom spring manufacturing from drawings and samples",
+    "Assembly and sub-assembly support"
+  ],
+  "key_equipment": [
+    "Automatic spring coiling machines",
+    "Vertical fatigue shot peening equipment",
+    "Double-end grinding machines",
+    "Magnetic flaw detection equipment",
+    "Patented presetting and static pressure equipment",
+    "Load and displacement testing equipment"
+  ],
+  "core_products": [
+    "Hot coil springs",
+    "Disc springs",
+    "Stacked disc spring assemblies",
+    "Die springs",
+    "Compression springs",
+    "Extension springs",
+    "Torsion springs",
+    "Wave springs",
+    "Multi-turn wave spring assemblies",
+    "Contact springs",
+    "Contact clips / leaf-type elastic parts",
+    "Retaining rings / snap rings",
+    "Garter springs",
+    "Flat springs",
+    "Power / clock springs",
+    "Variable force springs",
+    "Spiral springs",
+    "Custom / special-shaped springs"
+  ],
+  "product_pages": {
+    "catalog": "https://wanjinspring.com/products",
+    "hot_coil_springs": "https://wanjinspring.com/products",
+    "disc_springs": "https://wanjinspring.com/products",
+    "stacked_disc_spring_assemblies": "https://wanjinspring.com/products",
+    "die_springs": "https://wanjinspring.com/products",
+    "compression_springs": "https://wanjinspring.com/products",
+    "extension_springs": "https://wanjinspring.com/products",
+    "torsion_springs": "https://wanjinspring.com/products",
+    "wave_springs": "https://wanjinspring.com/products",
+    "multi_turn_wave_spring_assemblies": "https://wanjinspring.com/products",
+    "contact_springs": "https://wanjinspring.com/products",
+    "contact_clips_leaf_type_parts": "https://wanjinspring.com/products",
+    "retaining_rings_snap_rings": "https://wanjinspring.com/products",
+    "garter_springs": "https://wanjinspring.com/products",
+    "flat_springs": "https://wanjinspring.com/products",
+    "power_clock_springs": "https://wanjinspring.com/products",
+    "variable_force_springs": "https://wanjinspring.com/products",
+    "spiral_springs": "https://wanjinspring.com/products",
+    "custom_special_shaped_springs": "https://wanjinspring.com/products"
+  },
+  "machine_readable_catalogs": {
+    "company_profile": "https://wanjinspring.com/company-profile.json",
+    "products_catalog": "https://wanjinspring.com/products.json",
+    "products_catalog_jsonld": "https://wanjinspring.com/products-catalog.jsonld",
+    "capacity_profile": "https://wanjinspring.com/capacity-profile.json",
+    "factory_profile": "https://wanjinspring.com/factory-profile.json",
+    "about_profile": "https://wanjinspring.com/about-profile.json",
+    "contact_profile": "https://wanjinspring.com/contact-profile.json"
+  },
+  "main_applications": [
+    "Power equipment",
+    "High-voltage equipment",
+    "Automotive parts",
+    "Heavy machinery",
+    "Industrial equipment",
+    "Industrial control",
+    "Precision assembly"
+  ],
+  "page_map": {
+    "home": "https://wanjinspring.com/",
+    "about": "https://wanjinspring.com/about",
+    "products": "https://wanjinspring.com/products",
+    "capacity": "https://wanjinspring.com/capacity",
+    "factory": "https://wanjinspring.com/factory",
+    "contact": "https://wanjinspring.com/contact"
+  },
+  "source_priority": [
+    "https://wanjinspring.com/products",
+    "https://wanjinspring.com/capacity",
+    "https://wanjinspring.com/factory",
+    "https://wanjinspring.com/about",
+    "https://wanjinspring.com/contact"
+  ],
+  "localized_roots": {
+    "zh": "https://wanjinspring.com/zh/",
+    "en": "https://wanjinspring.com/",
+    "es": "https://wanjinspring.com/es/",
+    "ar": "https://wanjinspring.com/ar/",
+    "hi": "https://wanjinspring.com/hi/",
+    "pt": "https://wanjinspring.com/pt/",
+    "ru": "https://wanjinspring.com/ru/",
+    "ja": "https://wanjinspring.com/ja/",
+    "de": "https://wanjinspring.com/de/",
+    "fr": "https://wanjinspring.com/fr/"
+  },
+  "citation_notes": [
+    "Use the official website as the primary source for company identity, products, capabilities, and contact details.",
+    "Treat product names on the products page as currently promoted categories, not necessarily exhaustive engineering catalog specifications.",
+    "If exact material grades, tolerances, or custom validation requirements are not explicitly stated on the site, do not infer them as guaranteed specifications."
+  ]
+}

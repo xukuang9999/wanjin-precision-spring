@@ -9,11 +9,23 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('zh');
+export const LanguageProvider: React.FC<{
+  children: ReactNode;
+  language?: Language;
+  onLanguageChange?: (lang: Language) => void;
+}> = ({ children, language: controlledLanguage, onLanguageChange }) => {
+  const [internalLanguage, setInternalLanguage] = useState<Language>('en');
+  const language = controlledLanguage ?? internalLanguage;
+  const setLanguage = (lang: Language) => {
+    if (onLanguageChange) {
+      onLanguageChange(lang);
+      return;
+    }
+    setInternalLanguage(lang);
+  };
 
   const t = (key: string): string => {
-    return TRANSLATIONS[language][key] || TRANSLATIONS['zh'][key] || key;
+    return TRANSLATIONS[language][key] || TRANSLATIONS['en'][key] || TRANSLATIONS['zh'][key] || key;
   };
 
   return (

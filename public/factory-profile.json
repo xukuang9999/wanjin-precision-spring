@@ -1,0 +1,109 @@
+{
+  "profile_name": "Wanjin Factory Profile",
+  "profile_version": "2026-03-11",
+  "company_name": "Xi'an Wanjin Precision Spring Co., Ltd.",
+  "website": "https://wanjinspring.com/",
+  "page_url": "https://wanjinspring.com/factory",
+  "page_url_zh": "https://wanjinspring.com/zh/factory",
+  "summary_en": "Machine-readable summary of Wanjin factory process control, traceability, production flows, and inspection environment.",
+  "summary_zh": "万锦工厂过程控制、追溯体系、制造流程与检测环境的机器可读摘要。",
+  "factory_controls": [
+    {
+      "name_en": "Full Material Traceability",
+      "name_zh": "全流程材料溯源",
+      "description_en": "Material certificates, wire intake, heat-treatment lots, and finished delivery are tracked by item and batch.",
+      "description_zh": "对材质证书、线材入库、热处理批次和成品交付实施单件与批次追踪。"
+    },
+    {
+      "name_en": "Critical Process Parameter Monitoring",
+      "name_zh": "关键工艺参数监控",
+      "description_en": "Core process values such as induction heating temperature and coiling tolerance are recorded for consistency control.",
+      "description_zh": "对中频加热温度、卷制公差等核心参数进行记录，以保证过程一致性。"
+    },
+    {
+      "name_en": "Structural Reliability Control",
+      "name_zh": "极端环境结构可靠性控制",
+      "description_en": "Microscopic defect screening and structural reliability checks are supported by fatigue-related validation and magnetic particle inspection.",
+      "description_zh": "通过疲劳相关验证与磁粉探伤支持微观缺陷识别和结构可靠性控制。"
+    }
+  ],
+  "production_flows": {
+    "cold_coiling": {
+      "name_en": "Cold Coiling Flow",
+      "name_zh": "冷卷流程",
+      "wire_diameter_note_en": "Optimized for approximately 0.1 mm to 10 mm wire diameter range as referenced on the site.",
+      "wire_diameter_note_zh": "站点资料显示该流程适用于约 0.1 mm 至 10 mm 线径范围。",
+      "steps_en": [
+        "Material selection",
+        "Tooling setup",
+        "Coiling",
+        "Heat treatment",
+        "Grinding",
+        "Inspection"
+      ],
+      "steps_zh": [
+        "原材料准备",
+        "工装调试",
+        "卷制",
+        "热处理",
+        "磨削",
+        "检测"
+      ]
+    },
+    "hot_coiling": {
+      "name_en": "Hot Coiling Flow",
+      "name_zh": "热卷流程",
+      "special_note_en": "Focused on large-wire hot coiling with medium-frequency induction heating for heavy-duty industrial support.",
+      "special_note_zh": "聚焦大线径热卷，采用中频感应加热，服务重载工业配套。",
+      "steps_en": [
+        "Material selection",
+        "Induction heating",
+        "Quenching / heat processing",
+        "Gas cutting",
+        "Presetting",
+        "NDT",
+        "Load testing"
+      ],
+      "steps_zh": [
+        "原材料准备",
+        "中频感应加热",
+        "淬火 / 热处理",
+        "切割",
+        "强压 / 预压",
+        "无损检测",
+        "载荷检测"
+      ]
+    }
+  },
+  "inspection_environment": {
+    "quality_standard_en": "ISO 9001 quality management practice",
+    "quality_standard_zh": "ISO 9001 质量管理实践",
+    "methods_en": [
+      "Magnetic particle inspection (MPI)",
+      "Load and displacement testing",
+      "Dimensional tolerance inspection",
+      "Batch traceability checks"
+    ],
+    "methods_zh": [
+      "磁粉探伤（MPI）",
+      "载荷与位移检测",
+      "尺寸公差检测",
+      "批次追溯检查"
+    ]
+  },
+  "gallery_assets": [
+    "/factory/factory_10.jpg",
+    "/factory/factory_15.jpg",
+    "/factory/factory_22.jpg",
+    "/factory/factory_23.jpg",
+    "/factory/factory_17.jpg",
+    "/factory/factory_18.jpg",
+    "/factory/factory_19.jpg",
+    "/factory/factory_8.jpg"
+  ],
+  "source_priority": [
+    "https://wanjinspring.com/factory",
+    "https://wanjinspring.com/capacity",
+    "https://wanjinspring.com/about"
+  ]
+}

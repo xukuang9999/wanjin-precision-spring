@@ -15,6 +15,9 @@ View your app in AI Studio: https://ai.studio/apps/drive/1S61T2YLAoLx8o80shVMQ3q
 
 1. Install dependencies:
    `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
+2. (Optional) Set `VITE_API_BASE_URL` in `.env.local` if your API runs on a different origin.
+3. Provide backend endpoints for AI features:
+   - `POST /api/chat` -> `{ text: string }`
+   - `POST /api/image` -> `{ image: string }` (base64 data URL)
+4. Run the app:
    `npm run dev`

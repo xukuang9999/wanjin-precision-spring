@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { generateIndustrialImage } from '../services/geminiService';
-import { Image, Loader2, RefreshCw } from 'lucide-react';
+import { Loader2, RefreshCw } from 'lucide-react';
 
 interface AIImageProps {
   prompt: string;
@@ -46,7 +46,7 @@ export const AIImage: React.FC<AIImageProps> = ({ prompt, alt, className, fallba
       {!loading && !generated && (
         <button 
           onClick={(e) => { e.preventDefault(); handleGenerate(); }}
-          className="absolute bottom-4 right-4 bg-white/90 hover:bg-white text-slate-800 px-3 py-1.5 rounded-full text-xs font-medium shadow-lg flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity translate-y-2 group-hover:translate-y-0"
+          className="absolute bottom-4 right-4 bg-white/90 hover:bg-white text-slate-800 px-3 py-1.5 rounded-md text-xs font-medium shadow-lg shadow-black/40 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity translate-y-2 group-hover:translate-y-0"
         >
           <RefreshCw className="w-3 h-3" />
           Generate AI View

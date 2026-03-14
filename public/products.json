@@ -1,0 +1,1651 @@
+{
+  "catalog_name": "Wanjin Precision Spring Product Catalog",
+  "catalog_version": "2026-03-11",
+  "company_name": "Xi'an Wanjin Precision Spring Co., Ltd.",
+  "brand_name": "Wanjin Precision Spring",
+  "website": "https://wanjinspring.com/",
+  "catalog_url": "https://wanjinspring.com/products",
+  "catalog_url_zh": "https://wanjinspring.com/zh/products",
+  "inquiry_email": "sales@wanjinspring.com",
+  "notes": [
+    "These entries describe current promoted product categories on the official website.",
+    "The official products page remains the primary source for current catalog presentation.",
+    "Unless explicitly stated on the site, do not infer exact material grades, tolerances, or certification coverage for a specific product family."
+  ],
+  "products": [
+    {
+      "id": "1",
+      "slug": "hot-coil-springs",
+      "sort_order": 1,
+      "category_en": "Heavy Duty",
+      "category_zh": "重型弹簧",
+      "name_en": "Hot Coil Springs",
+      "name_zh": "热卷弹簧",
+      "description_en": "Hot coiled for large wire diameters. Used in engineering machinery and transportation vehicles.",
+      "description_zh": "中频感应热卷，适用于大线径。用于工程机械和交通装备。",
+      "features_en": [
+        "Large Dia.",
+        "Fatigue Res.",
+        "High Strength"
+      ],
+      "features_zh": [
+        "大线径",
+        "抗疲劳",
+        "高强度"
+      ],
+      "image_url": "https://wanjinspring.com/products/hot-coil-spring.jpg",
+      "page_url": "https://wanjinspring.com/products",
+      "page_url_zh": "https://wanjinspring.com/zh/products",
+      "application_areas_en": [
+        "Engineering machinery suspension systems",
+        "Heavy industrial damping systems",
+        "Transportation equipment elastic support"
+      ],
+      "application_areas_zh": [
+        "工程机械悬挂系统",
+        "重型工业缓冲减振系统",
+        "交通装备弹性支撑"
+      ],
+      "related_industries_en": [
+        "Heavy machinery",
+        "Transportation equipment",
+        "Industrial equipment"
+      ],
+      "related_industries_zh": [
+        "重型机械",
+        "交通装备",
+        "工业设备"
+      ],
+      "materials_en": [
+        "Spring steel",
+        "Alloy spring steel",
+        "Custom material on request"
+      ],
+      "materials_zh": [
+        "弹簧钢",
+        "合金弹簧钢",
+        "可按需求选材"
+      ],
+      "manufacturing_process_en": [
+        "Medium-frequency induction hot coiling",
+        "Heat treatment",
+        "Load testing"
+      ],
+      "manufacturing_process_zh": [
+        "中频感应热卷",
+        "热处理",
+        "载荷检测"
+      ],
+      "typical_load_range_note_en": "Typically selected for large wire diameter and heavy-load spring applications. Exact load range depends on design and validation requirements.",
+      "typical_load_range_note_zh": "通常用于大线径和重载工况。具体载荷范围需依据设计参数和验证要求确定。",
+      "related_process_capabilities_en": [
+        "Medium-frequency induction hot coiling",
+        "Heat treatment support",
+        "Shot peening support"
+      ],
+      "related_process_capabilities_zh": [
+        "中频感应热卷",
+        "热处理支持",
+        "喷丸强化支持"
+      ],
+      "inspection_methods_en": [
+        "Load testing",
+        "Dimensional inspection",
+        "Fatigue-related verification as required"
+      ],
+      "inspection_methods_zh": [
+        "载荷检测",
+        "尺寸检测",
+        "按需求进行疲劳相关验证"
+      ]
+    },
+    {
+      "id": "2",
+      "slug": "stacked-disc-spring-assemblies",
+      "sort_order": 2,
+      "category_en": "Heavy Duty",
+      "category_zh": "重型弹簧",
+      "name_en": "Stacked Disc Spring Assemblies",
+      "name_zh": "叠装碟簧组",
+      "description_en": "Disc springs arranged in series, parallel, or combined stacks to achieve higher loads and tuned load-deflection behavior for heavy-duty clamping and damping systems.",
+      "description_zh": "碟簧按串联、并联或组合方式叠装，以获得更高载荷和可调载荷位移特性，适用于重载夹紧与缓冲系统。",
+      "features_en": [
+        "High Load",
+        "Compact",
+        "Fatigue Res."
+      ],
+      "features_zh": [
+        "高负载",
+        "结构紧凑",
+        "抗疲劳"
+      ],
+      "image_url": "https://wanjinspring.com/products/disc-stack.jpg",
+      "page_url": "https://wanjinspring.com/products",
+      "page_url_zh": "https://wanjinspring.com/zh/products",
+      "application_areas_en": [
+        "High-load clamping systems",
+        "Heavy-duty damping systems",
+        "Power equipment actuation assemblies"
+      ],
+      "application_areas_zh": [
+        "高载荷夹紧系统",
+        "重载缓冲减振系统",
+        "电力设备执行机构组件"
+      ],
+      "related_industries_en": [
+        "Power equipment",
+        "Heavy machinery",
+        "Industrial control"
+      ],
+      "related_industries_zh": [
+        "电力设备",
+        "重型机械",
+        "工业控制"
+      ],
+      "materials_en": [
+        "Spring steel",
+        "Alloy spring steel",
+        "Custom material on request"
+      ],
+      "materials_zh": [
+        "弹簧钢",
+        "合金弹簧钢",
+        "可按需求选材"
+      ],
+      "manufacturing_process_en": [
+        "Disc spring stacking",
+        "Presetting / static pressure processing",
+        "Load-deflection verification"
+      ],
+      "manufacturing_process_zh": [
+        "碟簧叠装",
+        "强压 / 静压处理",
+        "载荷位移验证"
+      ],
+      "typical_load_range_note_en": "Used where high force is required in compact installation space. Final stack load depends on series-parallel arrangement and spring geometry.",
+      "typical_load_range_note_zh": "适用于有限安装空间内需要较高力值的场景。最终载荷取决于串并联方式和碟簧几何参数。",
+      "related_process_capabilities_en": [
+        "Disc spring stacking",
+        "Presetting / static pressure processing",
+        "Heavy-load assembly support"
+      ],
+      "related_process_capabilities_zh": [
+        "碟簧叠装",
+        "强压 / 静压处理",
+        "重载组件配套"
+      ],
+      "inspection_methods_en": [
+        "Load-deflection verification",
+        "Dimensional inspection",
+        "Assembly verification"
+      ],
+      "inspection_methods_zh": [
+        "载荷位移验证",
+        "尺寸检测",
+        "组件装配验证"
+      ]
+    },
+    {
+      "id": "3",
+      "slug": "die-springs",
+      "sort_order": 3,
+      "category_en": "Precision",
+      "category_zh": "精密弹簧",
+      "name_en": "Die Springs",
+      "name_zh": "模具弹簧",
+      "description_en": "Rectangular section for stamping dies, high rigidity and durability.",
+      "description_zh": "矩形截面，用于冲压模具，高刚性和耐用性。",
+      "features_en": [
+        "Rectangular",
+        "Color Coded",
+        "High Impact"
+      ],
+      "features_zh": [
+        "矩形截面",
+        "颜色区分",
+        "耐冲击"
+      ],
+      "image_url": "https://wanjinspring.com/products/die-spring.jpg",
+      "page_url": "https://wanjinspring.com/products",
+      "page_url_zh": "https://wanjinspring.com/zh/products",
+      "application_areas_en": [
+        "Stamping dies",
+        "Tooling return systems",
+        "Industrial mold assemblies"
+      ],
+      "application_areas_zh": [
+        "冲压模具",
+        "工装回位系统",
+        "工业模具组件"
+      ],
+      "related_industries_en": [
+        "Tooling",
+        "Industrial manufacturing",
+        "Automotive parts"
+      ],
+      "related_industries_zh": [
+        "模具工装",
+        "工业制造",
+        "汽车零部件"
+      ],
+      "materials_en": [
+        "Spring steel wire",
+        "Stainless steel",
+        "Special alloy on request"
+      ],
+      "materials_zh": [
+        "弹簧钢丝",
+        "不锈钢",
+        "可按需求选用特种合金"
+      ],
+      "manufacturing_process_en": [
+        "CNC cold coiling or precision forming",
+        "Heat treatment as required",
+        "Dimensional and load inspection"
+      ],
+      "manufacturing_process_zh": [
+        "CNC 冷卷或精密成形",
+        "按需求热处理",
+        "尺寸与载荷检测"
+      ],
+      "typical_load_range_note_en": "Applied across general-purpose and precision spring designs. Performance range depends on wire size, geometry, and validation target.",
+      "typical_load_range_note_zh": "适用于常规与精密弹簧设计。性能范围取决于线径、结构尺寸和验证目标。",
+      "related_process_capabilities_en": [
+        "CNC cold coiling",
+        "End forming or custom hooks as required",
+        "Heat treatment support"
+      ],
+      "related_process_capabilities_zh": [
+        "CNC 冷卷",
+        "按需求端部成形或挂钩成形",
+        "热处理支持"
+      ],
+      "inspection_methods_en": [
+        "Dimensional inspection",
+        "Load testing",
+        "Appearance inspection"
+      ],
+      "inspection_methods_zh": [
+        "尺寸检测",
+        "载荷检测",
+        "外观检查"
+      ]
+    },
+    {
+      "id": "5",
+      "slug": "compression-springs",
+      "sort_order": 4,
+      "category_en": "General",
+      "category_zh": "常规弹簧",
+      "name_en": "Compression Springs",
+      "name_zh": "压缩弹簧",
+      "description_en": "Most common spring type. Used in various mechanisms, auto suspension, and switches.",
+      "description_zh": "最常见的弹簧类型。用于各种机构、汽车悬挂和开关。",
+      "features_en": [
+        "Various Specs",
+        "Custom Ends",
+        "Durable"
+      ],
+      "features_zh": [
+        "规格多样",
+        "定制端部",
+        "经久耐用"
+      ],
+      "image_url": "https://wanjinspring.com/products/compression-spring.jpg",
+      "page_url": "https://wanjinspring.com/products",
+      "page_url_zh": "https://wanjinspring.com/zh/products",
+      "application_areas_en": [
+        "General mechanical return mechanisms",
+        "Valve and switch assemblies",
+        "Automotive elastic supports"
+      ],
+      "application_areas_zh": [
+        "通用机械回位机构",
+        "阀门与开关组件",
+        "汽车弹性支撑"
+      ],
+      "related_industries_en": [
+        "Industrial equipment",
+        "Automotive parts",
+        "General machinery"
+      ],
+      "related_industries_zh": [
+        "工业设备",
+        "汽车零部件",
+        "通用机械"
+      ],
+      "materials_en": [
+        "Spring steel wire",
+        "Stainless steel",
+        "Special alloy on request"
+      ],
+      "materials_zh": [
+        "弹簧钢丝",
+        "不锈钢",
+        "可按需求选用特种合金"
+      ],
+      "manufacturing_process_en": [
+        "CNC cold coiling or precision forming",
+        "Heat treatment as required",
+        "Dimensional and load inspection"
+      ],
+      "manufacturing_process_zh": [
+        "CNC 冷卷或精密成形",
+        "按需求热处理",
+        "尺寸与载荷检测"
+      ],
+      "typical_load_range_note_en": "Applied across general-purpose and precision spring designs. Performance range depends on wire size, geometry, and validation target.",
+      "typical_load_range_note_zh": "适用于常规与精密弹簧设计。性能范围取决于线径、结构尺寸和验证目标。",
+      "related_process_capabilities_en": [
+        "CNC cold coiling",
+        "End forming or custom hooks as required",
+        "Heat treatment support"
+      ],
+      "related_process_capabilities_zh": [
+        "CNC 冷卷",
+        "按需求端部成形或挂钩成形",
+        "热处理支持"
+      ],
+      "inspection_methods_en": [
+        "Dimensional inspection",
+        "Load testing",
+        "Appearance inspection"
+      ],
+      "inspection_methods_zh": [
+        "尺寸检测",
+        "载荷检测",
+        "外观检查"
+      ]
+    },
+    {
+      "id": "6",
+      "slug": "extension-springs",
+      "sort_order": 5,
+      "category_en": "General",
+      "category_zh": "常规弹簧",
+      "name_en": "Extension Springs",
+      "name_zh": "拉伸弹簧",
+      "description_en": "Hooks on both ends to withstand axial tension. Used in medical, fitness, and industrial doors.",
+      "description_zh": "两端带钩以承受轴向拉力。用于医疗、健身和工业门。",
+      "features_en": [
+        "Custom Hooks",
+        "Resilience",
+        "Anti-rust"
+      ],
+      "features_zh": [
+        "定制挂钩",
+        "回弹性好",
+        "防锈处理"
+      ],
+      "image_url": "https://wanjinspring.com/products/extension-spring.jpg",
+      "page_url": "https://wanjinspring.com/products",
+      "page_url_zh": "https://wanjinspring.com/zh/products",
+      "application_areas_en": [
+        "Door and latch return systems",
+        "Fitness equipment linkages",
+        "Medical device pull-back assemblies"
+      ],
+      "application_areas_zh": [
+        "门体与锁扣回位系统",
+        "健身设备联动机构",
+        "医疗设备回拉组件"
+      ],
+      "related_industries_en": [
+        "Industrial equipment",
+        "Fitness equipment",
+        "Medical devices"
+      ],
+      "related_industries_zh": [
+        "工业设备",
+        "健身器材",
+        "医疗器械"
+      ],
+      "materials_en": [
+        "Spring steel wire",
+        "Stainless steel",
+        "Special alloy on request"
+      ],
+      "materials_zh": [
+        "弹簧钢丝",
+        "不锈钢",
+        "可按需求选用特种合金"
+      ],
+      "manufacturing_process_en": [
+        "CNC cold coiling or precision forming",
+        "Heat treatment as required",
+        "Dimensional and load inspection"
+      ],
+      "manufacturing_process_zh": [
+        "CNC 冷卷或精密成形",
+        "按需求热处理",
+        "尺寸与载荷检测"
+      ],
+      "typical_load_range_note_en": "Applied across general-purpose and precision spring designs. Performance range depends on wire size, geometry, and validation target.",
+      "typical_load_range_note_zh": "适用于常规与精密弹簧设计。性能范围取决于线径、结构尺寸和验证目标。",
+      "related_process_capabilities_en": [
+        "CNC cold coiling",
+        "End forming or custom hooks as required",
+        "Heat treatment support"
+      ],
+      "related_process_capabilities_zh": [
+        "CNC 冷卷",
+        "按需求端部成形或挂钩成形",
+        "热处理支持"
+      ],
+      "inspection_methods_en": [
+        "Dimensional inspection",
+        "Load testing",
+        "Appearance inspection"
+      ],
+      "inspection_methods_zh": [
+        "尺寸检测",
+        "载荷检测",
+        "外观检查"
+      ]
+    },
+    {
+      "id": "7",
+      "slug": "torsion-springs",
+      "sort_order": 6,
+      "category_en": "General",
+      "category_zh": "常规弹簧",
+      "name_en": "Torsion Springs",
+      "name_zh": "扭转弹簧",
+      "description_en": "Uses torque for clamping mechanisms, hinges, and automotive locks.",
+      "description_zh": "利用扭矩进行夹紧机构、铰链和汽车锁。",
+      "features_en": [
+        "Precise Angle",
+        "Stable Torque",
+        "Complex Form"
+      ],
+      "features_zh": [
+        "角度精确",
+        "扭矩稳定",
+        "形状复杂"
+      ],
+      "image_url": "https://wanjinspring.com/products/torsion-spring.jpg",
+      "page_url": "https://wanjinspring.com/products",
+      "page_url_zh": "https://wanjinspring.com/zh/products",
+      "application_areas_en": [
+        "Hinges and clamps",
+        "Locking mechanisms",
+        "Rotational return assemblies"
+      ],
+      "application_areas_zh": [
+        "铰链与夹持机构",
+        "锁止机构",
+        "旋转回位组件"
+      ],
+      "related_industries_en": [
+        "Automotive parts",
+        "Industrial hardware",
+        "General machinery"
+      ],
+      "related_industries_zh": [
+        "汽车零部件",
+        "工业五金",
+        "通用机械"
+      ],
+      "materials_en": [
+        "Spring steel wire",
+        "Stainless steel",
+        "Special alloy on request"
+      ],
+      "materials_zh": [
+        "弹簧钢丝",
+        "不锈钢",
+        "可按需求选用特种合金"
+      ],
+      "manufacturing_process_en": [
+        "CNC cold coiling or precision forming",
+        "Heat treatment as required",
+        "Dimensional and load inspection"
+      ],
+      "manufacturing_process_zh": [
+        "CNC 冷卷或精密成形",
+        "按需求热处理",
+        "尺寸与载荷检测"
+      ],
+      "typical_load_range_note_en": "Applied across general-purpose and precision spring designs. Performance range depends on wire size, geometry, and validation target.",
+      "typical_load_range_note_zh": "适用于常规与精密弹簧设计。性能范围取决于线径、结构尺寸和验证目标。",
+      "related_process_capabilities_en": [
+        "CNC cold coiling",
+        "End forming or custom hooks as required",
+        "Heat treatment support"
+      ],
+      "related_process_capabilities_zh": [
+        "CNC 冷卷",
+        "按需求端部成形或挂钩成形",
+        "热处理支持"
+      ],
+      "inspection_methods_en": [
+        "Dimensional inspection",
+        "Load testing",
+        "Appearance inspection"
+      ],
+      "inspection_methods_zh": [
+        "尺寸检测",
+        "载荷检测",
+        "外观检查"
+      ]
+    },
+    {
+      "id": "8",
+      "slug": "wave-springs",
+      "sort_order": 7,
+      "category_en": "Precision",
+      "category_zh": "精密弹簧",
+      "name_en": "Wave Springs",
+      "name_zh": "波形弹簧",
+      "description_en": "Single-turn or multi-turn wave springs for limited axial space, preload control, and compact precision assemblies.",
+      "description_zh": "单层或多层波峰结构，适用于轴向空间受限、预紧力控制和紧凑型精密装配。",
+      "features_en": [
+        "Compact",
+        "High Precision",
+        "Long Life"
+      ],
+      "features_zh": [
+        "结构紧凑",
+        "高精度",
+        "长寿命"
+      ],
+      "image_url": "https://wanjinspring.com/products/wave-spring.jpg",
+      "page_url": "https://wanjinspring.com/products",
+      "page_url_zh": "https://wanjinspring.com/zh/products",
+      "application_areas_en": [
+        "Limited-axial-space preload control",
+        "Bearing preload assemblies",
+        "Compact precision mechanisms"
+      ],
+      "application_areas_zh": [
+        "有限轴向空间预紧控制",
+        "轴承预压组件",
+        "紧凑型精密机构"
+      ],
+      "related_industries_en": [
+        "Precision assembly",
+        "Industrial equipment",
+        "Automation systems"
+      ],
+      "related_industries_zh": [
+        "精密装配",
+        "工业设备",
+        "自动化系统"
+      ],
+      "materials_en": [
+        "Spring steel wire",
+        "Stainless steel",
+        "Special alloy on request"
+      ],
+      "materials_zh": [
+        "弹簧钢丝",
+        "不锈钢",
+        "可按需求选用特种合金"
+      ],
+      "manufacturing_process_en": [
+        "CNC cold coiling or precision forming",
+        "Heat treatment as required",
+        "Dimensional and load inspection"
+      ],
+      "manufacturing_process_zh": [
+        "CNC 冷卷或精密成形",
+        "按需求热处理",
+        "尺寸与载荷检测"
+      ],
+      "typical_load_range_note_en": "Applied across general-purpose and precision spring designs. Performance range depends on wire size, geometry, and validation target.",
+      "typical_load_range_note_zh": "适用于常规与精密弹簧设计。性能范围取决于线径、结构尺寸和验证目标。",
+      "related_process_capabilities_en": [
+        "CNC cold coiling",
+        "End forming or custom hooks as required",
+        "Heat treatment support"
+      ],
+      "related_process_capabilities_zh": [
+        "CNC 冷卷",
+        "按需求端部成形或挂钩成形",
+        "热处理支持"
+      ],
+      "inspection_methods_en": [
+        "Dimensional inspection",
+        "Load testing",
+        "Appearance inspection"
+      ],
+      "inspection_methods_zh": [
+        "尺寸检测",
+        "载荷检测",
+        "外观检查"
+      ]
+    },
+    {
+      "id": "9",
+      "slug": "contact-springs",
+      "sort_order": 8,
+      "category_en": "Precision",
+      "category_zh": "精密弹簧",
+      "name_en": "Contact Springs",
+      "name_zh": "电接触弹簧",
+      "description_en": "Precision elastic components for conductive connection, contact compensation, and stable contact force in electrical assemblies and control mechanisms.",
+      "description_zh": "用于导电连接、接触补偿和稳定接触力的精密弹性元件，适用于电气组件和控制机构。",
+      "features_en": [
+        "High Precision",
+        "Anti-rust",
+        "Small Batch"
+      ],
+      "features_zh": [
+        "高精度",
+        "防锈处理",
+        "小批量定制"
+      ],
+      "image_url": "https://wanjinspring.com/products/contact-spring.jpg",
+      "page_url": "https://wanjinspring.com/products",
+      "page_url_zh": "https://wanjinspring.com/zh/products",
+      "application_areas_en": [
+        "Electrical conductive contact systems",
+        "Switchgear contact compensation",
+        "Stable-force control contacts"
+      ],
+      "application_areas_zh": [
+        "电气导电接触系统",
+        "开关设备接触补偿",
+        "稳定力值控制触点"
+      ],
+      "related_industries_en": [
+        "Power equipment",
+        "Electrical assemblies",
+        "Industrial control"
+      ],
+      "related_industries_zh": [
+        "电力设备",
+        "电气组件",
+        "工业控制"
+      ],
+      "materials_en": [
+        "Strip steel",
+        "Stainless steel strip",
+        "Conductive alloy on request"
+      ],
+      "materials_zh": [
+        "带钢",
+        "不锈钢带材",
+        "可按需求选用导电合金"
+      ],
+      "manufacturing_process_en": [
+        "Precision stamping or forming",
+        "Heat treatment as required",
+        "Contact-force or dimensional inspection"
+      ],
+      "manufacturing_process_zh": [
+        "精密冲压或成形",
+        "按需求热处理",
+        "接触力或尺寸检测"
+      ],
+      "typical_load_range_note_en": "Usually developed around contact force, elastic travel, and installation geometry rather than a single standard load class.",
+      "typical_load_range_note_zh": "通常围绕接触力、弹性行程和安装结构开发，而非单一标准载荷等级。",
+      "related_process_capabilities_en": [
+        "Precision forming or stamping",
+        "Contact-force tuning",
+        "Surface finishing support"
+      ],
+      "related_process_capabilities_zh": [
+        "精密成形或冲压",
+        "接触力调校",
+        "表面处理支持"
+      ],
+      "inspection_methods_en": [
+        "Dimensional inspection",
+        "Contact-force verification as required",
+        "Appearance inspection"
+      ],
+      "inspection_methods_zh": [
+        "尺寸检测",
+        "按需求进行接触力验证",
+        "外观检查"
+      ]
+    },
+    {
+      "id": "10",
+      "slug": "retaining-rings-snap-rings",
+      "sort_order": 9,
+      "category_en": "Custom",
+      "category_zh": "定制弹簧",
+      "name_en": "Retaining Rings / Snap Rings",
+      "name_zh": "卡簧 / 挡圈弹性件",
+      "description_en": "Spring retaining elements for axial positioning, load retention, and installation locking, available in custom sizes and installation styles.",
+      "description_zh": "用于轴向定位、载荷保持和装配锁止的弹性固定件，可按尺寸和安装方式定制。",
+      "features_en": [
+        "Durable",
+        "Anti-rust",
+        "Small Batch"
+      ],
+      "features_zh": [
+        "经久耐用",
+        "防锈处理",
+        "小批量定制"
+      ],
+      "image_url": "https://wanjinspring.com/products/retaining-ring.jpg",
+      "page_url": "https://wanjinspring.com/products",
+      "page_url_zh": "https://wanjinspring.com/zh/products",
+      "application_areas_en": [
+        "Axial positioning",
+        "Load retention",
+        "Installation locking"
+      ],
+      "application_areas_zh": [
+        "轴向定位",
+        "载荷保持",
+        "装配锁止"
+      ],
+      "related_industries_en": [
+        "Industrial equipment",
+        "Automotive parts",
+        "Precision assemblies"
+      ],
+      "related_industries_zh": [
+        "工业设备",
+        "汽车零部件",
+        "精密组件"
+      ],
+      "materials_en": [
+        "Spring steel wire",
+        "Stainless steel",
+        "Special alloy on request"
+      ],
+      "materials_zh": [
+        "弹簧钢丝",
+        "不锈钢",
+        "可按需求选用特种合金"
+      ],
+      "manufacturing_process_en": [
+        "CNC cold coiling or precision forming",
+        "Heat treatment as required",
+        "Dimensional and load inspection"
+      ],
+      "manufacturing_process_zh": [
+        "CNC 冷卷或精密成形",
+        "按需求热处理",
+        "尺寸与载荷检测"
+      ],
+      "typical_load_range_note_en": "Applied across general-purpose and precision spring designs. Performance range depends on wire size, geometry, and validation target.",
+      "typical_load_range_note_zh": "适用于常规与精密弹簧设计。性能范围取决于线径、结构尺寸和验证目标。",
+      "related_process_capabilities_en": [
+        "Precision forming",
+        "Spring retaining geometry control",
+        "Surface finishing support"
+      ],
+      "related_process_capabilities_zh": [
+        "精密成形",
+        "弹性锁止结构控制",
+        "表面处理支持"
+      ],
+      "inspection_methods_en": [
+        "Dimensional inspection",
+        "Retention fit verification",
+        "Appearance inspection"
+      ],
+      "inspection_methods_zh": [
+        "尺寸检测",
+        "锁止配合验证",
+        "外观检查"
+      ]
+    },
+    {
+      "id": "11",
+      "slug": "custom-special-shaped-springs",
+      "sort_order": 10,
+      "category_en": "Custom",
+      "category_zh": "定制弹簧",
+      "name_en": "Custom / Special-Shaped Springs",
+      "name_zh": "精密异形弹簧",
+      "description_en": "Non-standard springs and wire forms tailored to specific needs.",
+      "description_zh": "根据具体需求量身定制的非标弹簧和线材制品。",
+      "features_en": [
+        "Complex Forms",
+        "Blueprint Custom",
+        "Special Alloy"
+      ],
+      "features_zh": [
+        "复杂工艺",
+        "图纸定制",
+        "特种合金"
+      ],
+      "image_url": "https://wanjinspring.com/products/custom-wire-form.jpg",
+      "page_url": "https://wanjinspring.com/products",
+      "page_url_zh": "https://wanjinspring.com/zh/products",
+      "application_areas_en": [
+        "Custom elastic structures from drawings",
+        "Non-standard linkage forms",
+        "Special-function spring components"
+      ],
+      "application_areas_zh": [
+        "按图纸定制的弹性结构件",
+        "非标联动成形件",
+        "特殊功能弹性元件"
+      ],
+      "related_industries_en": [
+        "Custom engineering",
+        "Industrial equipment",
+        "Precision manufacturing"
+      ],
+      "related_industries_zh": [
+        "定制工程",
+        "工业设备",
+        "精密制造"
+      ],
+      "materials_en": [
+        "Spring steel wire",
+        "Stainless steel",
+        "Special alloy on request"
+      ],
+      "materials_zh": [
+        "弹簧钢丝",
+        "不锈钢",
+        "可按需求选用特种合金"
+      ],
+      "manufacturing_process_en": [
+        "CNC cold coiling or precision forming",
+        "Heat treatment as required",
+        "Dimensional and load inspection"
+      ],
+      "manufacturing_process_zh": [
+        "CNC 冷卷或精密成形",
+        "按需求热处理",
+        "尺寸与载荷检测"
+      ],
+      "typical_load_range_note_en": "Applied across general-purpose and precision spring designs. Performance range depends on wire size, geometry, and validation target.",
+      "typical_load_range_note_zh": "适用于常规与精密弹簧设计。性能范围取决于线径、结构尺寸和验证目标。",
+      "related_process_capabilities_en": [
+        "CNC cold coiling",
+        "End forming or custom hooks as required",
+        "Heat treatment support"
+      ],
+      "related_process_capabilities_zh": [
+        "CNC 冷卷",
+        "按需求端部成形或挂钩成形",
+        "热处理支持"
+      ],
+      "inspection_methods_en": [
+        "Dimensional inspection",
+        "Load testing",
+        "Appearance inspection"
+      ],
+      "inspection_methods_zh": [
+        "尺寸检测",
+        "载荷检测",
+        "外观检查"
+      ]
+    },
+    {
+      "id": "12",
+      "slug": "constant-force-springs",
+      "sort_order": 11,
+      "category_en": "Custom",
+      "category_zh": "定制弹簧",
+      "name_en": "Constant Force Springs",
+      "name_zh": "恒力弹簧",
+      "description_en": "Provide nearly constant output force over long travel, suitable for retraction, counterbalance, and automatic return mechanisms.",
+      "description_zh": "在较长行程内输出近似恒定的作用力，适用于回卷、平衡和自动回位机构。",
+      "features_en": [
+        "Long Life",
+        "Compact",
+        "Custom Ends"
+      ],
+      "features_zh": [
+        "长寿命",
+        "结构紧凑",
+        "定制端部"
+      ],
+      "image_url": "https://wanjinspring.com/products/constant-force-spring.jpg",
+      "page_url": "https://wanjinspring.com/products",
+      "page_url_zh": "https://wanjinspring.com/zh/products",
+      "application_areas_en": [
+        "Retracting devices",
+        "Counterbalance mechanisms",
+        "Automatic return systems"
+      ],
+      "application_areas_zh": [
+        "回收装置",
+        "平衡机构",
+        "自动回位系统"
+      ],
+      "related_industries_en": [
+        "Automation systems",
+        "Industrial equipment",
+        "Precision devices"
+      ],
+      "related_industries_zh": [
+        "自动化系统",
+        "工业设备",
+        "精密设备"
+      ],
+      "materials_en": [
+        "Strip spring steel",
+        "Stainless steel strip",
+        "Custom strip material on request"
+      ],
+      "materials_zh": [
+        "带材弹簧钢",
+        "不锈钢带材",
+        "可按需求选用专用带材"
+      ],
+      "manufacturing_process_en": [
+        "Strip forming",
+        "Spiral winding",
+        "Force-travel verification"
+      ],
+      "manufacturing_process_zh": [
+        "带材成形",
+        "螺旋卷制",
+        "力值与行程验证"
+      ],
+      "typical_load_range_note_en": "Designed around force-travel behavior and cycle life. Exact performance depends on strip thickness, width, winding geometry, and validation target.",
+      "typical_load_range_note_zh": "设计重点在力值-行程曲线与循环寿命。具体性能取决于带材厚度、宽度、卷制结构和验证目标。",
+      "related_process_capabilities_en": [
+        "Strip forming",
+        "Spiral winding",
+        "Force-travel curve validation"
+      ],
+      "related_process_capabilities_zh": [
+        "带材成形",
+        "螺旋卷制",
+        "力值行程曲线验证"
+      ],
+      "inspection_methods_en": [
+        "Force-travel verification",
+        "Dimensional inspection",
+        "Cycle-life related validation as required"
+      ],
+      "inspection_methods_zh": [
+        "力值行程验证",
+        "尺寸检测",
+        "按需求进行循环寿命相关验证"
+      ]
+    },
+    {
+      "id": "13",
+      "slug": "garter-springs",
+      "sort_order": 12,
+      "category_en": "Precision",
+      "category_zh": "精密弹簧",
+      "name_en": "Garter Springs",
+      "name_zh": "卡特弹簧",
+      "description_en": "Coiled into a circular form for sealing preload, connection compensation, and elastic retention in rotating or cylindrical assemblies.",
+      "description_zh": "卷制成环形结构，用于密封预紧、连接补偿以及旋转或圆柱组件中的弹性保持。",
+      "features_en": [
+        "Resilience",
+        "Durable",
+        "High Precision"
+      ],
+      "features_zh": [
+        "回弹性好",
+        "经久耐用",
+        "高精度"
+      ],
+      "image_url": "https://wanjinspring.com/products/garter-spring.jpg",
+      "page_url": "https://wanjinspring.com/products",
+      "page_url_zh": "https://wanjinspring.com/zh/products",
+      "application_areas_en": [
+        "Seal preload systems",
+        "Rotary shaft elastic retention",
+        "Cylindrical assembly compensation"
+      ],
+      "application_areas_zh": [
+        "密封预紧系统",
+        "旋转轴弹性保持",
+        "圆柱组件补偿"
+      ],
+      "related_industries_en": [
+        "Sealing systems",
+        "Automotive parts",
+        "Industrial equipment"
+      ],
+      "related_industries_zh": [
+        "密封系统",
+        "汽车零部件",
+        "工业设备"
+      ],
+      "materials_en": [
+        "Spring steel wire",
+        "Stainless steel",
+        "Special alloy on request"
+      ],
+      "materials_zh": [
+        "弹簧钢丝",
+        "不锈钢",
+        "可按需求选用特种合金"
+      ],
+      "manufacturing_process_en": [
+        "CNC cold coiling or precision forming",
+        "Heat treatment as required",
+        "Dimensional and load inspection"
+      ],
+      "manufacturing_process_zh": [
+        "CNC 冷卷或精密成形",
+        "按需求热处理",
+        "尺寸与载荷检测"
+      ],
+      "typical_load_range_note_en": "Applied across general-purpose and precision spring designs. Performance range depends on wire size, geometry, and validation target.",
+      "typical_load_range_note_zh": "适用于常规与精密弹簧设计。性能范围取决于线径、结构尺寸和验证目标。",
+      "related_process_capabilities_en": [
+        "CNC cold coiling",
+        "End forming or custom hooks as required",
+        "Heat treatment support"
+      ],
+      "related_process_capabilities_zh": [
+        "CNC 冷卷",
+        "按需求端部成形或挂钩成形",
+        "热处理支持"
+      ],
+      "inspection_methods_en": [
+        "Dimensional inspection",
+        "Load testing",
+        "Appearance inspection"
+      ],
+      "inspection_methods_zh": [
+        "尺寸检测",
+        "载荷检测",
+        "外观检查"
+      ]
+    },
+    {
+      "id": "15",
+      "slug": "flat-springs",
+      "sort_order": 13,
+      "category_en": "Precision",
+      "category_zh": "精密弹簧",
+      "name_en": "Flat Springs",
+      "name_zh": "平面弹簧",
+      "description_en": "Precision elastic components formed from strip or sheet material, suitable for electrical contacts, latching mechanisms, and compact assemblies.",
+      "description_zh": "由带材或片材成形的精密弹性件，适用于电接触、锁止机构和紧凑型组件。",
+      "features_en": [
+        "High Precision",
+        "Anti-rust",
+        "Small Batch"
+      ],
+      "features_zh": [
+        "高精度",
+        "防锈处理",
+        "小批量定制"
+      ],
+      "image_url": "https://wanjinspring.com/products/flat-spring.jpg",
+      "page_url": "https://wanjinspring.com/products",
+      "page_url_zh": "https://wanjinspring.com/zh/products",
+      "application_areas_en": [
+        "Electrical contact elements",
+        "Latching mechanisms",
+        "Compact elastic plates"
+      ],
+      "application_areas_zh": [
+        "电接触元件",
+        "锁止机构",
+        "紧凑型弹性片结构"
+      ],
+      "related_industries_en": [
+        "Electrical assemblies",
+        "Industrial control",
+        "Precision devices"
+      ],
+      "related_industries_zh": [
+        "电气组件",
+        "工业控制",
+        "精密设备"
+      ],
+      "materials_en": [
+        "Strip steel",
+        "Stainless steel strip",
+        "Conductive alloy on request"
+      ],
+      "materials_zh": [
+        "带钢",
+        "不锈钢带材",
+        "可按需求选用导电合金"
+      ],
+      "manufacturing_process_en": [
+        "Precision stamping or forming",
+        "Heat treatment as required",
+        "Contact-force or dimensional inspection"
+      ],
+      "manufacturing_process_zh": [
+        "精密冲压或成形",
+        "按需求热处理",
+        "接触力或尺寸检测"
+      ],
+      "typical_load_range_note_en": "Usually developed around contact force, elastic travel, and installation geometry rather than a single standard load class.",
+      "typical_load_range_note_zh": "通常围绕接触力、弹性行程和安装结构开发，而非单一标准载荷等级。",
+      "related_process_capabilities_en": [
+        "Precision forming or stamping",
+        "Contact-force tuning",
+        "Surface finishing support"
+      ],
+      "related_process_capabilities_zh": [
+        "精密成形或冲压",
+        "接触力调校",
+        "表面处理支持"
+      ],
+      "inspection_methods_en": [
+        "Dimensional inspection",
+        "Contact-force verification as required",
+        "Appearance inspection"
+      ],
+      "inspection_methods_zh": [
+        "尺寸检测",
+        "按需求进行接触力验证",
+        "外观检查"
+      ]
+    },
+    {
+      "id": "16",
+      "slug": "power-clock-springs",
+      "sort_order": 14,
+      "category_en": "Custom",
+      "category_zh": "定制弹簧",
+      "name_en": "Power / Clock Springs",
+      "name_zh": "螺旋发条弹簧",
+      "description_en": "Flat spiral springs for energy storage, rewind, and automatic return mechanisms, commonly used in spring motors and retracting devices.",
+      "description_zh": "用于储能、回卷和自动回位的平面螺旋弹簧，常见于发条机构和回收装置。",
+      "features_en": [
+        "Long Life",
+        "Compact",
+        "Stable Torque"
+      ],
+      "features_zh": [
+        "长寿命",
+        "结构紧凑",
+        "扭矩稳定"
+      ],
+      "image_url": "https://wanjinspring.com/products/power-spring.jpg",
+      "page_url": "https://wanjinspring.com/products",
+      "page_url_zh": "https://wanjinspring.com/zh/products",
+      "application_areas_en": [
+        "Energy storage mechanisms",
+        "Rewind systems",
+        "Spring motor assemblies"
+      ],
+      "application_areas_zh": [
+        "储能机构",
+        "回卷系统",
+        "发条驱动组件"
+      ],
+      "related_industries_en": [
+        "Precision mechanisms",
+        "Industrial devices",
+        "Automation systems"
+      ],
+      "related_industries_zh": [
+        "精密机构",
+        "工业装置",
+        "自动化系统"
+      ],
+      "materials_en": [
+        "Strip spring steel",
+        "Stainless steel strip",
+        "Custom strip material on request"
+      ],
+      "materials_zh": [
+        "带材弹簧钢",
+        "不锈钢带材",
+        "可按需求选用专用带材"
+      ],
+      "manufacturing_process_en": [
+        "Strip forming",
+        "Spiral winding",
+        "Force-travel verification"
+      ],
+      "manufacturing_process_zh": [
+        "带材成形",
+        "螺旋卷制",
+        "力值与行程验证"
+      ],
+      "typical_load_range_note_en": "Designed around force-travel behavior and cycle life. Exact performance depends on strip thickness, width, winding geometry, and validation target.",
+      "typical_load_range_note_zh": "设计重点在力值-行程曲线与循环寿命。具体性能取决于带材厚度、宽度、卷制结构和验证目标。",
+      "related_process_capabilities_en": [
+        "Strip forming",
+        "Spiral winding",
+        "Force-travel curve validation"
+      ],
+      "related_process_capabilities_zh": [
+        "带材成形",
+        "螺旋卷制",
+        "力值行程曲线验证"
+      ],
+      "inspection_methods_en": [
+        "Force-travel verification",
+        "Dimensional inspection",
+        "Cycle-life related validation as required"
+      ],
+      "inspection_methods_zh": [
+        "力值行程验证",
+        "尺寸检测",
+        "按需求进行循环寿命相关验证"
+      ]
+    },
+    {
+      "id": "17",
+      "slug": "variable-force-springs",
+      "sort_order": 15,
+      "category_en": "Custom",
+      "category_zh": "定制弹簧",
+      "name_en": "Variable Force Springs",
+      "name_zh": "变力弹簧",
+      "description_en": "Designed to change output force over travel, suitable for mechanisms that need staged load response or progressive return characteristics.",
+      "description_zh": "可随行程变化输出力值，适用于需要分段载荷响应或渐进回位特性的机构。",
+      "features_en": [
+        "Compact",
+        "Custom Ends",
+        "Durable"
+      ],
+      "features_zh": [
+        "结构紧凑",
+        "定制端部",
+        "经久耐用"
+      ],
+      "image_url": "https://wanjinspring.com/products/variable-force-spring.png",
+      "page_url": "https://wanjinspring.com/products",
+      "page_url_zh": "https://wanjinspring.com/zh/products",
+      "application_areas_en": [
+        "Progressive return mechanisms",
+        "Stage-load response systems",
+        "Controlled-force travel assemblies"
+      ],
+      "application_areas_zh": [
+        "渐进回位机构",
+        "分段载荷响应系统",
+        "受控力值行程组件"
+      ],
+      "related_industries_en": [
+        "Automation systems",
+        "Industrial equipment",
+        "Precision devices"
+      ],
+      "related_industries_zh": [
+        "自动化系统",
+        "工业设备",
+        "精密设备"
+      ],
+      "materials_en": [
+        "Strip spring steel",
+        "Stainless steel strip",
+        "Custom strip material on request"
+      ],
+      "materials_zh": [
+        "带材弹簧钢",
+        "不锈钢带材",
+        "可按需求选用专用带材"
+      ],
+      "manufacturing_process_en": [
+        "Strip forming",
+        "Spiral winding",
+        "Force-travel verification"
+      ],
+      "manufacturing_process_zh": [
+        "带材成形",
+        "螺旋卷制",
+        "力值与行程验证"
+      ],
+      "typical_load_range_note_en": "Designed around force-travel behavior and cycle life. Exact performance depends on strip thickness, width, winding geometry, and validation target.",
+      "typical_load_range_note_zh": "设计重点在力值-行程曲线与循环寿命。具体性能取决于带材厚度、宽度、卷制结构和验证目标。",
+      "related_process_capabilities_en": [
+        "Strip forming",
+        "Spiral winding",
+        "Force-travel curve validation"
+      ],
+      "related_process_capabilities_zh": [
+        "带材成形",
+        "螺旋卷制",
+        "力值行程曲线验证"
+      ],
+      "inspection_methods_en": [
+        "Force-travel verification",
+        "Dimensional inspection",
+        "Cycle-life related validation as required"
+      ],
+      "inspection_methods_zh": [
+        "力值行程验证",
+        "尺寸检测",
+        "按需求进行循环寿命相关验证"
+      ]
+    },
+    {
+      "id": "18",
+      "slug": "spiral-springs",
+      "sort_order": 16,
+      "category_en": "Custom",
+      "category_zh": "定制弹簧",
+      "name_en": "Spiral Springs",
+      "name_zh": "涡卷弹簧",
+      "description_en": "Flat spiral springs formed from strip material, suitable for rewind, energy storage, travel limiting, and compact transmission mechanisms.",
+      "description_zh": "由带材制成的平面涡卷弹簧，适用于回卷、储能、行程限制和紧凑传动机构。",
+      "features_en": [
+        "Long Life",
+        "Compact",
+        "Stable Torque"
+      ],
+      "features_zh": [
+        "长寿命",
+        "结构紧凑",
+        "扭矩稳定"
+      ],
+      "image_url": "https://wanjinspring.com/products/spiral-spring.jpg",
+      "page_url": "https://wanjinspring.com/products",
+      "page_url_zh": "https://wanjinspring.com/zh/products",
+      "application_areas_en": [
+        "Rewind mechanisms",
+        "Travel limiting devices",
+        "Compact transmission systems"
+      ],
+      "application_areas_zh": [
+        "回卷机构",
+        "行程限制装置",
+        "紧凑传动系统"
+      ],
+      "related_industries_en": [
+        "Industrial equipment",
+        "Precision mechanisms",
+        "Automation systems"
+      ],
+      "related_industries_zh": [
+        "工业设备",
+        "精密机构",
+        "自动化系统"
+      ],
+      "materials_en": [
+        "Strip spring steel",
+        "Stainless steel strip",
+        "Custom strip material on request"
+      ],
+      "materials_zh": [
+        "带材弹簧钢",
+        "不锈钢带材",
+        "可按需求选用专用带材"
+      ],
+      "manufacturing_process_en": [
+        "Strip forming",
+        "Spiral winding",
+        "Force-travel verification"
+      ],
+      "manufacturing_process_zh": [
+        "带材成形",
+        "螺旋卷制",
+        "力值与行程验证"
+      ],
+      "typical_load_range_note_en": "Designed around force-travel behavior and cycle life. Exact performance depends on strip thickness, width, winding geometry, and validation target.",
+      "typical_load_range_note_zh": "设计重点在力值-行程曲线与循环寿命。具体性能取决于带材厚度、宽度、卷制结构和验证目标。",
+      "related_process_capabilities_en": [
+        "Strip forming",
+        "Spiral winding",
+        "Force-travel curve validation"
+      ],
+      "related_process_capabilities_zh": [
+        "带材成形",
+        "螺旋卷制",
+        "力值行程曲线验证"
+      ],
+      "inspection_methods_en": [
+        "Force-travel verification",
+        "Dimensional inspection",
+        "Cycle-life related validation as required"
+      ],
+      "inspection_methods_zh": [
+        "力值行程验证",
+        "尺寸检测",
+        "按需求进行循环寿命相关验证"
+      ]
+    },
+    {
+      "id": "19",
+      "slug": "contact-clips-leaf-type-elastic-parts",
+      "sort_order": 17,
+      "category_en": "Precision",
+      "category_zh": "精密弹簧",
+      "name_en": "Contact Clips / Leaf-Type Elastic Parts",
+      "name_zh": "簧片 / 导电弹片",
+      "description_en": "Stamped or formed elastic parts for conductive connection, clamping, latching, and contact compensation in electrical and precision assemblies.",
+      "description_zh": "冲压或成形的弹性件，用于导电连接、夹持、锁止和接触补偿，适用于电气和精密组件。",
+      "features_en": [
+        "High Precision",
+        "Anti-rust",
+        "Small Batch"
+      ],
+      "features_zh": [
+        "高精度",
+        "防锈处理",
+        "小批量定制"
+      ],
+      "image_url": "https://wanjinspring.com/products/contact-clips.jpg",
+      "page_url": "https://wanjinspring.com/products",
+      "page_url_zh": "https://wanjinspring.com/zh/products",
+      "application_areas_en": [
+        "Conductive clamping parts",
+        "Latch and contact compensation parts",
+        "Precision stamped elastic elements"
+      ],
+      "application_areas_zh": [
+        "导电夹持零件",
+        "锁止与接触补偿零件",
+        "精密冲压弹性元件"
+      ],
+      "related_industries_en": [
+        "Electrical assemblies",
+        "Precision assembly",
+        "Industrial control"
+      ],
+      "related_industries_zh": [
+        "电气组件",
+        "精密装配",
+        "工业控制"
+      ],
+      "materials_en": [
+        "Strip steel",
+        "Stainless steel strip",
+        "Conductive alloy on request"
+      ],
+      "materials_zh": [
+        "带钢",
+        "不锈钢带材",
+        "可按需求选用导电合金"
+      ],
+      "manufacturing_process_en": [
+        "Precision stamping or forming",
+        "Heat treatment as required",
+        "Contact-force or dimensional inspection"
+      ],
+      "manufacturing_process_zh": [
+        "精密冲压或成形",
+        "按需求热处理",
+        "接触力或尺寸检测"
+      ],
+      "typical_load_range_note_en": "Usually developed around contact force, elastic travel, and installation geometry rather than a single standard load class.",
+      "typical_load_range_note_zh": "通常围绕接触力、弹性行程和安装结构开发，而非单一标准载荷等级。",
+      "related_process_capabilities_en": [
+        "Precision forming or stamping",
+        "Contact-force tuning",
+        "Surface finishing support"
+      ],
+      "related_process_capabilities_zh": [
+        "精密成形或冲压",
+        "接触力调校",
+        "表面处理支持"
+      ],
+      "inspection_methods_en": [
+        "Dimensional inspection",
+        "Contact-force verification as required",
+        "Appearance inspection"
+      ],
+      "inspection_methods_zh": [
+        "尺寸检测",
+        "按需求进行接触力验证",
+        "外观检查"
+      ]
+    },
+    {
+      "id": "20",
+      "slug": "multi-turn-wave-spring-assemblies",
+      "sort_order": 18,
+      "category_en": "Precision",
+      "category_zh": "精密弹簧",
+      "name_en": "Multi-Turn Wave Spring Assemblies",
+      "name_zh": "多波峰波形弹簧组",
+      "description_en": "Multi-wave configurations that provide stable preload and improved travel usage in limited axial space, ideal for compact precision assemblies.",
+      "description_zh": "多波峰结构在有限轴向空间内提供稳定预紧力和更高行程利用率，适合紧凑型精密装配。",
+      "features_en": [
+        "Compact",
+        "High Load",
+        "Long Life"
+      ],
+      "features_zh": [
+        "结构紧凑",
+        "高负载",
+        "长寿命"
+      ],
+      "image_url": "https://wanjinspring.com/products/multi-turn-wave-spring.jpg",
+      "page_url": "https://wanjinspring.com/products",
+      "page_url_zh": "https://wanjinspring.com/zh/products",
+      "application_areas_en": [
+        "Compact stacked preload systems",
+        "Bearing and sealing preload assemblies",
+        "Precision axial force control"
+      ],
+      "application_areas_zh": [
+        "紧凑叠层预紧系统",
+        "轴承与密封预压组件",
+        "精密轴向力控制"
+      ],
+      "related_industries_en": [
+        "Precision assembly",
+        "Industrial equipment",
+        "Automation systems"
+      ],
+      "related_industries_zh": [
+        "精密装配",
+        "工业设备",
+        "自动化系统"
+      ],
+      "materials_en": [
+        "Spring steel wire",
+        "Stainless steel",
+        "Special alloy on request"
+      ],
+      "materials_zh": [
+        "弹簧钢丝",
+        "不锈钢",
+        "可按需求选用特种合金"
+      ],
+      "manufacturing_process_en": [
+        "CNC cold coiling or precision forming",
+        "Heat treatment as required",
+        "Dimensional and load inspection"
+      ],
+      "manufacturing_process_zh": [
+        "CNC 冷卷或精密成形",
+        "按需求热处理",
+        "尺寸与载荷检测"
+      ],
+      "typical_load_range_note_en": "Applied across general-purpose and precision spring designs. Performance range depends on wire size, geometry, and validation target.",
+      "typical_load_range_note_zh": "适用于常规与精密弹簧设计。性能范围取决于线径、结构尺寸和验证目标。",
+      "related_process_capabilities_en": [
+        "CNC cold coiling",
+        "End forming or custom hooks as required",
+        "Heat treatment support"
+      ],
+      "related_process_capabilities_zh": [
+        "CNC 冷卷",
+        "按需求端部成形或挂钩成形",
+        "热处理支持"
+      ],
+      "inspection_methods_en": [
+        "Dimensional inspection",
+        "Load testing",
+        "Appearance inspection"
+      ],
+      "inspection_methods_zh": [
+        "尺寸检测",
+        "载荷检测",
+        "外观检查"
+      ]
+    },
+    {
+      "id": "21",
+      "slug": "disc-springs",
+      "sort_order": 19,
+      "category_en": "Precision",
+      "category_zh": "精密弹簧",
+      "name_en": "Disc Springs",
+      "name_zh": "碟形弹簧",
+      "description_en": "High load capacity, short stroke. Used in heavy machinery and power equipment buffers.",
+      "description_zh": "高负载能力，短行程。用于重型机械和电力设备缓冲。",
+      "features_en": [
+        "High Load",
+        "Long Life",
+        "Compact"
+      ],
+      "features_zh": [
+        "高负载",
+        "长寿命",
+        "结构紧凑"
+      ],
+      "image_url": "https://wanjinspring.com/products/disc-spring.jpg",
+      "page_url": "https://wanjinspring.com/products",
+      "page_url_zh": "https://wanjinspring.com/zh/products",
+      "application_areas_en": [
+        "Heavy-load buffering",
+        "Short-stroke high-force assemblies",
+        "Power equipment preload systems"
+      ],
+      "application_areas_zh": [
+        "重载缓冲",
+        "短行程高力值组件",
+        "电力设备预紧系统"
+      ],
+      "related_industries_en": [
+        "Power equipment",
+        "Heavy machinery",
+        "Industrial equipment"
+      ],
+      "related_industries_zh": [
+        "电力设备",
+        "重型机械",
+        "工业设备"
+      ],
+      "materials_en": [
+        "Spring steel",
+        "Alloy spring steel",
+        "Custom material on request"
+      ],
+      "materials_zh": [
+        "弹簧钢",
+        "合金弹簧钢",
+        "可按需求选材"
+      ],
+      "manufacturing_process_en": [
+        "Disc spring stacking",
+        "Presetting / static pressure processing",
+        "Load-deflection verification"
+      ],
+      "manufacturing_process_zh": [
+        "碟簧叠装",
+        "强压 / 静压处理",
+        "载荷位移验证"
+      ],
+      "typical_load_range_note_en": "Used where high force is required in compact installation space. Final stack load depends on series-parallel arrangement and spring geometry.",
+      "typical_load_range_note_zh": "适用于有限安装空间内需要较高力值的场景。最终载荷取决于串并联方式和碟簧几何参数。",
+      "related_process_capabilities_en": [
+        "Disc spring stacking",
+        "Presetting / static pressure processing",
+        "Heavy-load assembly support"
+      ],
+      "related_process_capabilities_zh": [
+        "碟簧叠装",
+        "强压 / 静压处理",
+        "重载组件配套"
+      ],
+      "inspection_methods_en": [
+        "Load-deflection verification",
+        "Dimensional inspection",
+        "Assembly verification"
+      ],
+      "inspection_methods_zh": [
+        "载荷位移验证",
+        "尺寸检测",
+        "组件装配验证"
+      ]
+    }
+  ]
+}

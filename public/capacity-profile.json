@@ -1,0 +1,182 @@
+{
+  "profile_name": "Wanjin Capacity Profile",
+  "profile_version": "2026-03-11",
+  "company_name": "Xi'an Wanjin Precision Spring Co., Ltd.",
+  "website": "https://wanjinspring.com/",
+  "page_url": "https://wanjinspring.com/capacity",
+  "page_url_zh": "https://wanjinspring.com/zh/capacity",
+  "summary_en": "Machine-readable summary of Wanjin Precision Spring manufacturing capacity, production equipment, process flows, and quality metrics.",
+  "summary_zh": "万锦精密弹簧制造能力、生产装备、工艺流程与质量指标的机器可读摘要。",
+  "capacity_highlights": {
+    "regional_advantage_en": "Regional pioneer in medium-frequency induction hot coiling for large wire diameter springs in Northwest China.",
+    "regional_advantage_zh": "西北地区大线径弹簧中频感应热卷领域的区域先行者。",
+    "facility_area_sqm": 11122,
+    "workshop_area_sqm": 7000,
+    "quality_metrics": {
+      "production_pass_rate": ">=99%",
+      "contract_fulfillment_rate": ">=95%",
+      "customer_satisfaction": "98%"
+    }
+  },
+  "core_manufacturing_lines": [
+    {
+      "name_en": "Automatic Cold Coiling",
+      "name_zh": "全自动冷卷中心",
+      "description_en": "Automatic coiling for cold-coiled and special-shaped springs with stable dimensional control.",
+      "description_zh": "用于冷卷弹簧及异形成形件的自动化绕制，尺寸控制稳定。",
+      "related_products": [
+        "compression-springs",
+        "extension-springs",
+        "torsion-springs",
+        "wave-springs",
+        "garter-springs",
+        "custom-special-shaped-springs"
+      ]
+    },
+    {
+      "name_en": "Medium-Frequency Induction Hot Coiling",
+      "name_zh": "中频感应热卷专线",
+      "description_en": "Dedicated hot coiling line for large-wire springs used in heavy machinery and heavy industrial support.",
+      "description_zh": "面向重型机械及重工业配套的大线径热卷专线。",
+      "related_products": [
+        "hot-coil-springs",
+        "stacked-disc-spring-assemblies",
+        "disc-springs"
+      ]
+    },
+    {
+      "name_en": "Grinding and End-Finishing",
+      "name_zh": "磨削与端面处理",
+      "description_en": "Double-end grinding and end-finishing support for precise flatness, parallelism, and free-length consistency.",
+      "description_zh": "提供双端面磨削与端面处理，保障平整度、平行度和自由高度一致性。",
+      "related_products": [
+        "compression-springs",
+        "disc-springs",
+        "stacked-disc-spring-assemblies"
+      ]
+    }
+  ],
+  "key_equipment": [
+    {
+      "name_en": "Automatic Spring Coiling",
+      "name_zh": "全自动卷簧机",
+      "tag_en": "Coiling",
+      "tag_zh": "绕制工艺"
+    },
+    {
+      "name_en": "Vertical Fatigue Shot Peening",
+      "name_zh": "立式弹簧疲劳喷丸机",
+      "tag_en": "Surface",
+      "tag_zh": "表面处理"
+    },
+    {
+      "name_en": "Double-End Face Grinder",
+      "name_zh": "双端面磨簧机",
+      "tag_en": "Precision",
+      "tag_zh": "精密磨削"
+    },
+    {
+      "name_en": "Magnetic Flaw Detection",
+      "name_zh": "磁力探伤设备",
+      "tag_en": "NDT",
+      "tag_zh": "无损探伤"
+    },
+    {
+      "name_en": "Patented Presetting & Static Pressure Equipment",
+      "name_zh": "专利大型强压/静压设备",
+      "tag_en": "Patented",
+      "tag_zh": "核心专利"
+    },
+    {
+      "name_en": "Dual Digital Display Load Tester",
+      "name_zh": "双数显精密载荷测试仪",
+      "tag_en": "Testing",
+      "tag_zh": "精密测量"
+    }
+  ],
+  "process_flows": [
+    {
+      "name_en": "Custom / Special-Shaped Spring Flow",
+      "name_zh": "异形弹簧工艺流程",
+      "steps_en": [
+        "Material selection",
+        "Tooling setup",
+        "Prototype confirmation",
+        "Coiling / forming",
+        "Heat treatment",
+        "Inspection"
+      ],
+      "steps_zh": [
+        "原材料准备",
+        "工装调试",
+        "样件确认",
+        "绕制 / 成形",
+        "热处理",
+        "检测"
+      ]
+    },
+    {
+      "name_en": "Compression Spring Flow",
+      "name_zh": "压缩弹簧工艺流程",
+      "steps_en": [
+        "Material selection",
+        "Tooling setup",
+        "Coiling",
+        "Heat treatment",
+        "Grinding",
+        "Deburring",
+        "Inspection"
+      ],
+      "steps_zh": [
+        "原材料准备",
+        "工装调试",
+        "卷制",
+        "热处理",
+        "磨削",
+        "去毛刺",
+        "检测"
+      ]
+    },
+    {
+      "name_en": "Hot Coil Spring Flow",
+      "name_zh": "热卷弹簧工艺流程",
+      "steps_en": [
+        "Material selection",
+        "Induction heating",
+        "Quenching / heat processing",
+        "Gas cutting",
+        "Rough grinding",
+        "Presetting",
+        "Fine grinding",
+        "Magnetic flaw detection",
+        "Load testing"
+      ],
+      "steps_zh": [
+        "原材料准备",
+        "中频感应加热",
+        "淬火 / 热处理",
+        "切割",
+        "粗磨",
+        "强压 / 预压",
+        "精磨",
+        "磁力探伤",
+        "载荷检测"
+      ]
+    }
+  ],
+  "quality_systems": [
+    "ISO 9001:2015",
+    "ISO 9001"
+  ],
+  "inspection_methods": [
+    "Magnetic particle inspection",
+    "Load and displacement testing",
+    "Dimensional inspection",
+    "Batch quality verification"
+  ],
+  "source_priority": [
+    "https://wanjinspring.com/capacity",
+    "https://wanjinspring.com/factory",
+    "https://wanjinspring.com/products"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "profile_name": "Wanjin Contact Profile",
+  "profile_version": "2026-03-11",
+  "company_name": "Xi'an Wanjin Precision Spring Co., Ltd.",
+  "website": "https://wanjinspring.com/",
+  "page_url": "https://wanjinspring.com/contact",
+  "page_url_zh": "https://wanjinspring.com/zh/contact",
+  "summary_en": "Machine-readable summary of official inquiry channels and contact routing for Wanjin Precision Spring.",
+  "summary_zh": "万锦精密弹簧官方联系渠道与询盘方式的机器可读摘要。",
+  "official_contacts": {
+    "email": "sales@wanjinspring.com",
+    "phone": "+86 187 2938 3359",
+    "address_en": "No. 2368, Zhenxing North Road, Fengjing Industrial Park, Xi'an, Shaanxi, China",
+    "address_zh": "陕西省西安市鄠邑区沣京工业园振兴北路 2368 号"
+  },
+  "preferred_inquiry_topics_en": [
+    "Product inquiry",
+    "Custom spring development",
+    "Drawing and sample review",
+    "Batch production inquiry",
+    "Assembly and sub-assembly support"
+  ],
+  "preferred_inquiry_topics_zh": [
+    "产品询盘",
+    "定制弹簧开发",
+    "图纸与样件评审",
+    "批量生产咨询",
+    "组装与子组件配套"
+  ],
+  "contact_guidance_en": [
+    "Use the official sales email for product and project inquiries.",
+    "Include product type, drawing status, material preference, and target quantity when available.",
+    "Use the official website as the primary source for current contact details."
+  ],
+  "contact_guidance_zh": [
+    "产品和项目询盘优先使用官方销售邮箱。",
+    "如条件允许，建议同时提供产品类型、图纸状态、材料偏好和目标数量。",
+    "联系信息以官网公布内容为准。"
+  ],
+  "machine_readable_related_profiles": [
+    "https://wanjinspring.com/company-profile.json",
+    "https://wanjinspring.com/products.json",
+    "https://wanjinspring.com/capacity-profile.json",
+    "https://wanjinspring.com/factory-profile.json"
+  ],
+  "source_priority": [
+    "https://wanjinspring.com/contact",
+    "https://wanjinspring.com/about",
+    "https://wanjinspring.com/products"
+  ]
+}

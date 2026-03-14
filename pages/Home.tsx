@@ -1,41 +1,37 @@
 import React from 'react';
 import { ArrowRight, CheckCircle2, Factory, Zap, ShieldCheck, Microscope, Cpu, Wrench, Cog } from 'lucide-react';
-import { PageView } from '../types';
-import { AIImage } from '../components/AIImage';
+import { getLocalizedPath, PageView } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
-
-// Verified Pexels image helpers
-const px = (id: string, w = 800, h = 600) =>
-  `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}&h=${h}&dpr=1`;
-const ux = (id: string, w = 800) =>
-  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=80`;
+import { PRODUCT_IMAGES } from '../utils/productImages';
+import { Language } from '../utils/translations';
 
 interface HomeProps {
-  onNavigate: (page: PageView) => void;
+  onNavigate: (page: PageView, language?: Language) => void;
 }
 
 export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   return (
-    <div className="space-y-12 pb-20">
+    <div className="pt-24 space-y-12 pb-20">
       {/* Hero Section */}
-      <div className="relative h-[600px] flex items-center">
-        <div className="absolute inset-0 z-0">
-          <AIImage
-            prompt="Close up cinematic shot of shiny metal industrial springs, clean factory background, depth of field, blue and silver tones, 8k resolution"
-            alt="Industrial Springs"
-            fallbackSrc={px('2760244', 1920, 1080)}
-            className="w-full h-full"
+      <div className="relative min-h-[700px] flex items-center">
+        <div className="absolute inset-0 z-0 overflow-hidden bg-slate-900">
+          <img
+            src="/factory/factory_1.jpg"
+            alt="Wanjin Manufacturing"
+            className="w-full h-full object-cover"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 to-slate-900/40" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl text-white">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-              {t('hero_title')} <br />
-              <span className="text-slate-300">{t('hero_subtitle')}</span>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+              {t('hero_title')}
             </h1>
             <p className="text-xl text-slate-200 mb-8 font-light">
               {t('hero_desc')}
@@ -43,22 +39,25 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             <div className="flex flex-col sm:flex-row gap-4">
               <button
                 onClick={() => onNavigate(PageView.PRODUCTS)}
-                className="px-8 py-4 bg-white text-slate-900 rounded-full font-bold hover:bg-slate-100 transition flex items-center justify-center gap-2"
+                className="px-8 py-4 bg-accent-500 text-slate-900 rounded-md font-bold hover:bg-accent-400 transition flex items-center justify-center gap-2"
               >
                 {t('btn_explore')} <ArrowRight className="w-5 h-5" />
               </button>
-              <button
-                onClick={() => onNavigate(PageView.CONTACT)}
-                className="px-8 py-4 bg-transparent border border-white/30 text-white rounded-full font-semibold hover:bg-white/10 transition backdrop-blur-sm"
+              <a
+                href={getLocalizedPath(PageView.CONTACT, language)}
+                onClick={(event) => {
+                  event.preventDefault();
+                  onNavigate(PageView.CONTACT);
+                }}
+                className="px-8 py-4 bg-transparent border border-white/30 text-white rounded-full font-semibold hover:bg-white/10 transition backdrop-blur-sm text-center"
               >
                 {t('btn_contact')}
-              </button>
+              </a>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Highlights Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
@@ -87,6 +86,30 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         </div>
       </div>
 
+      {/* Quality Metrics - Moved from Capacity to Home Top */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-slate-900 rounded-3xl p-8 md:p-12 text-white shadow-2xl overflow-hidden relative">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/20 blur-3xl -mr-32 -mt-32 rounded-full"></div>
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center p-6 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition">
+              <div className="text-5xl font-bold text-white mb-2">≥99%</div>
+              <div className="text-blue-400 font-semibold text-sm mb-1">{t('cap_metric_pass_label')}</div>
+              <p className="text-slate-400 text-xs">{t('cap_metric_pass_target')}</p>
+            </div>
+            <div className="text-center p-6 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition">
+              <div className="text-5xl font-bold text-white mb-2">≥95%</div>
+              <div className="text-blue-400 font-semibold text-sm mb-1">{t('cap_metric_delivery_label')}</div>
+              <p className="text-slate-400 text-xs">{t('cap_metric_delivery_target')}</p>
+            </div>
+            <div className="text-center p-6 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition">
+              <div className="text-5xl font-bold text-white mb-2">98%</div>
+              <div className="text-blue-400 font-semibold text-sm mb-1">{t('cap_metric_satisfaction_label')}</div>
+              <p className="text-slate-400 text-xs">{t('cap_metric_satisfaction_target')}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Featured Products Preview */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
@@ -97,36 +120,33 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
             {
-              name: "碟形弹簧 Disc Springs",
-              prompt: "Macro photography of high-quality industrial disc springs (Belleville washers) stacked precisely, polished stainless steel material, cinematic lighting, 8k resolution, clean background",
-              fallback: px('14452000', 400, 400)
+              nameKey: "product_hot_name",
+              src: PRODUCT_IMAGES.hot
             },
             {
-              name: "压缩弹簧 Compression Springs",
-              prompt: "Macro shot of a heavy duty steel compression spring, industrial manufacturing, clean studio lighting, mechanical engineering precision, 8k",
-              fallback: px('2760241', 400, 400)
+              nameKey: "product_disc_stack_name",
+              src: PRODUCT_IMAGES.discStack
             },
             {
-              name: "热卷弹簧 Hot Coil Springs",
-              prompt: "Large diameter hot coil spring for heavy machinery, orange-hot metallic texture, industrial manufacturing plant background, professional photography, 8k",
-              fallback: px('2760243', 400, 400)
+              nameKey: "product_comp_name",
+              src: PRODUCT_IMAGES.compression
             },
             {
-              name: "汽车悬挂 Auto Suspension",
-              prompt: "Modern automotive suspension shock absorber and red coil spring, automotive engineering, high detail, clean professional studio shot, 8k",
-              fallback: px('2244746', 400, 400)
+              nameKey: "product_disc_name",
+              src: PRODUCT_IMAGES.disc
             },
           ].map((product, idx) => (
             <div key={idx} className="group cursor-pointer" onClick={() => onNavigate(PageView.PRODUCTS)}>
-              <div className="aspect-square rounded-2xl overflow-hidden mb-4 shadow-lg border border-slate-100">
-                <AIImage
-                  prompt={product.prompt}
-                  alt={product.name}
-                  fallbackSrc={product.fallback}
-                  className="w-full h-full"
+              <div className="aspect-square rounded-2xl overflow-hidden mb-4 shadow-lg border border-slate-100 bg-gradient-to-br from-white via-slate-50 to-slate-100 p-4">
+                <img
+                  src={product.src}
+                  alt={t(product.nameKey)}
+                  className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
-              <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition">{product.name}</h3>
+              <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition">{t(product.nameKey)}</h3>
             </div>
           ))}
         </div>
@@ -140,58 +160,6 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         </div>
       </div>
 
-      {/* Gallery Section */}
-      <div className="bg-slate-50 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-2 mb-8">
-            <Microscope className="w-6 h-6 text-slate-700" />
-            <h2 className="text-2xl font-bold text-slate-900">{t('mfg_excellence')}</h2>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {/* Large: raw materials */}
-            <div className="col-span-2 row-span-2 relative rounded-2xl overflow-hidden shadow-lg h-96 group">
-              <AIImage
-                prompt="Macro photography of steel wire raw material texture, industrial metal coils, high detail"
-                alt="Raw Materials"
-                fallbackSrc={px('2760244', 600, 600)}
-                className="w-full h-full"
-              />
-              <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/80 to-transparent text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                <span className="font-bold">{t('premium_materials')}</span>
-              </div>
-            </div>
-            {/* Logistics */}
-            <div className="relative rounded-2xl overflow-hidden shadow-lg group">
-              <AIImage
-                prompt="Commercial cargo ship at a modern container port, global export and trade logistics, sunrise lighting, cinematic atmosphere, 8k"
-                alt="Global Logistics"
-                fallbackSrc={px('1267337', 300, 200)}
-                className="w-full h-full"
-              />
-            </div>
-            {/* Measurement */}
-            <div className="relative rounded-2xl overflow-hidden shadow-lg group">
-              <AIImage
-                prompt="Engineer hands using caliper measuring spring diameter, close up, blue gloves, laboratory"
-                alt="Precision Measurement"
-                fallbackSrc={px('2280571', 300, 200)}
-                className="w-full h-full"
-              />
-            </div>
-            {/* Modern facility */}
-            <div className="col-span-2 relative rounded-2xl overflow-hidden shadow-lg h-48 group">
-              <AIImage
-                prompt="Clean modern factory floor with automated machinery, bokeh background, professional lighting"
-                alt="Modern Facility"
-                fallbackSrc={px('3862129', 600, 300)}
-                className="w-full h-full"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Partner Section */}
       <div className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -202,7 +170,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                 {t('client_section_desc')}
               </p>
               <ul className="space-y-3">
-                {['China XD Group Supplier', 'Automotive OEM', 'Custom Industrial Machinery'].map((item, i) => (
+                {[t('partner_major_group'), t('partner_auto_oem'), t('partner_custom_machinery')].map((item, i) => (
                   <li key={i} className="flex items-center gap-3 text-slate-700 font-medium">
                     <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" /> {item}
                   </li>
@@ -212,26 +180,55 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             <div className="md:w-1/2 grid grid-cols-2 gap-4">
               <div className="bg-slate-50 h-32 rounded-xl border border-slate-100 flex flex-col items-center justify-center gap-2 p-4 hover:border-slate-300 transition">
                 <Zap className="w-7 h-7 text-slate-400" />
-                <span className="text-sm font-semibold text-slate-500">XD Group</span>
-                <span className="text-xs text-slate-400">High Voltage</span>
+                <span className="text-sm font-semibold text-slate-500">{t('industry_power_sector')}</span>
+                <span className="text-xs text-slate-400">{t('industry_hv')}</span>
               </div>
               <div className="bg-slate-50 h-32 rounded-xl border border-slate-100 flex flex-col items-center justify-center gap-2 p-4 hover:border-slate-300 transition">
                 <Cog className="w-7 h-7 text-slate-400" />
-                <span className="text-sm font-semibold text-slate-500">Automotive</span>
-                <span className="text-xs text-slate-400">OEM Parts</span>
+                <span className="text-sm font-semibold text-slate-500">{t('industry_auto')}</span>
+                <span className="text-xs text-slate-400">{t('industry_oem')}</span>
               </div>
               <div className="bg-slate-50 h-32 rounded-xl border border-slate-100 flex flex-col items-center justify-center gap-2 p-4 hover:border-slate-300 transition">
                 <Wrench className="w-7 h-7 text-slate-400" />
-                <span className="text-sm font-semibold text-slate-500">Heavy Ind.</span>
-                <span className="text-xs text-slate-400">Machinery</span>
+                <span className="text-sm font-semibold text-slate-500">{t('industry_heavy')}</span>
+                <span className="text-xs text-slate-400">{t('industry_machine')}</span>
               </div>
               <div className="bg-slate-50 h-32 rounded-xl border border-slate-100 flex flex-col items-center justify-center gap-2 p-4 hover:border-slate-300 transition">
                 <Cpu className="w-7 h-7 text-slate-400" />
-                <span className="text-sm font-semibold text-slate-500">Electronics</span>
-                <span className="text-xs text-slate-400">Power Equip.</span>
+                <span className="text-sm font-semibold text-slate-500">{t('industry_elec')}</span>
+                <span className="text-xs text-slate-400">{t('industry_power')}</span>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="rounded-3xl border border-slate-200 bg-slate-50 p-8 md:p-12">
+          <div className="max-w-4xl">
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">{t('seo_scope_title')}</h2>
+            <p className="text-slate-600 leading-relaxed">{t('seo_scope_desc')}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-slate-900 mb-4">{t('faq_title')}</h2>
+          <div className="w-16 h-1 bg-slate-900 mx-auto rounded-full"></div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[
+            ['faq_q1', 'faq_a1'],
+            ['faq_q2', 'faq_a2'],
+            ['faq_q3', 'faq_a3'],
+            ['faq_q4', 'faq_a4'],
+          ].map(([questionKey, answerKey]) => (
+            <div key={questionKey} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="text-lg font-bold text-slate-900 mb-3">{t(questionKey)}</h3>
+              <p className="text-slate-600 leading-relaxed">{t(answerKey)}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>

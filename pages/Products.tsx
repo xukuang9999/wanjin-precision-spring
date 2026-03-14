@@ -1,101 +1,180 @@
 import React, { useState } from 'react';
-import { Product } from '../types';
-import { AIImage } from '../components/AIImage';
-import { Search, Filter } from 'lucide-react';
+import { Search, Filter, Wrench, Cable, Layers3 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { PRODUCT_IMAGES } from '../utils/productImages';
 
-const px = (id: string, w = 800, h = 600) =>
-  `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}&h=${h}&dpr=1`;
-const ux = (id: string, w = 800) =>
-  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=80`;
-
-const PRODUCT_DATA: Product[] = [
+const PRODUCT_DATA = [
   {
     id: '1',
-    name: '碟形弹簧 (Disc Springs)',
-    category: 'Precision',
-    description: 'High load capacity, short stroke. Used in heavy machinery and power equipment buffers.',
-    features: ['High Load', 'Long Life', 'Compact'],
-    imagePrompt: 'Macro photography of high-quality industrial disc springs (Belleville washers) stacked precisely, polished stainless steel material, cinematic lighting, 8k resolution, clean background',
-    fallbackSrc: px('14452000', 400, 300)
+    nameKey: 'product_hot_name',
+    categoryKey: 'cat_heavy',
+    descKey: 'product_hot_desc',
+    featureKeys: ['feat_large_dia', 'feat_fatigue_res', 'feat_high_strength'],
+    image: PRODUCT_IMAGES.hot
   },
   {
     id: '2',
-    name: '热卷弹簧 (Hot Coil Springs)',
-    category: 'Heavy',
-    description: 'Hot coiled for large wire diameters. Used in engineering machinery and railway vehicles.',
-    features: ['Large Diameter', 'Fatigue Resistant', 'High Strength'],
-    imagePrompt: 'Large diameter hot coil spring for heavy machinery, orange-hot metallic texture, industrial manufacturing plant background, professional photography, 8k',
-    fallbackSrc: px('2760243', 400, 300)
+    nameKey: 'product_disc_stack_name',
+    categoryKey: 'cat_heavy',
+    descKey: 'product_disc_stack_desc',
+    featureKeys: ['feat_high_load', 'feat_compact', 'feat_fatigue_res'],
+    image: PRODUCT_IMAGES.discStack
   },
   {
     id: '3',
-    name: '压缩弹簧 (Compression Springs)',
-    category: 'General',
-    description: 'Most common spring type. Used in various mechanisms, auto suspension, and switches.',
-    features: ['Various Specs', 'Custom Ends', 'Durable'],
-    imagePrompt: 'Macro shot of multiple high-quality steel compression springs, industrial manufacturing, clean studio lighting, mechanical engineering precision, 8k',
-    fallbackSrc: px('2760241', 400, 300)
-  },
-  {
-    id: '4',
-    name: '拉伸弹簧 (Extension Springs)',
-    category: 'General',
-    description: 'Hooks on both ends to withstand axial tension. Used in medical, fitness, and industrial doors.',
-    features: ['Custom Hooks', 'Good Resilience', 'Anti-rust'],
-    imagePrompt: 'Industrial extension springs with large closed hooks on ends, galvanized steel wire, professional studio shot on technical drawing background, 8k',
-    fallbackSrc: px('3760529', 400, 300)
+    nameKey: 'product_die_name',
+    categoryKey: 'cat_precision',
+    descKey: 'product_die_desc',
+    featureKeys: ['feat_rectangular', 'feat_color_coded', 'feat_high_impact'],
+    image: PRODUCT_IMAGES.die
   },
   {
     id: '5',
-    name: '扭转弹簧 (Torsion Springs)',
-    category: 'General',
-    description: 'Uses torque for clamping mechanisms, hinges, and automotive locks.',
-    features: ['Precise Angle', 'Stable Torque', 'Complex Form'],
-    imagePrompt: 'Close up of industrial torsion springs with long straight legs, made of galvanized steel wire, arranged neatly on an engineering blueprint, professional lighting, technical atmosphere, 8k',
-    fallbackSrc: ux('1513828583688-c52646db42da', 400)
+    nameKey: 'product_comp_name',
+    categoryKey: 'cat_general',
+    descKey: 'product_comp_desc',
+    featureKeys: ['feat_various_specs', 'feat_custom_ends', 'feat_durable'],
+    image: PRODUCT_IMAGES.compression
   },
   {
     id: '6',
-    name: '模具弹簧 (Die Springs)',
-    category: 'Precision',
-    description: 'Rectangular section for stamping dies, high rigidity and durability.',
-    features: ['Rectangular', 'Color Coded', 'High Impact'],
-    imagePrompt: 'A collection of industrial die springs in bright red, blue, and green, rectangular wire section, neatly arranged on a metal workbench, modern factory lighting, high resolution, 8k',
-    fallbackSrc: ux('1597484661973-ee6cd0b6482c', 400)
+    nameKey: 'product_ext_name',
+    categoryKey: 'cat_general',
+    descKey: 'product_ext_desc',
+    featureKeys: ['feat_custom_hooks', 'feat_resilience', 'feat_anti_rust'],
+    image: PRODUCT_IMAGES.extension
   },
   {
     id: '7',
-    name: '精密异形弹簧 (Custom Forms)',
-    category: 'Custom',
-    description: 'Non-standard springs and wire forms tailored to specific needs.',
-    features: ['Complex', 'Blueprint Custom', 'Special Alloy'],
-    imagePrompt: 'Complex custom-shaped wire forms and non-standard springs, intricate metal bending, industrial design prototypes, macro photography on blueprint, 8k',
-    fallbackSrc: px('3760529', 400, 300)
+    nameKey: 'product_tor_name',
+    categoryKey: 'cat_general',
+    descKey: 'product_tor_desc',
+    featureKeys: ['feat_precise_angle', 'feat_stable_torque', 'feat_complex_form'],
+    image: PRODUCT_IMAGES.torsion
   },
   {
     id: '8',
-    name: '机械加工零部件 (Machined Parts)',
-    category: 'Machining',
-    description: 'General mechanical parts, auto accessories, and electrical components beyond springs.',
-    features: ['CNC', 'High Precision', 'Small Batch'],
-    imagePrompt: 'CNC machined high-precision metal parts, aluminum and steel components, shining metallic surfaces, engineering laboratory context, 8k',
-    fallbackSrc: px('3825581', 400, 300)
+    nameKey: 'product_wave_name',
+    categoryKey: 'cat_precision',
+    descKey: 'product_wave_desc',
+    featureKeys: ['feat_compact', 'feat_high_precision', 'feat_long_life'],
+    image: PRODUCT_IMAGES.wave
+  },
+  {
+    id: '9',
+    nameKey: 'product_contact_name',
+    categoryKey: 'cat_precision',
+    descKey: 'product_contact_desc',
+    featureKeys: ['feat_high_precision', 'feat_anti_rust', 'feat_small_batch'],
+    image: PRODUCT_IMAGES.contact
+  },
+  {
+    id: '10',
+    nameKey: 'product_retaining_name',
+    categoryKey: 'cat_custom',
+    descKey: 'product_retaining_desc',
+    featureKeys: ['feat_durable', 'feat_anti_rust', 'feat_small_batch'],
+    image: PRODUCT_IMAGES.retaining
+  },
+  {
+    id: '11',
+    nameKey: 'product_custom_name',
+    categoryKey: 'cat_custom',
+    descKey: 'product_custom_desc',
+    featureKeys: ['feat_complex', 'feat_blueprint_custom', 'feat_special_alloy'],
+    image: PRODUCT_IMAGES.custom
+  },
+  {
+    id: '12',
+    nameKey: 'product_constant_force_name',
+    categoryKey: 'cat_custom',
+    descKey: 'product_constant_force_desc',
+    featureKeys: ['feat_long_life', 'feat_compact', 'feat_custom_ends'],
+    image: PRODUCT_IMAGES.constantForce
+  },
+  {
+    id: '13',
+    nameKey: 'product_garter_name',
+    categoryKey: 'cat_precision',
+    descKey: 'product_garter_desc',
+    featureKeys: ['feat_resilience', 'feat_durable', 'feat_high_precision'],
+    image: PRODUCT_IMAGES.garter
+  },
+  {
+    id: '15',
+    nameKey: 'product_flat_name',
+    categoryKey: 'cat_precision',
+    descKey: 'product_flat_desc',
+    featureKeys: ['feat_high_precision', 'feat_anti_rust', 'feat_small_batch'],
+    image: PRODUCT_IMAGES.flat
+  },
+  {
+    id: '16',
+    nameKey: 'product_power_name',
+    categoryKey: 'cat_custom',
+    descKey: 'product_power_desc',
+    featureKeys: ['feat_long_life', 'feat_compact', 'feat_stable_torque'],
+    image: PRODUCT_IMAGES.power
+  },
+  {
+    id: '17',
+    nameKey: 'product_variable_force_name',
+    categoryKey: 'cat_custom',
+    descKey: 'product_variable_force_desc',
+    featureKeys: ['feat_compact', 'feat_custom_ends', 'feat_durable'],
+    image: PRODUCT_IMAGES.variableForce
+  },
+  {
+    id: '18',
+    nameKey: 'product_spiral_name',
+    categoryKey: 'cat_custom',
+    descKey: 'product_spiral_desc',
+    featureKeys: ['feat_long_life', 'feat_compact', 'feat_stable_torque'],
+    image: PRODUCT_IMAGES.spiral
+  },
+  {
+    id: '19',
+    nameKey: 'product_contact_clips_name',
+    categoryKey: 'cat_precision',
+    descKey: 'product_contact_clips_desc',
+    featureKeys: ['feat_high_precision', 'feat_anti_rust', 'feat_small_batch'],
+    image: PRODUCT_IMAGES.contactClips
+  },
+  {
+    id: '20',
+    nameKey: 'product_multi_wave_name',
+    categoryKey: 'cat_precision',
+    descKey: 'product_multi_wave_desc',
+    featureKeys: ['feat_compact', 'feat_high_load', 'feat_long_life'],
+    image: PRODUCT_IMAGES.multiTurnWave
+  },
+  {
+    id: '21',
+    nameKey: 'product_disc_name',
+    categoryKey: 'cat_precision',
+    descKey: 'product_disc_desc',
+    featureKeys: ['feat_high_load', 'feat_long_life', 'feat_compact'],
+    image: PRODUCT_IMAGES.disc
   }
 ];
 
 export const Products: React.FC = () => {
   const { t } = useLanguage();
-  const [filter, setFilter] = useState('All');
+  const [filter, setFilter] = useState('cat_all');
   const [searchTerm, setSearchTerm] = useState('');
-  const categories = ['All', ...Array.from(new Set(PRODUCT_DATA.map(p => p.category)))];
+  
+  const categories = ['cat_all', 'cat_precision', 'cat_heavy', 'cat_general', 'cat_custom'];
 
   const filteredProducts = PRODUCT_DATA.filter(p => {
-    const matchesCategory = filter === 'All' || p.category === filter;
+    const matchesCategory = filter === 'cat_all' || p.categoryKey === filter;
+    const name = t(p.nameKey);
+    const desc = t(p.descKey);
+    const features = p.featureKeys.map(k => t(k)).join(' ');
+    
     const matchesSearch = !searchTerm ||
-      p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      p.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      p.features.some(f => f.toLowerCase().includes(searchTerm.toLowerCase()));
+      name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      desc.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      features.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -106,8 +185,7 @@ export const Products: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <h1 className="text-3xl font-bold text-slate-900 mb-4">{t('nav_products')}</h1>
           <p className="text-slate-500 max-w-2xl">
-            We offer comprehensive spring manufacturing services, from micro precision springs to large hot coil springs.
-            Support custom drawings and samples to meet your industrial needs.
+            {t('product_header_desc')}
           </p>
         </div>
       </div>
@@ -126,7 +204,7 @@ export const Products: React.FC = () => {
                     : 'bg-white text-slate-600 hover:bg-slate-100'
                   }`}
               >
-                {cat}
+                {t(cat)}
               </button>
             ))}
           </div>
@@ -147,41 +225,83 @@ export const Products: React.FC = () => {
         {filteredProducts.length === 0 ? (
           <div className="text-center py-20 text-slate-400">
             <Search className="w-10 h-10 mx-auto mb-3 opacity-30" />
-            <p className="text-lg">No products found for "{searchTerm}"</p>
+            <p className="text-lg">{t('no_products_found')}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredProducts.map((product) => (
               <div key={product.id} className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-xl transition-all duration-300 group">
-                <div className="aspect-[4/3] bg-slate-100 relative">
-                  <AIImage
-                    prompt={product.imagePrompt}
-                    alt={product.name}
-                    fallbackSrc={product.fallbackSrc}
-                    className="w-full h-full"
+                <div className="aspect-[4/3] bg-gradient-to-br from-white via-slate-50 to-slate-100 relative p-4">
+                  <img
+                    src={product.image}
+                    alt={t(product.nameKey)}
+                    className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                    decoding="async"
                   />
                   <div className="absolute top-3 right-3 bg-white/90 px-2 py-1 rounded text-xs font-bold text-slate-800 shadow-sm">
-                    {product.category}
+                    {t(product.categoryKey)}
                   </div>
                 </div>
                 <div className="p-5">
-                  <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">{product.name}</h3>
-                  <p className="text-sm text-slate-500 mb-4 line-clamp-2">{product.description}</p>
+                  <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">{t(product.nameKey)}</h3>
+                  <p className="text-sm text-slate-500 mb-4 line-clamp-2">{t(product.descKey)}</p>
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {product.features.slice(0, 2).map((feature, idx) => (
+                    {product.featureKeys.slice(0, 3).map((key, idx) => (
                       <span key={idx} className="text-[10px] uppercase tracking-wider bg-slate-50 text-slate-600 px-2 py-1 rounded-md border border-slate-200">
-                        {feature}
+                        {t(key)}
                       </span>
                     ))}
                   </div>
-                  <button className="w-full py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-900 hover:text-white transition-colors">
-                    Details
-                  </button>
+                  <a
+                    href={`mailto:sales@wanjinspring.com?subject=${encodeURIComponent(`Product Inquiry - ${t(product.nameKey)}`)}`}
+                    className="block w-full py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 text-center hover:bg-slate-900 hover:text-white transition-colors"
+                  >
+                    {t('btn_send_email')}
+                  </a>
                 </div>
               </div>
             ))}
           </div>
         )}
+
+        <div className="mt-16 rounded-3xl border border-slate-200 bg-white p-8 md:p-10 shadow-sm">
+          <div className="max-w-4xl mb-8">
+            <h2 className="text-2xl font-bold text-slate-900 mb-3">{t('seo_scope_title')}</h2>
+            <p className="text-slate-600 leading-relaxed">{t('seo_scope_desc')}</p>
+          </div>
+
+          <div className="max-w-3xl mb-8">
+            <h2 className="text-2xl font-bold text-slate-900 mb-3">{t('product_more_title')}</h2>
+            <p className="text-slate-600 leading-relaxed">{t('product_more_desc')}</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="rounded-2xl border border-slate-100 bg-slate-50 p-6">
+              <div className="mb-4 inline-flex rounded-xl bg-white p-3 shadow-sm">
+                <Cable className="w-6 h-6 text-blue-600" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">{t('product_power_eq_name')}</h3>
+              <p className="text-sm text-slate-600 leading-relaxed">{t('product_power_eq_desc')}</p>
+            </div>
+
+            <div className="rounded-2xl border border-slate-100 bg-slate-50 p-6">
+              <div className="mb-4 inline-flex rounded-xl bg-white p-3 shadow-sm">
+                <Layers3 className="w-6 h-6 text-blue-600" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">{t('product_high_pressure_name')}</h3>
+              <p className="text-sm text-slate-600 leading-relaxed">{t('product_high_pressure_desc')}</p>
+            </div>
+
+            <div className="rounded-2xl border border-blue-100 bg-blue-50 p-6">
+              <div className="mb-4 inline-flex rounded-xl bg-white p-3 shadow-sm">
+                <Wrench className="w-6 h-6 text-blue-600" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">{t('assembly_service_title')}</h3>
+              <p className="text-sm text-slate-700 leading-relaxed">{t('assembly_service_desc')}</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

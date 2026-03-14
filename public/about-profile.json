@@ -1,0 +1,71 @@
+{
+  "profile_name": "Wanjin About Profile",
+  "profile_version": "2026-03-11",
+  "company_name": "Xi'an Wanjin Precision Spring Co., Ltd.",
+  "brand_name": "Wanjin Precision Spring",
+  "website": "https://wanjinspring.com/",
+  "page_url": "https://wanjinspring.com/about",
+  "page_url_zh": "https://wanjinspring.com/zh/about",
+  "summary_en": "Machine-readable summary of Wanjin company background, timeline, certifications, and market positioning.",
+  "summary_zh": "万锦公司背景、发展历程、认证资质和市场定位的机器可读摘要。",
+  "company_background": {
+    "historical_origin_en": "The company traces its origin to a spring and electrical factory founded in 1982.",
+    "historical_origin_zh": "公司前身可追溯至 1982 年创立的弹簧电器厂。",
+    "reincorporated_date": "2018-04-24",
+    "registered_location_en": "Fengjing Industrial Park, Xi'an, Shaanxi, China",
+    "registered_location_zh": "中国陕西省西安市沣京工业园"
+  },
+  "company_scale": {
+    "total_area_sqm": 11122,
+    "workshop_area_sqm": 7000,
+    "registered_capital_rmb": 10000000
+  },
+  "market_positioning": {
+    "positioning_en": [
+      "Precision spring manufacturer",
+      "Heavy-duty spring manufacturer",
+      "Regional pioneer in medium-frequency induction hot coiling",
+      "Supplier for industrial spring and elastic component projects"
+    ],
+    "positioning_zh": [
+      "精密弹簧制造商",
+      "重载弹簧制造商",
+      "中频感应热卷区域先行者",
+      "工业弹簧与弹性元件项目供应商"
+    ]
+  },
+  "certifications_and_standards": {
+    "certifications": [
+      "ISO 9001:2015",
+      "ISO 9001"
+    ],
+    "standards_reference": [
+      "GB",
+      "ISO",
+      "JIS"
+    ]
+  },
+  "core_claims": [
+    "Regional leadership in hot coiling capability for large wire diameter springs",
+    "Dual quality-system references",
+    "Production pass rate >=99%",
+    "Customer satisfaction 98%"
+  ],
+  "main_customer_fields_en": [
+    "Power industry",
+    "Advanced manufacturing",
+    "Transportation equipment",
+    "Industrial support projects"
+  ],
+  "main_customer_fields_zh": [
+    "电力行业",
+    "先进制造业",
+    "交通装备",
+    "工业配套项目"
+  ],
+  "source_priority": [
+    "https://wanjinspring.com/about",
+    "https://wanjinspring.com/",
+    "https://wanjinspring.com/capacity"
+  ]
+}
