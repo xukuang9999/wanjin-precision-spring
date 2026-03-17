@@ -23,7 +23,8 @@ export enum PageView {
   PRODUCTS = 'PRODUCTS',
   CAPACITY = 'CAPACITY',
   FACTORY = 'FACTORY',
-  CONTACT = 'CONTACT'
+  CONTACT = 'CONTACT',
+  BLOG = 'BLOG',
 }
 
 export const PAGE_PATHS: Record<PageView, string> = {
@@ -33,6 +34,7 @@ export const PAGE_PATHS: Record<PageView, string> = {
   [PageView.CAPACITY]: '/capacity',
   [PageView.FACTORY]: '/factory',
   [PageView.CONTACT]: '/contact',
+  [PageView.BLOG]: '/blog',
 };
 
 export const getPathForPage = (page: PageView): string => PAGE_PATHS[page];
@@ -44,22 +46,38 @@ export const getPageFromPath = (pathname: string): PageView => {
   return match ? match[0] : PageView.HOME;
 };
 
-export const getLocalizedPath = (page: PageView, language: Language): string => {
+export const getLocalizedPath = (page: PageView, language: Language, slug?: string): string => {
   const basePath = getPathForPage(page);
+  const suffix = slug && (page === PageView.BLOG || page === PageView.PRODUCTS) ? `/${slug}` : '';
   if (language === DEFAULT_LANGUAGE) {
-    return basePath;
+    return `${basePath}${suffix}` || '/';
   }
 
-  return basePath === '/' ? `/${language}` : `/${language}${basePath}`;
+  const localizedBase = basePath === '/' ? `/${language}` : `/${language}${basePath}`;
+  return `${localizedBase}${suffix}`;
 };
 
-export const getLocaleStateFromPath = (pathname: string): { language: Language; page: PageView } => {
+export const getLocaleStateFromPath = (pathname: string): { language: Language; page: PageView; slug?: string } => {
   const normalized = pathname.replace(/\/+$/, '') || '/';
   const segments = normalized.split('/').filter(Boolean);
   const maybeLanguage = segments[0] as Language | undefined;
   const isKnownLanguage = maybeLanguage && ['zh', 'en', 'es', 'ar', 'hi', 'pt', 'ru', 'ja', 'de', 'fr'].includes(maybeLanguage);
 
   if (!isKnownLanguage) {
+    if (segments[0] === 'products' && segments[1]) {
+      return {
+        language: DEFAULT_LANGUAGE,
+        page: PageView.PRODUCTS,
+        slug: segments.slice(1).join('/'),
+      };
+    }
+    if (segments[0] === 'blog' && segments[1]) {
+      return {
+        language: DEFAULT_LANGUAGE,
+        page: PageView.BLOG,
+        slug: segments.slice(1).join('/'),
+      };
+    }
     return {
       language: DEFAULT_LANGUAGE,
       page: getPageFromPath(normalized),
@@ -67,6 +85,21 @@ export const getLocaleStateFromPath = (pathname: string): { language: Language; 
   }
 
   const restPath = `/${segments.slice(1).join('/')}`.replace(/\/+$/, '') || '/';
+  const restSegments = restPath.split('/').filter(Boolean);
+  if (restSegments[0] === 'products' && restSegments[1]) {
+    return {
+      language: maybeLanguage,
+      page: PageView.PRODUCTS,
+      slug: restSegments.slice(1).join('/'),
+    };
+  }
+  if (restSegments[0] === 'blog' && restSegments[1]) {
+    return {
+      language: maybeLanguage,
+      page: PageView.BLOG,
+      slug: restSegments.slice(1).join('/'),
+    };
+  }
   return {
     language: maybeLanguage,
     page: getPageFromPath(restPath),

@@ -1,11 +1,20 @@
 import React from 'react';
-import { Phone, Mail, MapPin, MessageSquare } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Mail, MapPin, MessageSquare, Phone } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { PageView } from '../types';
+import { Language } from '../utils/translations';
+import { formatBlogDate, getLocalizedPost, getRelevantBlogPosts } from '../utils/blog';
 
-export const Contact: React.FC = () => {
-  const { t } = useLanguage();
+interface ContactProps {
+  onNavigate: (page: PageView, language?: Language, slug?: string, search?: string) => void;
+}
+
+export const Contact: React.FC<ContactProps> = ({ onNavigate }) => {
+  const { language, t } = useLanguage();
   const phoneHref = 'tel:+8618729383359';
   const emailHref = 'mailto:sales@wanjinspring.com';
+  const prepArticles = getRelevantBlogPosts(['drawing review', 'load testing', 'material selection', 'export packaging'], 3);
+  const prepChecklistKeys = ['contact_prep_item_1', 'contact_prep_item_2', 'contact_prep_item_3'];
 
   return (
     <div className="pt-20 min-h-screen bg-slate-50">
@@ -105,6 +114,77 @@ export const Contact: React.FC = () => {
             </div>
           </div>
         </div>
+
+        <div className="mt-10 grid grid-cols-1 lg:grid-cols-[1.05fr_1.4fr] gap-8">
+          <section className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-2xl font-bold text-slate-900">{t('contact_prep_title')}</h2>
+            <p className="mt-3 text-slate-600 leading-relaxed">{t('contact_prep_desc')}</p>
+            <div className="mt-6 space-y-4">
+              {prepChecklistKeys.map((key) => (
+                <div key={key} className="flex items-start gap-3 rounded-2xl bg-slate-50 p-4">
+                  <CheckCircle2 className="mt-0.5 w-5 h-5 text-blue-600 flex-shrink-0" />
+                  <p className="text-sm leading-relaxed text-slate-700">{t(key)}</p>
+                </div>
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => onNavigate(PageView.BLOG, language)}
+              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-slate-900 hover:text-blue-700"
+            >
+              {t('contact_prep_view_blog')} <ArrowRight className="w-4 h-4" />
+            </button>
+          </section>
+
+          <section className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-2xl font-bold text-slate-900">{t('contact_articles_title')}</h2>
+            <p className="mt-3 text-slate-600 leading-relaxed">{t('contact_articles_desc')}</p>
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-5">
+              {prepArticles.map((post) => {
+                const localized = getLocalizedPost(post, language);
+                return (
+                  <article key={post.slug} className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
+                    <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                      {localized.categoryLabel}
+                    </div>
+                    <h3 className="mt-3 text-lg font-bold text-slate-900 leading-snug">{localized.title}</h3>
+                    <p className="mt-3 text-sm text-slate-500">{formatBlogDate(post.publishedAt, language)}</p>
+                    <p className="mt-4 text-sm text-slate-600 leading-relaxed">{localized.excerpt}</p>
+                    <button
+                      type="button"
+                      onClick={() => onNavigate(PageView.BLOG, language, post.slug)}
+                      className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-blue-700 hover:text-blue-800"
+                    >
+                      {t('contact_articles_cta')} <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        </div>
+
+        <section className="mt-8 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+          <div className="max-w-4xl">
+            <h2 className="text-2xl font-bold text-slate-900">{t('contact_delivery_title')}</h2>
+            <p className="mt-3 text-slate-600 leading-relaxed">{t('contact_delivery_desc')}</p>
+          </div>
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+            {[
+              'contact_delivery_item_1',
+              'contact_delivery_item_2',
+              'contact_delivery_item_3',
+              'contact_delivery_item_4',
+            ].map((key) => (
+              <div key={key} className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="mt-0.5 w-5 h-5 text-blue-600 flex-shrink-0" />
+                  <p className="text-sm leading-relaxed text-slate-700">{t(key)}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );

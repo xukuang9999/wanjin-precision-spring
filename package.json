@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && node generate-prerender-pages.mjs",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy:godaddy": "./scripts/deploy-godaddy.sh"
   },
   "dependencies": {
     "lucide-react": "^0.554.0",

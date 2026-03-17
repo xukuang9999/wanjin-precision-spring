@@ -1,7 +1,7 @@
 import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
-import { DEFAULT_LANGUAGE, getLocaleStateFromPath, getLocalizedPath, getPathForPage, PageView } from './types';
+import { DEFAULT_LANGUAGE, getLocaleStateFromPath, getLocalizedPath, PageView } from './types';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { SeoManager } from './components/SeoManager';
 import { Language } from './utils/translations';
@@ -12,6 +12,7 @@ const Products = lazy(() => import('./pages/Products').then((module) => ({ defau
 const Capacity = lazy(() => import('./pages/Capacity').then((module) => ({ default: module.Capacity })));
 const Factory = lazy(() => import('./pages/Factory').then((module) => ({ default: module.Factory })));
 const Contact = lazy(() => import('./pages/Contact').then((module) => ({ default: module.Contact })));
+const Blog = lazy(() => import('./pages/Blog').then((module) => ({ default: module.Blog })));
 const ChatWidget = lazy(() => import('./components/ChatWidget').then((module) => ({ default: module.ChatWidget })));
 
 function AppContent({
@@ -22,6 +23,7 @@ function AppContent({
   setLanguage: (lang: Language) => void;
 }) {
   const [currentPage, setCurrentPage] = useState<PageView>(PageView.HOME);
+  const [currentSlug, setCurrentSlug] = useState<string | undefined>();
 
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
@@ -45,6 +47,7 @@ function AppContent({
       const state = getLocaleStateFromPath(pathname);
       setLanguage(state.language);
       setCurrentPage(state.page);
+      setCurrentSlug(state.slug);
     };
 
     window.addEventListener('popstate', syncPageWithLocation);
@@ -59,13 +62,15 @@ function AppContent({
     };
   }, []);
 
-  const navigateTo = (page: PageView, nextLanguage = language) => {
-    const nextPath = getLocalizedPath(page, nextLanguage);
-    if (window.location.pathname !== nextPath) {
-      window.history.pushState({}, '', nextPath);
+  const navigateTo = (page: PageView, nextLanguage = language, slug?: string, search?: string) => {
+    const nextPath = getLocalizedPath(page, nextLanguage, slug);
+    const nextUrl = search ? `${nextPath}?${search}` : nextPath;
+    if (`${window.location.pathname}${window.location.search}` !== nextUrl) {
+      window.history.pushState({}, '', nextUrl);
     }
     setLanguage(nextLanguage);
     setCurrentPage(page);
+    setCurrentSlug(page === PageView.BLOG || page === PageView.PRODUCTS ? slug : undefined);
     window.scrollTo(0, 0);
   };
 
@@ -76,13 +81,15 @@ function AppContent({
       case PageView.ABOUT:
         return <About />;
       case PageView.PRODUCTS:
-        return <Products />;
+        return <Products slug={currentSlug} onNavigate={navigateTo} />;
       case PageView.CAPACITY:
         return <Capacity />;
       case PageView.FACTORY:
         return <Factory />;
       case PageView.CONTACT:
-        return <Contact />;
+        return <Contact onNavigate={navigateTo} />;
+      case PageView.BLOG:
+        return <Blog slug={currentSlug} onNavigate={navigateTo} />;
       default:
         return <Home onNavigate={navigateTo} />;
     }
@@ -90,8 +97,8 @@ function AppContent({
 
   return (
     <div className="min-h-screen flex flex-col font-sans text-slate-900 bg-slate-50">
-      <SeoManager currentPage={currentPage} />
-      <Navbar currentPage={currentPage} onNavigate={navigateTo} />
+      <SeoManager currentPage={currentPage} productSlug={currentPage === PageView.PRODUCTS ? currentSlug : undefined} blogSlug={currentPage === PageView.BLOG ? currentSlug : undefined} />
+      <Navbar currentPage={currentPage} currentContentSlug={currentSlug} onNavigate={navigateTo} />
       
       <main className="flex-grow">
         <Suspense fallback={<div className="min-h-[40vh]" />}>

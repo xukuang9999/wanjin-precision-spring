@@ -1,16 +1,22 @@
 import React from 'react';
-import { ArrowRight, CheckCircle2, Factory, Zap, ShieldCheck, Microscope, Cpu, Wrench, Cog } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Factory, Zap, ShieldCheck, Cpu, Wrench, Cog, CalendarDays, FileCheck2, Boxes, Layers3 } from 'lucide-react';
 import { getLocalizedPath, PageView } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
-import { PRODUCT_IMAGES } from '../utils/productImages';
 import { Language } from '../utils/translations';
+import { formatBlogDate, getFeaturedBlogPosts, getLocalizedPost, getRelevantBlogPosts } from '../utils/blog';
+import { getFeaturedProducts } from '../data/products';
 
 interface HomeProps {
-  onNavigate: (page: PageView, language?: Language) => void;
+  onNavigate: (page: PageView, language?: Language, slug?: string, search?: string) => void;
 }
 
 export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   const { t, language } = useLanguage();
+  const featuredPosts = getFeaturedBlogPosts().slice(0, 2);
+  const featuredProducts = getFeaturedProducts().map((product) => ({
+    ...product,
+    article: getRelevantBlogPosts(product.articleTerms, 1)[0],
+  }));
 
   return (
     <div className="pt-24 space-y-12 pb-20">
@@ -118,35 +124,37 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[
-            {
-              nameKey: "product_hot_name",
-              src: PRODUCT_IMAGES.hot
-            },
-            {
-              nameKey: "product_disc_stack_name",
-              src: PRODUCT_IMAGES.discStack
-            },
-            {
-              nameKey: "product_comp_name",
-              src: PRODUCT_IMAGES.compression
-            },
-            {
-              nameKey: "product_disc_name",
-              src: PRODUCT_IMAGES.disc
-            },
-          ].map((product, idx) => (
-            <div key={idx} className="group cursor-pointer" onClick={() => onNavigate(PageView.PRODUCTS)}>
-              <div className="aspect-square rounded-2xl overflow-hidden mb-4 shadow-lg border border-slate-100 bg-gradient-to-br from-white via-slate-50 to-slate-100 p-4">
+          {featuredProducts.map((product, idx) => (
+            <div key={idx} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+              <button type="button" className="group w-full text-left" onClick={() => onNavigate(PageView.PRODUCTS, language, product.slug)}>
+                <div className="aspect-square rounded-2xl overflow-hidden mb-4 border border-slate-100 bg-gradient-to-br from-white via-slate-50 to-slate-100 p-4">
                 <img
-                  src={product.src}
+                  src={product.image}
                   alt={t(product.nameKey)}
                   className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
                   decoding="async"
                 />
-              </div>
-              <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition">{t(product.nameKey)}</h3>
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition">{t(product.nameKey)}</h3>
+              </button>
+              {product.article ? (
+                <button
+                  type="button"
+                  onClick={() => onNavigate(PageView.BLOG, language, product.article.slug)}
+                  className="mt-4 block w-full rounded-2xl bg-slate-50 p-4 text-left transition hover:bg-blue-50"
+                >
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                    {t('home_product_article_label')}
+                  </div>
+                  <div className="mt-2 text-sm font-semibold leading-snug text-slate-900">
+                    {getLocalizedPost(product.article, language).title}
+                  </div>
+                  <div className="mt-2 inline-flex items-center gap-2 text-xs font-semibold text-blue-700">
+                    {t('home_product_article_cta')} <ArrowRight className="w-3.5 h-3.5" />
+                  </div>
+                </button>
+              ) : null}
             </div>
           ))}
         </div>
@@ -208,6 +216,143 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           <div className="max-w-4xl">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">{t('seo_scope_title')}</h2>
             <p className="text-slate-600 leading-relaxed">{t('seo_scope_desc')}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="rounded-3xl border border-slate-200 bg-white p-8 md:p-12 shadow-sm">
+          <div className="max-w-4xl">
+            <h2 className="text-3xl font-bold text-slate-900">{t('home_keyword_title')}</h2>
+            <p className="mt-3 text-slate-600 leading-relaxed">{t('home_keyword_desc')}</p>
+          </div>
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+            {[
+              ['home_keyword_1_title', 'home_keyword_1_desc'],
+              ['home_keyword_2_title', 'home_keyword_2_desc'],
+              ['home_keyword_3_title', 'home_keyword_3_desc'],
+              ['home_keyword_4_title', 'home_keyword_4_desc'],
+              ['home_keyword_5_title', 'home_keyword_5_desc'],
+              ['home_keyword_6_title', 'home_keyword_6_desc'],
+            ].map(([titleKey, descKey]) => (
+              <div key={titleKey} className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
+                <div className="text-sm font-bold uppercase tracking-[0.08em] text-slate-900">{t(titleKey)}</div>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">{t(descKey)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+          <div className="max-w-3xl">
+            <h2 className="text-3xl font-bold text-slate-900">{t('home_solutions_title')}</h2>
+            <p className="mt-3 text-slate-600 leading-relaxed">{t('home_solutions_desc')}</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[
+            {
+              icon: <Zap className="w-7 h-7 text-blue-600" />,
+              titleKey: 'home_solution_power_title',
+              descKey: 'home_solution_power_desc',
+            },
+            {
+              icon: <Layers3 className="w-7 h-7 text-blue-600" />,
+              titleKey: 'home_solution_heavy_title',
+              descKey: 'home_solution_heavy_desc',
+            },
+            {
+              icon: <Cpu className="w-7 h-7 text-blue-600" />,
+              titleKey: 'home_solution_precision_title',
+              descKey: 'home_solution_precision_desc',
+            },
+          ].map((item) => (
+            <div key={item.titleKey} className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+              <div className="inline-flex rounded-2xl bg-blue-50 p-3">{item.icon}</div>
+              <h3 className="mt-5 text-xl font-bold text-slate-900">{t(item.titleKey)}</h3>
+              <p className="mt-3 text-slate-600 leading-relaxed">{t(item.descKey)}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="rounded-3xl bg-slate-900 p-8 md:p-12 text-white">
+          <div className="max-w-3xl">
+            <h2 className="text-3xl font-bold">{t('home_flow_title')}</h2>
+            <p className="mt-3 text-slate-300 leading-relaxed">{t('home_flow_desc')}</p>
+          </div>
+          <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              ['home_flow_1_title', 'home_flow_1_desc', <FileCheck2 className="w-6 h-6 text-blue-300" />],
+              ['home_flow_2_title', 'home_flow_2_desc', <Cog className="w-6 h-6 text-blue-300" />],
+              ['home_flow_3_title', 'home_flow_3_desc', <Factory className="w-6 h-6 text-blue-300" />],
+              ['home_flow_4_title', 'home_flow_4_desc', <Boxes className="w-6 h-6 text-blue-300" />],
+            ].map(([titleKey, descKey, icon]) => (
+              <div key={titleKey} className="rounded-3xl border border-white/10 bg-white/5 p-6">
+                <div className="inline-flex rounded-2xl bg-white/10 p-3">{icon}</div>
+                <h3 className="mt-4 text-lg font-bold">{t(titleKey)}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-slate-300">{t(descKey)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white py-16 border-y border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+            <div className="max-w-3xl">
+              <span className="inline-flex rounded-full bg-slate-100 px-4 py-1 text-xs font-bold uppercase tracking-[0.2em] text-slate-700">
+                {t('blog_label')}
+              </span>
+              <h2 className="mt-4 text-3xl font-bold text-slate-900">{t('blog_home_title')}</h2>
+              <p className="mt-3 text-slate-600 leading-relaxed">{t('blog_home_desc')}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => onNavigate(PageView.BLOG)}
+              className="inline-flex items-center gap-2 text-sm font-semibold text-slate-900"
+            >
+              {t('blog_view_all')} <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {featuredPosts.map((post) => {
+              const localized = getLocalizedPost(post, language);
+              return (
+                <button
+                  key={post.slug}
+                  type="button"
+                  onClick={() => onNavigate(PageView.BLOG, language, post.slug)}
+                  className="overflow-hidden rounded-[28px] border border-slate-200 bg-slate-50 text-left transition hover:-translate-y-1 hover:shadow-xl"
+                >
+                  <div className="aspect-[16/9] overflow-hidden">
+                    <img
+                      src={post.coverImage}
+                      alt={localized.title}
+                      className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                      <CalendarDays className="w-3.5 h-3.5" />
+                      <span>{formatBlogDate(post.publishedAt, language)}</span>
+                    </div>
+                    <h3 className="mt-4 text-xl font-bold text-slate-900 leading-snug">{localized.title}</h3>
+                    <p className="mt-3 text-slate-600 leading-relaxed">{localized.excerpt}</p>
+                    <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-blue-700">
+                      {t('blog_read_more')} <ArrowRight className="w-4 h-4" />
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Microscope, Settings, Shield, Zap, Target, Award, ChevronRight } from 'lucide-react';
+import { Microscope, Settings, Shield, Zap, Target, Award, ChevronRight, ExternalLink, FileCheck2, Gauge, Layers3, PackageCheck, FileText, Truck } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 export const Capacity: React.FC = () => {
@@ -62,6 +62,69 @@ export const Capacity: React.FC = () => {
     {
       titleKey: 'product_hot_name',
       steps: ['step_induction', 'step_quench', 'step_grind_end', 'step_gas_cut', 'step_rough_grind', 'step_preset', 'step_fine_grind', 'step_flaw_detect', 'step_load'],
+    },
+  ];
+
+  const capabilityBands = [
+    {
+      valueKey: 'cap_band_cold_value',
+      titleKey: 'cap_band_cold_title',
+      descKey: 'cap_band_cold_desc',
+      icon: <Gauge className="w-6 h-6 text-blue-600" />,
+    },
+    {
+      valueKey: 'cap_band_hot_value',
+      titleKey: 'cap_band_hot_title',
+      descKey: 'cap_band_hot_desc',
+      icon: <Layers3 className="w-6 h-6 text-blue-600" />,
+    },
+    {
+      valueKey: 'cap_band_test_value',
+      titleKey: 'cap_band_test_title',
+      descKey: 'cap_band_test_desc',
+      icon: <FileCheck2 className="w-6 h-6 text-blue-600" />,
+    },
+    {
+      valueKey: 'cap_band_standard_value',
+      titleKey: 'cap_band_standard_title',
+      descKey: 'cap_band_standard_desc',
+      icon: <Shield className="w-6 h-6 text-blue-600" />,
+    },
+  ];
+
+  const publicReferences = [
+    {
+      titleKey: 'cap_ref_xd_title',
+      descKey: 'cap_ref_xd_desc',
+      url: 'https://www.xd.com.cn/info/1029/8503.htm',
+    },
+    {
+      titleKey: 'cap_ref_patent_title',
+      descKey: 'cap_ref_patent_desc',
+      url: 'https://patents.google.com/patent/CN103604590A/zh',
+    },
+  ];
+
+  const deliveryControls = [
+    {
+      titleKey: 'cap_delivery_doc_title',
+      descKey: 'cap_delivery_doc_desc',
+      icon: <FileText className="w-6 h-6 text-blue-600" />,
+    },
+    {
+      titleKey: 'cap_delivery_trace_title',
+      descKey: 'cap_delivery_trace_desc',
+      icon: <Shield className="w-6 h-6 text-blue-600" />,
+    },
+    {
+      titleKey: 'cap_delivery_pack_title',
+      descKey: 'cap_delivery_pack_desc',
+      icon: <PackageCheck className="w-6 h-6 text-blue-600" />,
+    },
+    {
+      titleKey: 'cap_delivery_ship_title',
+      descKey: 'cap_delivery_ship_desc',
+      icon: <Truck className="w-6 h-6 text-blue-600" />,
     },
   ];
 
@@ -131,6 +194,25 @@ export const Capacity: React.FC = () => {
               <p className="text-slate-400 text-xs">{t('cap_metric_satisfaction_target')}</p>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        <div className="mb-10">
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">{t('cap_band_title')}</h2>
+          <p className="text-slate-600 max-w-4xl leading-relaxed">{t('cap_band_desc')}</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+          {capabilityBands.map((band, idx) => (
+            <div key={idx} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="flex items-center justify-between gap-4">
+                <div className="p-3 rounded-2xl bg-blue-50">{band.icon}</div>
+                <div className="text-right text-2xl font-bold text-slate-900">{t(band.valueKey)}</div>
+              </div>
+              <h3 className="mt-5 text-lg font-bold text-slate-900">{t(band.titleKey)}</h3>
+              <p className="mt-3 text-sm text-slate-600 leading-relaxed">{t(band.descKey)}</p>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -235,6 +317,45 @@ export const Capacity: React.FC = () => {
                 </div>
                 <h3 className="font-bold text-slate-900 mb-1 text-sm leading-snug">{t(eq.nameKey)}</h3>
                 <p className="text-sm text-slate-600 leading-relaxed">{t(eq.descKey)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="rounded-3xl border border-slate-200 bg-white p-8 md:p-10 shadow-sm">
+          <div className="max-w-4xl mb-8">
+            <h2 className="text-2xl font-bold text-slate-900 mb-2">{t('cap_delivery_title')}</h2>
+            <p className="text-slate-600 leading-relaxed">{t('cap_delivery_desc')}</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+            {deliveryControls.map((item) => (
+              <div key={item.titleKey} className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
+                <div className="inline-flex rounded-2xl bg-white p-3 shadow-sm">{item.icon}</div>
+                <h3 className="mt-5 text-lg font-bold text-slate-900">{t(item.titleKey)}</h3>
+                <p className="mt-3 text-sm text-slate-600 leading-relaxed">{t(item.descKey)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="rounded-3xl border border-slate-200 bg-slate-50 p-8 md:p-10">
+          <div className="max-w-4xl mb-8">
+            <h2 className="text-2xl font-bold text-slate-900 mb-2">{t('cap_ref_title')}</h2>
+            <p className="text-slate-600 leading-relaxed">{t('cap_ref_desc')}</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {publicReferences.map((reference, idx) => (
+              <div key={idx} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                <h3 className="text-lg font-bold text-slate-900">{t(reference.titleKey)}</h3>
+                <p className="mt-3 text-sm text-slate-600 leading-relaxed">{t(reference.descKey)}</p>
+                <a
+                  href={reference.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-blue-700 hover:text-blue-800"
+                >
+                  {t('cap_ref_link_label')} <ExternalLink className="w-4 h-4" />
+                </a>
               </div>
             ))}
           </div>

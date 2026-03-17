@@ -1,9 +1,10 @@
 import React from 'react';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { getLocalizedPath, PageView } from '../types';
 
 export const Footer: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const phoneHref = 'tel:+8618729383359';
   const emailHref = 'mailto:sales@wanjinspring.com';
 
@@ -22,6 +23,17 @@ export const Footer: React.FC = () => {
             <p className="text-sm text-slate-500 mb-4 leading-relaxed">
               {t('footer_desc')}
             </p>
+            <div className="flex flex-wrap gap-4 text-sm mb-4">
+              <a href={getLocalizedPath(PageView.PRODUCTS, language)} className="hover:text-white transition">
+                {t('nav_products')}
+              </a>
+              <a href={getLocalizedPath(PageView.BLOG, language)} className="hover:text-white transition">
+                {t('nav_blog')}
+              </a>
+              <a href={getLocalizedPath(PageView.CONTACT, language)} className="hover:text-white transition">
+                {t('nav_contact')}
+              </a>
+            </div>
             <div className="text-xs text-slate-600">
               Code: 91610125MA6UU9L314
             </div>

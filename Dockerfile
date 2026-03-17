@@ -20,9 +20,8 @@ FROM nginx:alpine
 
 # Copy built assets from build stage
 COPY --from=build /app/dist /usr/share/nginx/html
-
-# Copy a default nginx configuration if needed (optional)
-# For simple hash-based routing, the default is fine.
+RUN chmod -R a+rX /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 

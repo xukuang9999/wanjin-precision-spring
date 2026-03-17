@@ -21,3 +21,44 @@ View your app in AI Studio: https://ai.studio/apps/drive/1S61T2YLAoLx8o80shVMQ3q
    - `POST /api/image` -> `{ image: string }` (base64 data URL)
 4. Run the app:
    `npm run dev`
+
+## Publish Blog Content
+
+Blog content lives in [data/blog/content.ts](/Users/michaelxu/Library/Mobile%20Documents/com~apple~CloudDocs/Wanjin%20Website/wanjin-precision-spring/data/blog/content.ts).
+
+To publish a new article or news item:
+
+1. Add a new object to `BLOG_POSTS`.
+2. Set `slug`, `category`, `publishedAt`, `updatedAt`, `featured`, `coverImage`, and `readingMinutes`.
+3. Fill `title`, `excerpt`, `seoTitle`, `seoDescription`, and `content` for at least `en` and `zh`.
+4. Run `npm run build`.
+
+Build output now includes:
+
+- localized blog pages in `dist/blog/...`
+- `dist/sitemap.xml`
+- `dist/blog-feed.xml`
+- `dist/blog-feed.json`
+
+## One-Command GoDaddy Deploy
+
+Run:
+
+`GODADDY_PASS='your-password' npm run deploy:godaddy`
+
+Optional environment variables:
+
+- `GODADDY_HOST`
+- `GODADDY_USER`
+- `GODADDY_REMOTE_DIR`
+- `GODADDY_HOME_DIR`
+- `GODADDY_SITE_URL`
+
+The deploy script will:
+
+- run `npm run build`
+- create a remote backup of the current static site
+- upload the new `dist/` package
+- replace only the static site files under the target directory
+- clean macOS `._*` artifacts
+- run a basic remote and public URL check

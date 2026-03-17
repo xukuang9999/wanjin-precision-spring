@@ -6,10 +6,11 @@ import { Language, LANGUAGES } from '../utils/translations';
 
 interface NavbarProps {
   currentPage: PageView;
-  onNavigate: (page: PageView, language?: Language) => void;
+  currentContentSlug?: string;
+  onNavigate: (page: PageView, language?: Language, slug?: string, search?: string) => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
+export const Navbar: React.FC<NavbarProps> = ({ currentPage, currentContentSlug, onNavigate }) => {
   const { language, setLanguage, t } = useLanguage();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
@@ -19,6 +20,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
     { label: t('nav_products'), value: PageView.PRODUCTS },
     { label: t('nav_capacity'), value: PageView.CAPACITY },
     { label: t('nav_factory'), value: PageView.FACTORY },
+    { label: t('nav_blog'), value: PageView.BLOG },
     { label: t('nav_contact'), value: PageView.CONTACT },
   ];
 
@@ -63,7 +65,11 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
                 onChange={(e) => {
                   const nextLanguage = e.target.value as Language;
                   setLanguage(nextLanguage);
-                  onNavigate(currentPage, nextLanguage);
+                  onNavigate(
+                    currentPage,
+                    nextLanguage,
+                    currentPage === PageView.BLOG || currentPage === PageView.PRODUCTS ? currentContentSlug : undefined
+                  );
                 }}
                 className="bg-transparent text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none cursor-pointer appearance-none pr-4"
                 style={{ backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right center', backgroundSize: '12px' }}
@@ -93,7 +99,11 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
               onChange={(e) => {
                 const nextLanguage = e.target.value as Language;
                 setLanguage(nextLanguage);
-                onNavigate(currentPage, nextLanguage);
+                onNavigate(
+                  currentPage,
+                  nextLanguage,
+                  currentPage === PageView.BLOG || currentPage === PageView.PRODUCTS ? currentContentSlug : undefined
+                );
               }}
               className="bg-transparent text-xs font-bold text-slate-600 focus:outline-none border border-slate-300 rounded px-1 py-1 cursor-pointer appearance-none"
             >
