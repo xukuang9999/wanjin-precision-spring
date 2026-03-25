@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquare, Send, X, Bot, User, Loader2, Sparkles } from 'lucide-react';
 import { ChatMessage } from '../types';
-import { chatWithBot } from '../services/geminiService';
 import { useLanguage } from '../contexts/LanguageContext';
 
 export const ChatWidget: React.FC = () => {
@@ -64,6 +63,7 @@ export const ChatWidget: React.FC = () => {
     const finalMessage = `${langInstruction} \n\n User Query: ${userMsg.text}`;
 
     try {
+      const { chatWithBot } = await import('../services/geminiService');
       const responseText = await chatWithBot(history, finalMessage);
 
       const botMsg: ChatMessage = {

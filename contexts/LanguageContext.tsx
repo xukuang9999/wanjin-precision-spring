@@ -1,5 +1,10 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
-import { Language, TRANSLATIONS } from '../utils/translations';
+import React, { createContext, useEffect, useRef, useState, useContext, ReactNode } from 'react';
+import { type Language } from '../utils/languages';
+import {
+  loadTranslationDictionary,
+  preloadTranslationDictionary,
+  type TranslationDictionary,
+} from '../utils/runtimeTranslations';
 
 interface LanguageContextType {
   language: Language;
@@ -13,10 +18,46 @@ export const LanguageProvider: React.FC<{
   children: ReactNode;
   language?: Language;
   onLanguageChange?: (lang: Language) => void;
-}> = ({ children, language: controlledLanguage, onLanguageChange }) => {
+  initialDictionary?: TranslationDictionary;
+}> = ({ children, language: controlledLanguage, onLanguageChange, initialDictionary }) => {
   const [internalLanguage, setInternalLanguage] = useState<Language>('en');
   const language = controlledLanguage ?? internalLanguage;
+  const [dictionaries, setDictionaries] = useState<Partial<Record<Language, TranslationDictionary>>>(() =>
+    initialDictionary ? { [language]: initialDictionary } : {},
+  );
+  const fallbackLanguageRef = useRef(language);
+
+  useEffect(() => {
+    if (!dictionaries[language]) {
+      let cancelled = false;
+
+      void loadTranslationDictionary(language)
+        .then((dictionary) => {
+          if (cancelled) {
+            return;
+          }
+
+          fallbackLanguageRef.current = language;
+          setDictionaries((previous) => ({
+            ...previous,
+            [language]: dictionary,
+          }));
+        })
+        .catch((error) => {
+          console.error(`Failed to load translations for ${language}:`, error);
+        });
+
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    fallbackLanguageRef.current = language;
+    return undefined;
+  }, [dictionaries, language]);
+
   const setLanguage = (lang: Language) => {
+    preloadTranslationDictionary(lang);
     if (onLanguageChange) {
       onLanguageChange(lang);
       return;
@@ -24,8 +65,11 @@ export const LanguageProvider: React.FC<{
     setInternalLanguage(lang);
   };
 
+  const activeLanguage = dictionaries[language] ? language : fallbackLanguageRef.current;
+  const activeDictionary = dictionaries[activeLanguage];
+
   const t = (key: string): string => {
-    return TRANSLATIONS[language][key] || TRANSLATIONS['en'][key] || TRANSLATIONS['zh'][key] || key;
+    return activeDictionary?.[key] || key;
   };
 
   return (

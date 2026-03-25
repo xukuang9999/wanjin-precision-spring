@@ -5,275 +5,194 @@ export interface ProductSeoProfile {
   keywords: string[];
 }
 
-const DEFAULT_OVERVIEW_SUFFIX =
-  'The page is written for OEM buyers and engineering teams comparing manufacturing fit, load targets, material options, and batch delivery readiness.';
+const PRODUCT_KEYWORDS = {
+  'compression-springs': [
+    'compression spring manufacturer',
+    'custom compression springs',
+    'compression spring supplier',
+    'OEM compression spring factory',
+  ],
+  'extension-springs': [
+    'extension spring manufacturer',
+    'custom extension springs',
+    'tension spring manufacturer',
+    'extension spring supplier',
+  ],
+  'torsion-springs': [
+    'torsion spring manufacturer',
+    'custom torsion springs',
+    'torsion spring supplier',
+    'OEM torsion spring factory',
+  ],
+  'wave-springs': [
+    'wave spring manufacturer',
+    'wave spring supplier',
+    'custom wave springs',
+    'precision wave spring factory',
+  ],
+  'retaining-rings': [
+    'retaining ring manufacturer',
+    'retaining ring supplier',
+    'snap ring supplier',
+    'custom retaining rings',
+  ],
+  'custom-wire-forms': [
+    'custom wire form manufacturer',
+    'wire form manufacturer',
+    'custom wire forms',
+    'special shaped spring supplier',
+  ],
+  'constant-force-springs': [
+    'constant force spring manufacturer',
+    'constant force spring supplier',
+    'custom constant force springs',
+    'motion control spring manufacturer',
+  ],
+  'disc-springs': [
+    'disc spring manufacturer',
+    'belleville spring manufacturer',
+    'disc spring supplier',
+    'heavy duty disc springs',
+  ],
+  'disc-spring-stacks': [
+    'disc spring stack manufacturer',
+    'disc spring stack assemblies',
+    'belleville washer stack supplier',
+    'heavy load spring stack',
+  ],
+  'hot-coil-springs': [
+    'hot coil spring manufacturer',
+    'large wire spring manufacturer',
+    'heavy duty coil spring supplier',
+    'industrial hot coiled springs',
+  ],
+  'die-springs': [
+    'die spring manufacturer',
+    'die spring supplier',
+    'tooling spring manufacturer',
+    'stamping die springs',
+  ],
+  'contact-springs': [
+    'contact spring manufacturer',
+    'electrical contact spring supplier',
+    'precision contact springs',
+    'switchgear contact springs',
+  ],
+  'garter-springs': [
+    'garter spring manufacturer',
+    'garter spring supplier',
+    'seal garter spring',
+    'custom garter springs',
+  ],
+  'flat-springs': [
+    'flat spring manufacturer',
+    'flat spring supplier',
+    'strip spring manufacturer',
+    'custom flat springs',
+  ],
+  'power-springs': [
+    'power spring manufacturer',
+    'power spring supplier',
+    'clock spring manufacturer',
+    'spiral power springs',
+  ],
+  'variable-force-springs': [
+    'variable force spring manufacturer',
+    'variable force spring supplier',
+    'custom variable force springs',
+    'progressive force spring',
+  ],
+  'spiral-springs': [
+    'spiral spring manufacturer',
+    'spiral spring supplier',
+    'flat spiral spring',
+    'custom spiral springs',
+  ],
+  'contact-clips': [
+    'contact clip manufacturer',
+    'conductive spring clip supplier',
+    'battery contact clip manufacturer',
+    'metal contact clips',
+  ],
+  'multi-turn-wave-springs': [
+    'multi turn wave spring manufacturer',
+    'wave spring supplier',
+    'multi wave spring',
+    'compact preload spring',
+  ],
+};
 
-const PRODUCT_SEO_PROFILES: Record<string, ProductSeoProfile> = {
-  'compression-springs': {
-    title: 'Custom Compression Spring Manufacturer',
-    description:
-      'Source custom compression springs from Wanjin for industrial equipment, automotive parts, and OEM assemblies with drawing review, material selection, and batch production support.',
-    overview:
-      'Compression spring projects usually start with load, stroke, free length, and end-form requirements. This page aligns those engineering inputs with custom compression spring manufacturing and supplier selection.',
-    keywords: [
-      'compression spring manufacturer',
-      'custom compression springs',
-      'compression spring supplier',
-      'OEM compression spring factory',
-    ],
+const buildFallbackKeywords = (productName: string) => {
+  const normalizedName = productName.trim().toLowerCase();
+  return [
+    `${normalizedName} manufacturer`,
+    `custom ${normalizedName}`,
+    `${normalizedName} supplier`,
+    `oem ${normalizedName}`,
+  ];
+};
+
+const PRODUCT_SEO_COPY = {
+  zh: {
+    titleSuffix: '制造与项目配套',
+    description: (productName: string) => `万锦围绕${productName}项目提供图纸评审、工艺规划、样件验证与批量交付支持。`,
+    overview: (productName: string) => `${productName}项目通常需要围绕载荷目标、安装空间、材料路径和验证计划做前置确认，再进入打样与报价阶段。`,
   },
-  'extension-springs': {
-    title: 'Custom Extension Spring Manufacturer',
-    description:
-      'Order custom extension springs with hook design, corrosion-resistant finishes, and batch consistency support for industrial doors, machinery, and engineered assemblies.',
-    overview:
-      'Extension spring sourcing depends on hook geometry, initial tension, cycle life, and corrosion control. The content here is tuned to buyers comparing custom extension spring manufacturers and suppliers.',
-    keywords: [
-      'extension spring manufacturer',
-      'custom extension springs',
-      'tension spring manufacturer',
-      'extension spring supplier',
-    ],
+  en: {
+    titleSuffix: 'Manufacturing and Supply',
+    description: (productName: string) => `Wanjin supports ${productName.toLowerCase()} programs with drawing review, process planning, sample validation, and batch delivery for industrial and OEM sourcing.`,
+    overview: (productName: string) => `${productName} programs are usually reviewed around load target, installation space, material route, and validation planning before quotation or sampling begins.`,
   },
-  'torsion-springs': {
-    title: 'Custom Torsion Spring Manufacturer',
-    description:
-      'Work with a torsion spring manufacturer for custom leg geometry, torque control, preload targets, and repeatable production for hinges, latches, and industrial mechanisms.',
-    overview:
-      'Torsion spring programs are usually evaluated by torque angle, leg configuration, installation direction, and fatigue life. This page helps buyers match those needs to a custom torsion spring supplier.',
-    keywords: [
-      'torsion spring manufacturer',
-      'custom torsion springs',
-      'torsion spring supplier',
-      'OEM torsion spring factory',
-    ],
+  ru: {
+    titleSuffix: 'производство и поставка',
+    description: (productName: string) => `Wanjin поддерживает проекты по ${productName} с анализом чертежей, планированием процесса, валидацией образцов и серийными поставками.`,
+    overview: (productName: string) => `Проекты по ${productName} обычно оцениваются по нагрузке, монтажному пространству, выбору материала и плану валидации до начала котировки и образцов.`,
   },
-  'wave-springs': {
-    title: 'Wave Spring Manufacturer',
-    description:
-      'Source wave springs for compact assemblies, preload control, and limited axial space with precision manufacturing and engineering support for OEM programs.',
-    overview:
-      'Wave spring buyers normally compare axial space savings, preload stability, and tolerance control. The page is positioned around those search and sourcing priorities.',
-    keywords: [
-      'wave spring manufacturer',
-      'wave spring supplier',
-      'custom wave springs',
-      'precision wave spring factory',
-    ],
+  es: {
+    titleSuffix: 'fabricacion y suministro',
+    description: (productName: string) => `Wanjin respalda proyectos de ${productName} con revision de planos, planificacion del proceso, validacion de muestras y entrega por lotes para compras OEM e industriales.`,
+    overview: (productName: string) => `Los programas de ${productName} suelen revisarse en torno a la carga objetivo, el espacio de instalacion, la ruta del material y el plan de validacion antes de cotizar o muestrear.`,
   },
-  'retaining-rings': {
-    title: 'Retaining Ring Manufacturer',
-    description:
-      'Custom retaining rings and snap rings for axial positioning, locking, and installation stability with size customization and industrial batch supply support.',
-    overview:
-      'Retaining ring sourcing often includes snap ring equivalents, groove fit, installation style, and material selection. This page is tuned to that buyer language and application logic.',
-    keywords: [
-      'retaining ring manufacturer',
-      'retaining ring supplier',
-      'snap ring supplier',
-      'custom retaining rings',
-    ],
+  ar: {
+    titleSuffix: 'التصنيع والتوريد',
+    description: (productName: string) => `تدعم Wanjin مشاريع ${productName} من خلال مراجعة الرسومات وتخطيط العملية والتحقق من العينات والتوريد الدفعي للمشتريات الصناعية وOEM.`,
+    overview: (productName: string) => `عادة ما تتم مراجعة برامج ${productName} من حيث الحمل المستهدف ومساحة التركيب ومسار المواد وخطة التحقق قبل بدء التسعير أو العينات.`,
   },
-  'custom-wire-forms': {
-    title: 'Custom Wire Form Manufacturer',
-    description:
-      'Develop custom wire forms and special-shaped springs from drawings or samples with feasibility review, process planning, and batch production for industrial assemblies.',
-    overview:
-      'Custom wire form projects usually involve drawing review, interference checks, bend sequence, and revision control. This page is written for buyers sourcing custom wire form manufacturers for non-standard parts.',
-    keywords: [
-      'custom wire form manufacturer',
-      'wire form manufacturer',
-      'custom wire forms',
-      'special shaped spring supplier',
-    ],
+  hi: {
+    titleSuffix: 'निर्माण और आपूर्ति',
+    description: (productName: string) => `Wanjin ${productName} परियोजनाओं के लिए ड्रॉइंग समीक्षा, प्रक्रिया योजना, सैंपल सत्यापन और बैच डिलीवरी का समर्थन करता है।`,
+    overview: (productName: string) => `${productName} परियोजनाओं में आमतौर पर कोटेशन या सैंपलिंग से पहले लक्ष्य लोड, इंस्टॉलेशन स्पेस, सामग्री मार्ग और वैलिडेशन योजना की समीक्षा की जाती है।`,
   },
-  'constant-force-springs': {
-    title: 'Constant Force Spring Manufacturer',
-    description:
-      'Constant force springs for retraction, counterbalance, and motion-control mechanisms with long-travel output consistency and custom end configuration support.',
-    overview:
-      'Constant force spring sourcing usually centers on output stability, travel, drum fit, and life targets. The page is aligned with those engineering and procurement search terms.',
-    keywords: [
-      'constant force spring manufacturer',
-      'constant force spring supplier',
-      'custom constant force springs',
-      'motion control spring manufacturer',
-    ],
+  pt: {
+    titleSuffix: 'fabricacao e fornecimento',
+    description: (productName: string) => `A Wanjin apoia programas de ${productName} com revisao de desenhos, planejamento de processo, validacao de amostras e entrega em lote para compras OEM e industriais.`,
+    overview: (productName: string) => `Os programas de ${productName} normalmente sao analisados quanto a carga alvo, espaco de instalacao, rota de material e plano de validacao antes da cotacao ou da amostragem.`,
   },
-  'disc-springs': {
-    title: 'Disc Spring Manufacturer',
-    description:
-      'Disc springs and Belleville spring solutions for heavy-load clamping, buffering, and compact high-force applications in power and industrial equipment.',
-    overview:
-      'Disc spring buyers often search for Belleville spring manufacturers when they need high load in short travel. This page connects that search behavior to heavy-duty spring applications.',
-    keywords: [
-      'disc spring manufacturer',
-      'belleville spring manufacturer',
-      'disc spring supplier',
-      'heavy duty disc springs',
-    ],
+  ja: {
+    titleSuffix: '製造と供給',
+    description: (productName: string) => `Wanjin は ${productName} の案件に対して、図面レビュー、工程計画、サンプル検証、量産供給を支援します。`,
+    overview: (productName: string) => `${productName} の案件では、通常、見積もりや試作の前に、荷重目標、取付スペース、材料方針、検証計画を確認します。`,
   },
-  'disc-spring-stacks': {
-    title: 'Disc Spring Stack Assemblies',
-    description:
-      'Disc spring stack assemblies in series, parallel, or combined arrangements for tuned load-deflection performance in heavy-duty industrial systems.',
-    overview:
-      'Stacked disc spring projects are usually sourced around force curve tuning, stack arrangement, and installation constraints. The page now reflects that buyer intent more directly.',
-    keywords: [
-      'disc spring stack manufacturer',
-      'disc spring stack assemblies',
-      'belleville washer stack supplier',
-      'heavy load spring stack',
-    ],
+  de: {
+    titleSuffix: 'Fertigung und Lieferung',
+    description: (productName: string) => `Wanjin unterstutzt ${productName}-Projekte mit Zeichnungsprufung, Prozessplanung, Musterfreigabe und Serienlieferung fur industrielle und OEM-Beschaffung.`,
+    overview: (productName: string) => `${productName}-Programme werden in der Regel im Hinblick auf Ziellast, Bauraum, Werkstoffpfad und Validierungsplanung gepruft, bevor Angebot oder Bemusterung startet.`,
   },
-  'hot-coil-springs': {
-    title: 'Hot Coil Spring Manufacturer',
-    description:
-      'Hot coil springs for large wire diameters, heavy machinery, and power equipment with medium-frequency induction capability and heavy-load validation support.',
-    overview:
-      'Large wire spring sourcing is usually driven by load density, fatigue resistance, and hot coiling capability. This page speaks directly to hot coil spring manufacturer searches.',
-    keywords: [
-      'hot coil spring manufacturer',
-      'large wire spring manufacturer',
-      'heavy duty coil spring supplier',
-      'industrial hot coiled springs',
-    ],
-  },
-  'die-springs': {
-    title: 'Die Spring Manufacturer',
-    description:
-      'Die springs for stamping dies, tooling systems, and high-cycle industrial assemblies with color-coded load classes and repeatable batch production support.',
-    overview:
-      'Die spring buyers usually compare load class, installation space, fatigue life, and tooling-cycle stability. This page is tuned to teams sourcing die spring manufacturers for production tooling programs.',
-    keywords: [
-      'die spring manufacturer',
-      'die spring supplier',
-      'tooling spring manufacturer',
-      'stamping die springs',
-    ],
-  },
-  'contact-springs': {
-    title: 'Contact Spring Manufacturer',
-    description:
-      'Precision contact springs for electrical reliability, stable contact force, and repeatable production in switchgear, connectors, and control assemblies.',
-    overview:
-      'Contact spring sourcing usually depends on force stability, finish selection, conductivity, and assembly tolerance. This page is positioned around those electrical-contact buying terms.',
-    keywords: [
-      'contact spring manufacturer',
-      'electrical contact spring supplier',
-      'precision contact springs',
-      'switchgear contact springs',
-    ],
-  },
-  'garter-springs': {
-    title: 'Garter Spring Manufacturer',
-    description:
-      'Garter springs for sealing preload, circular retention, and compensation in cylindrical assemblies with custom diameter and material support.',
-    overview:
-      'Garter spring projects are usually sourced around seal performance, ring geometry, material choice, and corrosion resistance. The page now matches that supplier-selection language more closely.',
-    keywords: [
-      'garter spring manufacturer',
-      'garter spring supplier',
-      'seal garter spring',
-      'custom garter springs',
-    ],
-  },
-  'flat-springs': {
-    title: 'Flat Spring Manufacturer',
-    description:
-      'Flat springs and strip-formed elastic components for contact systems, locking mechanisms, and compact precision assemblies with custom forming support.',
-    overview:
-      'Flat spring buyers often compare strip material, forming repeatability, contact performance, and burr control. This page addresses those manufacturing and sourcing priorities.',
-    keywords: [
-      'flat spring manufacturer',
-      'flat spring supplier',
-      'strip spring manufacturer',
-      'custom flat springs',
-    ],
-  },
-  'power-springs': {
-    title: 'Power Spring Manufacturer',
-    description:
-      'Power springs for energy storage, rewind mechanisms, and controlled return motion with custom torque output and batch production support.',
-    overview:
-      'Power spring programs are usually evaluated by torque curve, rewind life, drum fit, and material route. This page is written for buyers comparing power spring manufacturers and suppliers.',
-    keywords: [
-      'power spring manufacturer',
-      'power spring supplier',
-      'clock spring manufacturer',
-      'spiral power springs',
-    ],
-  },
-  'variable-force-springs': {
-    title: 'Variable Force Spring Manufacturer',
-    description:
-      'Variable force springs for progressive load response, staged return force, and engineered motion systems with custom force-curve support.',
-    overview:
-      'Variable force spring sourcing usually centers on force curve design, travel behavior, and installation geometry. The page is aligned with that custom engineering intent.',
-    keywords: [
-      'variable force spring manufacturer',
-      'variable force spring supplier',
-      'custom variable force springs',
-      'progressive force spring',
-    ],
-  },
-  'spiral-springs': {
-    title: 'Spiral Spring Manufacturer',
-    description:
-      'Spiral springs for rewind, torque storage, and compact motion-control mechanisms with custom material and geometry options for OEM assemblies.',
-    overview:
-      'Spiral spring buyers typically compare torque output, winding geometry, life target, and space envelope. This page helps connect those requirements to supplier capability.',
-    keywords: [
-      'spiral spring manufacturer',
-      'spiral spring supplier',
-      'flat spiral spring',
-      'custom spiral springs',
-    ],
-  },
-  'contact-clips': {
-    title: 'Contact Clip Manufacturer',
-    description:
-      'Contact clips and conductive spring clips for electrical connection, retention, and contact compensation in precision and industrial assemblies.',
-    overview:
-      'Contact clip projects are usually sourced around conductivity, retention force, stamping consistency, and finish choice. This page maps to that procurement language.',
-    keywords: [
-      'contact clip manufacturer',
-      'conductive spring clip supplier',
-      'battery contact clip manufacturer',
-      'metal contact clips',
-    ],
-  },
-  'multi-turn-wave-springs': {
-    title: 'Multi Turn Wave Spring Manufacturer',
-    description:
-      'Multi turn wave springs for compact axial assemblies needing higher travel, stable preload, and precision manufacturing support.',
-    overview:
-      'Multi turn wave spring sourcing usually depends on preload stability, travel range, and tolerance control in space-limited assemblies. This page is positioned around those buyer priorities.',
-    keywords: [
-      'multi turn wave spring manufacturer',
-      'wave spring supplier',
-      'multi wave spring',
-      'compact preload spring',
-    ],
+  fr: {
+    titleSuffix: 'fabrication et fourniture',
+    description: (productName: string) => `Wanjin accompagne les projets ${productName} avec revue de plans, planification du procede, validation d'echantillons et livraison en serie pour les achats OEM et industriels.`,
+    overview: (productName: string) => `Les programmes ${productName} sont generalement examines selon la charge cible, l'espace d'installation, la filiere matiere et le plan de validation avant devis ou echantillonnage.`,
   },
 };
 
-export const getProductSeoProfile = (slug: string, productName: string): ProductSeoProfile => {
-  const profile = PRODUCT_SEO_PROFILES[slug];
-
-  if (profile) {
-    return profile;
-  }
+export const getProductSeoProfile = (slug: string, productName: string, language: string): ProductSeoProfile => {
+  const keywords = PRODUCT_KEYWORDS[slug] ?? buildFallbackKeywords(productName);
+  const copy = PRODUCT_SEO_COPY[language] ?? PRODUCT_SEO_COPY.en;
 
   return {
-    title: `${productName} Manufacturer`,
-    description: `Source ${productName.toLowerCase()} from Wanjin for industrial, OEM, and custom manufacturing programs with engineering review and batch delivery support.`,
-    overview: `${productName} sourcing usually depends on drawing clarity, manufacturing route, material selection, and validation planning. ${DEFAULT_OVERVIEW_SUFFIX}`,
-    keywords: [
-      `${productName.toLowerCase()} manufacturer`,
-      `custom ${productName.toLowerCase()}`,
-      `${productName.toLowerCase()} supplier`,
-      `OEM ${productName.toLowerCase()}`,
-    ],
+    title: language === 'zh' ? `${productName}${copy.titleSuffix}` : `${productName} ${copy.titleSuffix}`,
+    description: copy.description(productName),
+    overview: copy.overview(productName),
+    keywords,
   };
 };

@@ -1,145 +1,157 @@
 import React from 'react';
-import { Award, TrendingUp, Users, History } from 'lucide-react';
+import { Award, History, TrendingUp, Users } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 export const About: React.FC = () => {
   const { t } = useLanguage();
 
+  const stats = [
+    { icon: <History className="h-5 w-5" />, value: '1982', label: t('stat_founded') },
+    { icon: <Users className="h-5 w-5" />, value: '20+', label: t('stat_experts') },
+    { icon: <Award className="h-5 w-5" />, value: 'ISO 9001', label: t('stat_certifications') },
+    { icon: <TrendingUp className="h-5 w-5" />, value: '≥99%', label: t('stat_regional') },
+  ];
+
+  const timelineItems = [
+    {
+      date: t('timeline_april_2018'),
+      title: t('timeline_establishment'),
+      desc: t('timeline_establishment_desc'),
+      accent: 'bg-accent-400',
+    },
+    {
+      date: t('timeline_2022'),
+      title: t('timeline_expansion'),
+      desc: t('timeline_expansion_desc'),
+      accent: 'bg-brand-400',
+    },
+    {
+      date: t('timeline_oct_2023'),
+      title: t('timeline_milestone'),
+      desc: t('timeline_milestone_desc'),
+      accent: 'bg-slate-400',
+    },
+    {
+      date: t('timeline_2024_2025'),
+      title: t('timeline_innovation'),
+      desc: t('timeline_innovation_desc'),
+      accent: 'bg-brand-500',
+    },
+  ];
+
+  const valueKeys = [
+    ['val_refined', 'val_refined_desc'],
+    ['val_integrity', 'val_integrity_desc'],
+    ['val_responsibility', 'val_responsibility_desc'],
+  ] as const;
+
   return (
-    <div className="pt-20 pb-20 bg-white">
-      {/* Header */}
-      <div className="bg-slate-900 py-20 text-white mb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold mb-4">{t('about_title')}</h1>
-          <p className="text-slate-400 max-w-2xl">
-            {t('about_desc')}
-          </p>
+    <div className="page-canvas pt-24 pb-24">
+      <section className="page-shell">
+        <div className="page-hero-panel">
+          <div className="page-hero-grid items-center">
+            <div>
+              <h1 className="apple-hero-title max-w-4xl text-white">{t('about_title')}</h1>
+              <p className="apple-body mt-6 max-w-2xl text-slate-200">{t('about_desc')}</p>
+
+              <div className="mt-10 grid gap-4 sm:grid-cols-2">
+                {stats.map((stat) => (
+                  <div key={stat.label} className="rounded-[28px] border border-white/12 bg-white/10 p-5 backdrop-blur">
+                    <div className="page-icon-badge">{stat.icon}</div>
+                    <div className="mt-5 text-3xl font-semibold tracking-[-0.04em] text-white">{stat.value}</div>
+                    <div className="mt-2 text-sm font-semibold text-slate-200">{stat.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-[36px] border border-white/12 bg-[linear-gradient(180deg,rgba(250,204,21,0.12)_0%,rgba(255,255,255,0.08)_100%)] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+              <div className="overflow-hidden rounded-[28px]">
+                <img
+                  src="/factory/about-company.jpeg"
+                  alt="Wanjin Manufacturing Facility"
+                  width="1200"
+                  height="800"
+                  className="h-full min-h-[420px] w-full object-cover"
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                />
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
-
-        {/* Company Profile */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 className="text-3xl font-bold text-slate-900 mb-6">{t('company_intro')}</h2>
-            <div className="prose prose-slate text-slate-600">
-              <p className="mb-4">{t('about_para1')}</p>
-              <p className="mb-4">{t('about_para2')}</p>
+      <section className="page-shell mt-20">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(300px,0.85fr)]">
+          <div className="page-soft-card page-accent-line p-8 md:p-10">
+            <p className="page-kicker">{t('company_intro')}</p>
+            <h2 className="apple-section-title mt-4 text-slate-950">{t('company_intro')}</h2>
+            <div className="apple-body mt-6 space-y-4 text-slate-600">
+              <p>{t('about_para1')}</p>
+              <p>{t('about_para2')}</p>
               <p>{t('about_para3')}</p>
             </div>
           </div>
-          <div className="h-[400px] rounded-2xl overflow-hidden shadow-2xl group">
-            <img
-              src="/factory/about-company.jpeg"
-              alt="Wanjin Manufacturing Facility"
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-        </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          <div className="text-center p-6 bg-slate-50 rounded-xl">
-            <History className="w-8 h-8 mx-auto text-blue-600 mb-3" />
-            <div className="text-3xl font-bold text-slate-900 mb-1">1982</div>
-            <div className="text-sm text-slate-500">{t('stat_founded')}</div>
-          </div>
-          <div className="text-center p-6 bg-slate-50 rounded-xl">
-            <Users className="w-8 h-8 mx-auto text-blue-600 mb-3" />
-            <div className="text-3xl font-bold text-slate-900 mb-1">20+</div>
-            <div className="text-sm text-slate-500">{t('stat_experts')}</div>
-          </div>
-          <div className="text-center p-6 bg-slate-50 rounded-xl">
-            <Award className="w-8 h-8 mx-auto text-blue-600 mb-3" />
-            <div className="text-3xl font-bold text-slate-900 mb-1">ISO 9001</div>
-            <div className="text-sm text-slate-500">{t('stat_certifications')}</div>
-          </div>
-          <div className="text-center p-6 bg-slate-50 rounded-xl">
-            <TrendingUp className="w-8 h-8 mx-auto text-blue-600 mb-3" />
-            <div className="text-3xl font-bold text-slate-900 mb-1">≥99%</div>
-            <div className="text-sm text-slate-500">{t('stat_regional')}</div>
-          </div>
-        </div>
-
-        {/* History / Timeline */}
-        <div>
-          <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center">{t('our_history')}</h2>
-          <div className="relative">
-            {/* Vertical line: left-4 on mobile, centered on desktop */}
-            <div className="absolute top-2 bottom-2 w-0.5 bg-slate-200 left-4 md:left-1/2 md:-translate-x-1/2"></div>
-
-            <div className="space-y-10">
-              {/* April 2018 — LEFT on desktop */}
-              <div className="relative grid grid-cols-1 md:grid-cols-2">
-                <div className="pl-12 md:pl-0 md:pr-12 md:text-right">
-                  <span className="text-blue-600 font-bold block mb-1">{t('timeline_april_2018')}</span>
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">{t('timeline_establishment')}</h3>
-                  <p className="text-slate-500 text-sm">{t('timeline_establishment_desc')}</p>
+          <div className="page-dark-card p-8 md:p-10">
+            <p className="page-kicker-gold">{t('our_values')}</p>
+            <h2 className="apple-section-title mt-4 text-white">{t('our_values')}</h2>
+            <div className="mt-8 space-y-4">
+              {valueKeys.map(([titleKey, descKey]) => (
+                <div key={titleKey} className="rounded-[24px] border border-white/10 bg-white/10 p-5">
+                  <h3 className="text-lg font-semibold text-white">{t(titleKey)}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-200">{t(descKey)}</p>
                 </div>
-                <div className="hidden md:block"></div>
-                <div className="absolute left-4 md:left-1/2 top-1 w-4 h-4 rounded-full bg-blue-600 border-4 border-white shadow-sm -translate-x-1/2"></div>
-              </div>
-
-              {/* 2022 — RIGHT on desktop */}
-              <div className="relative grid grid-cols-1 md:grid-cols-2">
-                <div className="hidden md:block"></div>
-                <div className="pl-12 md:pl-12">
-                  <span className="text-slate-500 font-bold block mb-1">{t('timeline_2022')}</span>
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">{t('timeline_expansion')}</h3>
-                  <p className="text-slate-500 text-sm">{t('timeline_expansion_desc')}</p>
-                </div>
-                <div className="absolute left-4 md:left-1/2 top-1 w-4 h-4 rounded-full bg-slate-300 border-4 border-white shadow-sm -translate-x-1/2"></div>
-              </div>
-
-              {/* Oct 2023 — LEFT on desktop */}
-              <div className="relative grid grid-cols-1 md:grid-cols-2">
-                <div className="pl-12 md:pl-0 md:pr-12 md:text-right">
-                  <span className="text-slate-500 font-bold block mb-1">{t('timeline_oct_2023')}</span>
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">{t('timeline_milestone')}</h3>
-                  <p className="text-slate-500 text-sm">{t('timeline_milestone_desc')}</p>
-                </div>
-                <div className="hidden md:block"></div>
-                <div className="absolute left-4 md:left-1/2 top-1 w-4 h-4 rounded-full bg-slate-300 border-4 border-white shadow-sm -translate-x-1/2"></div>
-              </div>
-
-              {/* 2024-2025 — RIGHT on desktop */}
-              <div className="relative grid grid-cols-1 md:grid-cols-2">
-                <div className="hidden md:block"></div>
-                <div className="pl-12 md:pl-12">
-                  <span className="text-slate-900 font-bold block mb-1">{t('timeline_2024_2025')}</span>
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">{t('timeline_innovation')}</h3>
-                  <p className="text-slate-500 text-sm">{t('timeline_innovation_desc')}</p>
-                </div>
-                <div className="absolute left-4 md:left-1/2 top-1 w-4 h-4 rounded-full bg-slate-900 border-4 border-white shadow-sm -translate-x-1/2"></div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Culture / Values */}
-        <div className="bg-slate-50 rounded-3xl p-8 md:p-12">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-2xl font-bold text-slate-900 mb-8">{t('our_values')}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div>
-                <div className="text-lg font-bold text-slate-900 mb-2">{t('val_refined')}</div>
-                <p className="text-sm text-slate-600">{t('val_refined_desc')}</p>
-              </div>
-              <div>
-                <div className="text-lg font-bold text-slate-900 mb-2">{t('val_integrity')}</div>
-                <p className="text-sm text-slate-600">{t('val_integrity_desc')}</p>
-              </div>
-              <div>
-                <div className="text-lg font-bold text-slate-900 mb-2">{t('val_responsibility')}</div>
-                <p className="text-sm text-slate-600">{t('val_responsibility_desc')}</p>
-              </div>
+      <section className="page-shell mt-20">
+        <div className="page-soft-card page-accent-line p-8 md:p-10">
+          <p className="page-kicker">{t('our_history')}</p>
+          <h2 className="apple-section-title mt-4 text-slate-950">{t('our_history')}</h2>
+
+          <div className="relative mt-10">
+            <div className="absolute bottom-2 left-4 top-2 w-px bg-[linear-gradient(180deg,rgba(250,204,21,0.95)_0%,rgba(18,55,101,0.24)_100%)] md:left-1/2 md:-translate-x-1/2" />
+
+            <div className="space-y-6">
+              {timelineItems.map((item, index) => (
+                <div key={item.date} className="relative grid gap-4 md:grid-cols-2 md:gap-10">
+                  {index % 2 === 0 ? (
+                    <>
+                      <div className="pl-12 md:pl-0 md:pr-12 md:text-right">
+                        <div className="page-white-card p-6">
+                          <div className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-500">{item.date}</div>
+                          <h3 className="mt-3 text-xl font-semibold text-slate-950">{item.title}</h3>
+                          <p className="mt-3 text-sm leading-relaxed text-slate-600">{item.desc}</p>
+                        </div>
+                      </div>
+                      <div className="hidden md:block" />
+                    </>
+                  ) : (
+                    <>
+                      <div className="hidden md:block" />
+                      <div className="pl-12 md:pl-12">
+                        <div className="page-white-card p-6">
+                          <div className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-500">{item.date}</div>
+                          <h3 className="mt-3 text-xl font-semibold text-slate-950">{item.title}</h3>
+                          <p className="mt-3 text-sm leading-relaxed text-slate-600">{item.desc}</p>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  <div className={`absolute left-4 top-8 h-4 w-4 -translate-x-1/2 rounded-full border-4 border-white shadow-sm ${item.accent} md:left-1/2`} />
+                </div>
+              ))}
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };

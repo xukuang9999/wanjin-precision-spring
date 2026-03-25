@@ -14,4 +14,6 @@ export interface BlogPostRecord {
   seoDescription: Record<string, string>;
   tags: string[];
   content: Record<string, string[]>;
+  takeaways?: Record<string, string[]>;
+  checklist?: Record<string, string[]>;
 }

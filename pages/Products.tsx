@@ -1,39 +1,78 @@
-import React, { useMemo, useState } from 'react';
+import React, { startTransition, useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, ArrowRight, Cable, Filter, Layers3, Search, Wrench } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { PageView } from '../types';
-import { Language } from '../utils/translations';
-import { formatBlogDate, getLocalizedPost, getRelevantBlogPosts } from '../utils/blog';
+import { type Language } from '../utils/languages';
 import { getProductSeoProfile } from '../utils/productSeo';
 import { getProductBySlug, PRODUCT_DATA, type ProductRecord } from '../data/products';
+import { loadBlogModule, type BlogModule } from '../utils/loadBlogModule';
 
 interface ProductsProps {
   slug?: string;
   onNavigate: (page: PageView, language?: Language, slug?: string, search?: string) => void;
 }
 
-const buildProductBuyerChecklist = (product: ProductRecord, t: (key: string) => string) => [
-  `Application fit: ${product.industryKeys.map((key) => t(key)).join(', ')}.`,
-  `Manufacturing route: ${product.processKeys.map((key) => t(key)).join(', ')}.`,
-  `Validation scope: ${product.specKeys.map((spec) => `${t(spec.titleKey)} ${t(spec.valueKey)}`).join('; ')}.`,
-];
-
-const buildProductCapabilityNarrative = (product: ProductRecord, t: (key: string) => string) => {
-  const featureText = product.featureKeys.map((key) => t(key)).join(', ');
-  const processText = product.processKeys.map((key) => t(key)).join(', ');
-  const industryText = product.industryKeys.map((key) => t(key)).join(', ');
-
-  return [
-    `${t(product.nameKey)} programs are usually evaluated against the end-use environment, expected cycle life, installation space, and downstream assembly tolerance. This page is written to help buyers compare manufacturing fit instead of only browsing a short catalog description.`,
-    `Typical project conversations combine ${featureText} with process requirements such as ${processText}. In practice, buyers also need to know whether the supplier can keep dimensional consistency and repeatable load behavior across production batches.`,
-    `For teams sourcing into ${industryText}, the useful discussion is normally about drawing review, material route, finish, inspection, and delivery readiness. That is the gap this product page is intended to close.`,
-  ];
+type ProductsBlogState = {
+  blogModule: BlogModule;
+  productArticleBySlug: Record<string, ReturnType<BlogModule['getRelevantBlogPosts']>[number] | undefined>;
 };
 
-const ProductList: React.FC<ProductsProps> = ({ onNavigate }) => {
+const useProductsBlogState = () => {
+  const [blogState, setBlogState] = useState<ProductsBlogState | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    void loadBlogModule()
+      .then((blogModule) => {
+        if (cancelled) {
+          return;
+        }
+
+        const productArticleBySlug = Object.fromEntries(
+          PRODUCT_DATA.map((product) => [product.slug, blogModule.getRelevantBlogPosts(product.articleTerms, 1)[0]]),
+        );
+
+        startTransition(() => {
+          setBlogState({ blogModule, productArticleBySlug });
+        });
+      })
+      .catch((error) => {
+        console.error('Failed to load product page blog content:', error);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  return blogState;
+};
+
+const ProductList: React.FC<ProductsProps & { blogState: ProductsBlogState | null }> = ({ onNavigate, blogState }) => {
   const { language, t } = useLanguage();
   const [filter, setFilter] = useState('cat_all');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(() => new URLSearchParams(window.location.search).get('q') ?? '');
+  const trimmedSearchTerm = searchTerm.trim();
+  const compactSpecCards = [
+    ['products_spec_cold_value', 'products_spec_cold_title'],
+    ['products_spec_hot_value', 'products_spec_hot_title'],
+    ['products_spec_test_value', 'products_spec_test_title'],
+    ['products_spec_application_value', 'products_spec_application_title'],
+  ] as const;
+  const keywordKeys = [
+    'home_keyword_1_title',
+    'home_keyword_2_title',
+    'home_keyword_3_title',
+    'home_keyword_4_title',
+    'home_keyword_5_title',
+    'home_keyword_6_title',
+  ] as const;
+  const supportCards = [
+    { titleKey: 'product_power_eq_name', descKey: 'product_power_eq_desc', icon: <Cable className="w-6 h-6 text-accent-500" /> },
+    { titleKey: 'product_high_pressure_name', descKey: 'product_high_pressure_desc', icon: <Layers3 className="w-6 h-6 text-accent-500" /> },
+    { titleKey: 'assembly_service_title', descKey: 'assembly_service_desc', icon: <Wrench className="w-6 h-6 text-accent-500" /> },
+  ] as const;
 
   const categories = ['cat_all', 'cat_precision', 'cat_heavy', 'cat_general', 'cat_custom'];
   const filteredProducts = PRODUCT_DATA.filter((product) => {
@@ -47,7 +86,7 @@ const ProductList: React.FC<ProductsProps> = ({ onNavigate }) => {
     ]
       .join(' ')
       .toLowerCase();
-    const matchesSearch = !searchTerm || haystack.includes(searchTerm.toLowerCase());
+    const matchesSearch = !trimmedSearchTerm || haystack.includes(trimmedSearchTerm.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -59,178 +98,205 @@ const ProductList: React.FC<ProductsProps> = ({ onNavigate }) => {
     cat_custom: ['custom wire forms', 'constant force springs', 'retaining rings', 'motion control'],
   };
 
-  const recommendedPosts = getRelevantBlogPosts([...(insightTermsByFilter[filter] ?? insightTermsByFilter.cat_all), searchTerm], 3);
+  const recommendedPosts = useMemo(() => {
+    if (!blogState) {
+      return [];
+    }
+
+    return blogState.blogModule.getRelevantBlogPosts(
+      [...(insightTermsByFilter[filter] ?? insightTermsByFilter.cat_all), trimmedSearchTerm],
+      3,
+    );
+  }, [blogState, filter, trimmedSearchTerm]);
+
+  useEffect(() => {
+    const syncSearchFromUrl = () => {
+      setSearchTerm(new URLSearchParams(window.location.search).get('q') ?? '');
+    };
+
+    syncSearchFromUrl();
+    window.addEventListener('popstate', syncSearchFromUrl);
+    return () => window.removeEventListener('popstate', syncSearchFromUrl);
+  }, []);
+
+  useEffect(() => {
+    const search = trimmedSearchTerm ? `q=${encodeURIComponent(trimmedSearchTerm)}` : '';
+    const nextUrl = `${window.location.pathname}${search ? `?${search}` : ''}`;
+
+    if (`${window.location.pathname}${window.location.search}` !== nextUrl) {
+      window.history.replaceState({}, '', nextUrl);
+    }
+  }, [trimmedSearchTerm]);
 
   return (
-    <div className="pt-20 min-h-screen bg-slate-50">
-      <div className="bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <h1 className="text-3xl font-bold text-slate-900 mb-4">{t('nav_products')}</h1>
-          <p className="text-slate-500 max-w-2xl">{t('product_header_desc')}</p>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-10 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-          <div className="max-w-4xl">
-            <h2 className="text-2xl font-bold text-slate-900">{t('products_spec_title')}</h2>
-            <p className="mt-3 text-slate-600 leading-relaxed">{t('products_spec_desc')}</p>
+    <div className="page-canvas pt-20 pb-16 md:pt-24 md:pb-24">
+      <section className="page-shell">
+        <div className="page-hero-panel">
+          <div className="page-hero-grid items-center">
+            <div>
+              <h1 className="apple-hero-title max-w-4xl text-white">{t('nav_products')}</h1>
+              <p className="apple-body mt-4 max-w-3xl text-base text-slate-200 sm:mt-6 sm:text-[17px]">{t('product_header_desc')}</p>
+            </div>
+            <div className="rounded-[28px] border border-white/12 bg-[linear-gradient(180deg,rgba(250,204,21,0.12)_0%,rgba(255,255,255,0.08)_100%)] p-5 sm:rounded-[36px] sm:p-6">
+              <div className="grid gap-3 sm:grid-cols-2 sm:gap-5 xl:gap-6">
+                <div className="rounded-[22px] border border-white/10 bg-white/10 p-4 sm:p-5">
+                  <div className="text-2xl font-semibold text-white sm:text-3xl">{PRODUCT_DATA.length}</div>
+                  <div className="mt-1.5 text-xs font-semibold text-[#ffe39a] sm:mt-2 sm:text-sm">{t('core_products')}</div>
+                </div>
+                <div className="rounded-[22px] border border-white/10 bg-white/10 p-4 sm:p-5">
+                  <div className="text-2xl font-semibold text-white sm:text-3xl">{categories.length - 1}</div>
+                  <div className="mt-1.5 text-xs font-semibold text-[#ffe39a] sm:mt-2 sm:text-sm">{t('blog_stat_categories')}</div>
+                </div>
+                <div className="rounded-[22px] border border-white/10 bg-white/10 p-4 sm:p-5">
+                  <div className="text-2xl font-semibold text-white sm:text-3xl">{t('products_spec_hot_value')}</div>
+                  <div className="mt-1.5 text-xs font-semibold text-[#ffe39a] sm:mt-2 sm:text-sm">{t('products_spec_hot_title')}</div>
+                </div>
+                <div className="rounded-[22px] border border-white/10 bg-white/10 p-4 sm:p-5">
+                  <div className="text-2xl font-semibold text-white sm:text-3xl">{t('products_spec_cold_value')}</div>
+                  <div className="mt-1.5 text-xs font-semibold text-[#ffe39a] sm:mt-2 sm:text-sm">{t('products_spec_cold_title')}</div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
-            {[
-              ['products_spec_cold_value', 'products_spec_cold_title', 'products_spec_cold_desc'],
-              ['products_spec_hot_value', 'products_spec_hot_title', 'products_spec_hot_desc'],
-              ['products_spec_test_value', 'products_spec_test_title', 'products_spec_test_desc'],
-              ['products_spec_application_value', 'products_spec_application_title', 'products_spec_application_desc'],
-            ].map(([valueKey, titleKey, descKey]) => (
-              <div key={titleKey} className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
-                <div className="text-2xl font-bold text-slate-900">{t(valueKey)}</div>
-                <h3 className="mt-4 text-lg font-bold text-slate-900">{t(titleKey)}</h3>
-                <p className="mt-3 text-sm text-slate-600 leading-relaxed">{t(descKey)}</p>
+        </div>
+      </section>
+
+      <section className="page-shell mt-12 space-y-8 sm:mt-16 sm:space-y-10 xl:mt-24 xl:space-y-12">
+        <div className="page-soft-card page-accent-line p-6 md:p-10">
+          <div className="max-w-2xl">
+            <p className="page-kicker">{t('products_spec_title')}</p>
+            <h2 className="apple-card-title mt-4 text-slate-950">{t('products_spec_title')}</h2>
+            <div className="-mx-1 mt-5 flex gap-2 overflow-x-auto px-1 pb-2 sm:mx-0 sm:mt-6 sm:flex-wrap sm:gap-3 sm:overflow-visible sm:px-0 sm:pb-0">
+              {keywordKeys.map((key) => (
+                <span key={key} className="shrink-0 rounded-full border border-accent-400/18 bg-[linear-gradient(180deg,#ffffff_0%,#fff8dc_100%)] px-4 py-2 text-sm font-semibold text-slate-800">
+                  {t(key)}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-4 md:mt-8 md:grid-cols-2 md:gap-5 xl:grid-cols-4 xl:gap-5">
+            {compactSpecCards.map(([valueKey, titleKey]) => (
+              <div key={titleKey} className="flex min-h-[136px] flex-col justify-between rounded-[24px] border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(15,23,42,0.05)] sm:min-h-[168px] sm:rounded-[28px] sm:p-6">
+                <div className="text-[clamp(1.5rem,7vw,2.25rem)] font-bold leading-[1.05] text-slate-900">{t(valueKey)}</div>
+                <h3 className="mt-4 text-sm font-semibold leading-snug text-slate-700 sm:mt-5 sm:text-base">{t(titleKey)}</h3>
               </div>
             ))}
           </div>
-        </div>
 
-        <div className="mb-10 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-          <div className="max-w-4xl">
-            <h2 className="text-2xl font-bold text-slate-900">{t('products_keyword_title')}</h2>
-            <p className="mt-3 text-slate-600 leading-relaxed">{t('products_keyword_desc')}</p>
-          </div>
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-            {[
-              'home_keyword_1_title',
-              'home_keyword_2_title',
-              'home_keyword_3_title',
-              'home_keyword_4_title',
-              'home_keyword_5_title',
-              'home_keyword_6_title',
-            ].map((key) => (
-              <div key={key} className="rounded-3xl border border-slate-200 bg-slate-50 px-5 py-4 text-sm font-semibold text-slate-800">
-                {t(key)}
+          <div className="mt-6 rounded-[24px] border border-slate-200 bg-white/90 p-4 shadow-[0_18px_40px_rgba(15,23,42,0.05)] sm:mt-8 sm:rounded-[28px] sm:p-5">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
+              <div className="flex items-center gap-3 text-sm font-semibold text-slate-700">
+                <Filter className="h-5 w-5 flex-shrink-0 text-accent-500" />
+                <span>{t('core_products')}</span>
+                <span className="rounded-full border border-accent-400/18 bg-[linear-gradient(180deg,#ffffff_0%,#fff8dc_100%)] px-3 py-1 text-xs font-semibold text-slate-800">
+                  {filteredProducts.length} / {PRODUCT_DATA.length}
+                </span>
               </div>
-            ))}
-          </div>
-        </div>
 
-        <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
-          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-            <Filter className="w-5 h-5 text-slate-400 flex-shrink-0" />
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setFilter(cat)}
-                className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-                  filter === cat ? 'bg-slate-900 text-white' : 'bg-white text-slate-600 hover:bg-slate-100'
-                }`}
-              >
-                {t(cat)}
-              </button>
-            ))}
-          </div>
+              <div className="relative w-full lg:w-64">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-accent-500" />
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder={t('search_placeholder')}
+                  className="w-full rounded-full border border-accent-400/20 bg-white py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-accent-400/35"
+                />
+              </div>
+            </div>
 
-          <div className="relative w-full sm:w-64">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder={t('search_placeholder')}
-              className="w-full pl-10 pr-4 py-2 rounded-full border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900"
-            />
+            <div className="-mx-1 mt-4 flex gap-2 overflow-x-auto px-1 pb-2 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setFilter(cat)}
+                  className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors ${
+                    filter === cat
+                      ? 'border border-accent-400/30 bg-[linear-gradient(145deg,#071427_0%,#0d2747_58%,#123765_100%)] text-white shadow-[0_10px_24px_rgba(250,204,21,0.12)]'
+                      : 'bg-white text-slate-600 hover:bg-accent-400/10'
+                  }`}
+                >
+                  {t(cat)}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
         {filteredProducts.length === 0 ? (
-          <div className="text-center py-20 text-slate-400">
+            <div className="page-white-card py-16 text-center text-slate-400 sm:py-20">
             <Search className="w-10 h-10 mx-auto mb-3 opacity-30" />
             <p className="text-lg">{t('no_products_found')}</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-6">
             {filteredProducts.map((product) => {
-              const productArticle = getRelevantBlogPosts(product.articleTerms, 1)[0];
+              const productArticle = blogState?.productArticleBySlug[product.slug];
 
               return (
-                <div key={product.id} className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                <div key={product.id} className="page-soft-card flex h-full flex-col overflow-hidden transition-all duration-300 group hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(15,23,42,0.12)]">
                   <button
                     type="button"
-                    className="w-full text-left"
+                    className="flex flex-1 flex-col text-left"
                     onClick={() => onNavigate(PageView.PRODUCTS, language, product.slug)}
                   >
-                    <div className="aspect-[4/3] bg-gradient-to-br from-white via-slate-50 to-slate-100 relative p-4">
+                    <div className="relative aspect-[4/3] bg-[linear-gradient(180deg,#ffffff_0%,#eef4fb_100%)] p-3 sm:p-4">
                       <img
                         src={product.image}
                         alt={t(product.nameKey)}
+                        width="1200"
+                        height="900"
                         className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
                         loading="lazy"
                         decoding="async"
                       />
-                      <div className="absolute top-3 right-3 bg-white/90 px-2 py-1 rounded text-xs font-bold text-slate-800 shadow-sm">
+                      <div className="absolute right-2.5 top-2.5 rounded-full border border-accent-400/20 bg-white/90 px-2.5 py-1 text-[11px] font-bold text-slate-800 shadow-sm sm:right-3 sm:top-3 sm:px-3">
                         {t(product.categoryKey)}
                       </div>
                     </div>
-                    <div className="p-5">
-                      <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">{t(product.nameKey)}</h3>
-                      <p className="text-sm text-slate-500 mb-4 line-clamp-2">{t(product.descKey)}</p>
+                    <div className="flex flex-1 flex-col p-4 sm:p-5">
+                      <div className="mb-2 flex flex-wrap gap-2 sm:mb-3">
+                        {product.featureKeys.slice(0, 2).map((key) => (
+                          <span key={key} className="rounded-md border border-accent-400/16 bg-[linear-gradient(180deg,#ffffff_0%,#fff8dc_100%)] px-2 py-1 text-[10px] uppercase tracking-wider text-slate-600">
+                            {t(key)}
+                          </span>
+                        ))}
+                      </div>
+                      <h3 className="min-h-[3.1rem] line-clamp-2 text-lg font-bold text-slate-900 transition-colors group-hover:text-brand-500 sm:min-h-[3.5rem]">{t(product.nameKey)}</h3>
+                      <p className="mt-2 line-clamp-2 text-sm text-slate-500 sm:mt-3">{t(product.descKey)}</p>
+                      <div className="mt-3 flex flex-wrap gap-2 sm:mt-4">
+                        {product.industryKeys.slice(0, 2).map((key) => (
+                          <span key={key} className="rounded-full border border-accent-400/16 bg-[linear-gradient(180deg,#ffffff_0%,#fff8dc_100%)] px-2.5 py-1 text-[11px] font-medium text-slate-800">
+                            {t(key)}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </button>
-                  <div className="px-5 pb-5">
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {product.featureKeys.slice(0, 3).map((key) => (
-                        <span key={key} className="text-[10px] uppercase tracking-wider bg-slate-50 text-slate-600 px-2 py-1 rounded-md border border-slate-200">
-                          {t(key)}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="space-y-3 mb-4">
-                      <div>
-                        <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">{t('products_card_application')}</div>
-                        <div className="mt-2 flex flex-wrap gap-2">
-                          {product.industryKeys.map((key) => (
-                            <span key={key} className="rounded-full bg-blue-50 px-2.5 py-1 text-[11px] font-medium text-blue-800">
-                              {t(key)}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                      <div>
-                        <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">{t('products_card_process')}</div>
-                        <div className="mt-2 flex flex-wrap gap-2">
-                          {product.processKeys.map((key) => (
-                            <span key={key} className="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-medium text-slate-700">
-                              {t(key)}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
+                  <div className="mt-auto px-4 pb-4 sm:px-5 sm:pb-5">
+                    <div className="min-h-[20px]">
                       {productArticle ? (
                         <button
                           type="button"
                           onClick={() => onNavigate(PageView.BLOG, language, productArticle.slug)}
-                          className="w-full rounded-2xl border border-slate-200 bg-slate-50 p-3 text-left transition hover:border-blue-200 hover:bg-blue-50"
+                          className="inline-flex items-center gap-2 text-xs font-semibold text-brand-500 hover:text-accent-500"
                         >
-                          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">{t('products_card_article')}</div>
-                          <div className="mt-2 text-sm font-semibold leading-snug text-slate-900">
-                            {getLocalizedPost(productArticle, language).title}
-                          </div>
-                          <div className="mt-2 inline-flex items-center gap-2 text-xs font-semibold text-blue-700">
-                            {t('products_card_article_cta')} <ArrowRight className="w-3.5 h-3.5" />
-                          </div>
+                          {t('products_card_article_cta')} <ArrowRight className="h-3.5 w-3.5 text-accent-500" />
                         </button>
                       ) : null}
                     </div>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="mt-3 grid grid-cols-2 gap-2.5 sm:mt-4 sm:gap-3">
                       <button
                         type="button"
                         onClick={() => onNavigate(PageView.PRODUCTS, language, product.slug)}
-                        className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-900 hover:text-white"
+                        className="flex min-h-[72px] items-center justify-center rounded-lg border border-accent-400/20 px-3 py-2 text-center text-sm font-medium text-slate-700 transition hover:bg-[linear-gradient(145deg,#071427_0%,#0d2747_58%,#123765_100%)] hover:text-white sm:min-h-[88px]"
                       >
                         {t('product_details')}
                       </button>
                       <a
-                        href={`mailto:sales@wanjinspring.com?subject=${encodeURIComponent(`Product Inquiry - ${t(product.nameKey)}`)}`}
-                        className="block w-full py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 text-center hover:bg-slate-900 hover:text-white transition-colors"
+                        href={`mailto:sales@wanjinspring.com?subject=${encodeURIComponent(`${t('product_email_subject_inquiry')} - ${t(product.nameKey)}`)}`}
+                        className="flex min-h-[72px] w-full items-center justify-center rounded-lg border border-accent-400/20 px-3 py-2 text-center text-sm font-medium text-slate-700 transition-colors hover:bg-[linear-gradient(145deg,#071427_0%,#0d2747_58%,#123765_100%)] hover:text-white sm:min-h-[88px]"
                       >
                         {t('btn_send_email')}
                       </a>
@@ -242,90 +308,87 @@ const ProductList: React.FC<ProductsProps> = ({ onNavigate }) => {
           </div>
         )}
 
-        <div className="mt-16 rounded-3xl border border-slate-200 bg-white p-8 md:p-10 shadow-sm">
-          <div className="mb-10 rounded-3xl border border-blue-100 bg-gradient-to-br from-blue-50 via-white to-slate-50 p-8">
-            <div className="flex items-start justify-between gap-6 flex-col lg:flex-row">
-              <div className="max-w-3xl">
-                <h2 className="text-2xl font-bold text-slate-900">{t('products_blog_title')}</h2>
-                <p className="mt-3 text-slate-600 leading-relaxed">{t('products_blog_desc')}</p>
+        <div className="mt-12 grid gap-4 xl:grid-cols-[1.05fr_0.95fr] xl:gap-6">
+          <div className="page-dark-card p-6 md:p-10">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+              <div className="max-w-2xl">
+                <p className="page-kicker-gold">{t('products_blog_title')}</p>
+                <h2 className="apple-card-title mt-4">{t('products_blog_title')}</h2>
+                <p className="mt-4 line-clamp-2 text-slate-300">{t('products_blog_desc')}</p>
               </div>
               <button
                 type="button"
                 onClick={() => onNavigate(PageView.BLOG, language)}
-                className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:border-slate-900"
+                className="page-secondary-button"
               >
-                {t('blog_view_all')} <ArrowRight className="w-4 h-4" />
+                {t('blog_view_all')} <ArrowRight className="page-button-icon w-4 h-4" />
               </button>
             </div>
 
-            <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-5">
-              {recommendedPosts.map((post) => {
-                const localized = getLocalizedPost(post, language);
-                return (
-                  <article key={post.slug} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-                    <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{localized.categoryLabel}</div>
-                    <h3 className="mt-3 text-lg font-bold text-slate-900 leading-snug">{localized.title}</h3>
-                    <p className="mt-3 text-sm text-slate-500">{formatBlogDate(post.publishedAt, language)}</p>
-                    <p className="mt-4 text-sm text-slate-600 leading-relaxed">{localized.excerpt}</p>
-                    <button
-                      type="button"
-                      onClick={() => onNavigate(PageView.BLOG, language, post.slug)}
-                      className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-blue-700 hover:text-blue-800"
-                    >
-                      {t('products_blog_cta')} <ArrowRight className="w-4 h-4" />
-                    </button>
-                  </article>
-                );
-              })}
+            <div className="mt-6 grid gap-3 sm:mt-8 sm:gap-4">
+              {blogState
+                ? recommendedPosts.slice(0, 2).map((post) => {
+                    const localized = blogState.blogModule.getLocalizedPost(post, language);
+                    return (
+                      <article key={post.slug} className="rounded-[22px] border border-white/10 bg-white/10 p-5 sm:rounded-[28px] sm:p-6">
+                        <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[#ffe39a]">{localized.categoryLabel}</div>
+                        <h3 className="mt-3 text-lg font-bold text-white leading-snug">{localized.title}</h3>
+                        <p className="mt-3 text-sm text-slate-300">{blogState.blogModule.formatBlogDate(post.publishedAt, language)}</p>
+                        <p className="mt-4 line-clamp-2 text-sm leading-relaxed text-slate-300">{localized.excerpt}</p>
+                        <button
+                          type="button"
+                          onClick={() => onNavigate(PageView.BLOG, language, post.slug)}
+                          className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#ffe39a] hover:text-white"
+                        >
+                          {t('products_blog_cta')} <ArrowRight className="w-4 h-4" />
+                        </button>
+                      </article>
+                    );
+                  })
+                : Array.from({ length: 2 }).map((_, index) => (
+                    <div key={index} className="rounded-[22px] border border-white/10 bg-white/10 p-5 sm:rounded-[28px] sm:p-6">
+                      <div className="h-4 w-24 rounded-full bg-white/10" />
+                      <div className="mt-3 h-6 w-full rounded-full bg-white/10" />
+                      <div className="mt-2 h-6 w-2/3 rounded-full bg-white/10" />
+                      <div className="mt-4 h-4 w-24 rounded-full bg-white/10" />
+                      <div className="mt-4 h-4 w-full rounded-full bg-white/10" />
+                      <div className="mt-2 h-4 w-5/6 rounded-full bg-white/10" />
+                    </div>
+                  ))}
             </div>
           </div>
 
-          <div className="max-w-4xl mb-8">
-            <h2 className="text-2xl font-bold text-slate-900 mb-3">{t('seo_scope_title')}</h2>
-            <p className="text-slate-600 leading-relaxed">{t('seo_scope_desc')}</p>
-          </div>
-
-          <div className="max-w-3xl mb-8">
-            <h2 className="text-2xl font-bold text-slate-900 mb-3">{t('product_more_title')}</h2>
-            <p className="text-slate-600 leading-relaxed">{t('product_more_desc')}</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="rounded-2xl border border-slate-100 bg-slate-50 p-6">
-              <div className="mb-4 inline-flex rounded-xl bg-white p-3 shadow-sm">
-                <Cable className="w-6 h-6 text-blue-600" />
-              </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">{t('product_power_eq_name')}</h3>
-              <p className="text-sm text-slate-600 leading-relaxed">{t('product_power_eq_desc')}</p>
-            </div>
-
-            <div className="rounded-2xl border border-slate-100 bg-slate-50 p-6">
-              <div className="mb-4 inline-flex rounded-xl bg-white p-3 shadow-sm">
-                <Layers3 className="w-6 h-6 text-blue-600" />
-              </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">{t('product_high_pressure_name')}</h3>
-              <p className="text-sm text-slate-600 leading-relaxed">{t('product_high_pressure_desc')}</p>
-            </div>
-
-            <div className="rounded-2xl border border-blue-100 bg-blue-50 p-6">
-              <div className="mb-4 inline-flex rounded-xl bg-white p-3 shadow-sm">
-                <Wrench className="w-6 h-6 text-blue-600" />
-              </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">{t('assembly_service_title')}</h3>
-              <p className="text-sm text-slate-700 leading-relaxed">{t('assembly_service_desc')}</p>
+          <div className="page-soft-card page-accent-line p-6 md:p-10">
+            <p className="page-kicker">{t('product_more_title')}</p>
+            <h2 className="apple-card-title mt-4 text-slate-950">{t('product_more_title')}</h2>
+            <div className="mt-6 grid gap-3 sm:mt-8 sm:gap-4">
+              {supportCards.map((card) => (
+                <div key={card.titleKey} className="rounded-[22px] border border-slate-200 bg-white p-5 sm:rounded-[28px] sm:p-6">
+                  <div className="inline-flex rounded-xl bg-white p-3 shadow-sm">{card.icon}</div>
+                  <h3 className="mt-4 text-lg font-bold text-slate-900">{t(card.titleKey)}</h3>
+                  <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-slate-600">{t(card.descKey)}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };
 
-const ProductDetail: React.FC<{ product: ProductRecord; onNavigate: ProductsProps['onNavigate'] }> = ({ product, onNavigate }) => {
+const ProductDetail: React.FC<{
+  blogState: ProductsBlogState | null;
+  product: ProductRecord;
+  onNavigate: ProductsProps['onNavigate'];
+}> = ({ blogState, product, onNavigate }) => {
   const { language, t } = useLanguage();
   const productName = t(product.nameKey);
-  const seoProfile = getProductSeoProfile(product.slug, productName);
-  const relatedPosts = useMemo(() => getRelevantBlogPosts(product.articleTerms, 3), [product.articleTerms]);
+  const seoProfile = getProductSeoProfile(product.slug, productName, language);
+  const relatedPosts = useMemo(
+    () => (blogState ? blogState.blogModule.getRelevantBlogPosts(product.articleTerms, 3) : []),
+    [blogState, product.articleTerms],
+  );
   const relatedProducts = useMemo(
     () => PRODUCT_DATA.filter((entry) => entry.slug !== product.slug && entry.categoryKey === product.categoryKey).slice(0, 3),
     [product]
@@ -344,85 +407,91 @@ const ProductDetail: React.FC<{ product: ProductRecord; onNavigate: ProductsProp
   };
   const solutionKeys = solutionKeysByCategory[product.categoryKey] ?? solutionKeysByCategory.cat_general;
   const riskKeys = riskKeysByCategory[product.categoryKey] ?? riskKeysByCategory.cat_general;
-  const buyerChecklist = buildProductBuyerChecklist(product, t);
-  const capabilityNarrative = language === 'en' ? buildProductCapabilityNarrative(product, t) : [];
 
   return (
-    <div className="pt-20 min-h-screen bg-slate-50">
-      <div className="bg-slate-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+    <div className="page-canvas pt-20 pb-16 md:pt-24 md:pb-24">
+      <section className="page-shell">
+        <div className="page-hero-panel">
+          <div className="p-6 md:p-10">
           <button
             type="button"
             onClick={() => onNavigate(PageView.PRODUCTS, language)}
-            className="inline-flex items-center gap-2 text-sm font-semibold text-blue-200 hover:text-white"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-[#ffe39a] hover:text-white"
           >
             <ArrowLeft className="w-4 h-4" />
             {t('products_detail_back')}
           </button>
-          <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1.1fr,0.9fr] gap-10 items-center">
+          <div className="mt-5 grid grid-cols-1 items-center gap-6 lg:mt-6 lg:grid-cols-[1.1fr,0.9fr] lg:gap-10">
             <div>
-              <div className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs font-bold uppercase tracking-[0.22em] text-blue-200">
+              <div className="page-chip">
                 {t(product.categoryKey)}
               </div>
-              <h1 className="mt-5 text-4xl md:text-5xl font-bold leading-tight">{productName}</h1>
-              <p className="mt-5 max-w-3xl text-lg text-slate-300 leading-relaxed">{t(product.descKey)}</p>
-              <div className="mt-8 flex flex-wrap gap-3">
+              <h1 className="mt-4 text-3xl font-bold leading-tight sm:text-4xl md:mt-5 md:text-5xl">{productName}</h1>
+              <p className="mt-4 max-w-3xl text-base leading-relaxed text-slate-300 sm:text-lg md:mt-5">{t(product.descKey)}</p>
+              <div className="-mx-1 mt-6 flex gap-2 overflow-x-auto px-1 pb-2 sm:mx-0 sm:mt-8 sm:flex-wrap sm:gap-3 sm:overflow-visible sm:px-0 sm:pb-0">
                 {product.featureKeys.map((key) => (
-                  <span key={key} className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200">
+                  <span key={key} className="page-chip shrink-0">
                     {t(key)}
                   </span>
                 ))}
               </div>
-              <div className="mt-8 flex flex-col sm:flex-row gap-4">
+              <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:gap-4">
                 <button
                   type="button"
                   onClick={() => onNavigate(PageView.CONTACT, language)}
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-900"
+                  className="page-secondary-button w-full sm:w-auto"
                 >
-                  {t('products_detail_primary')} <ArrowRight className="w-4 h-4" />
+                  {t('products_detail_primary')} <ArrowRight className="page-button-icon w-4 h-4" />
                 </button>
                 <a
-                  href={`mailto:sales@wanjinspring.com?subject=${encodeURIComponent(`Drawing Review - ${t(product.nameKey)}`)}`}
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white"
+                  href={`mailto:sales@wanjinspring.com?subject=${encodeURIComponent(`${t('product_email_subject_drawing_review')} - ${t(product.nameKey)}`)}`}
+                  className="page-dark-button w-full sm:w-auto"
                 >
-                  {t('products_detail_secondary')} <ArrowRight className="w-4 h-4" />
+                  {t('products_detail_secondary')} <ArrowRight className="w-4 h-4 text-accent-400" />
                 </a>
               </div>
             </div>
-            <div className="rounded-[32px] border border-white/10 bg-white/5 p-8 backdrop-blur-sm">
-              <div className="aspect-[4/3] rounded-[28px] bg-white p-6">
-                <img src={product.image} alt={t(product.nameKey)} className="h-full w-full object-contain" loading="eager" fetchPriority="high" decoding="async" />
+            <div className="rounded-[24px] border border-white/10 bg-white/5 p-5 backdrop-blur-sm sm:rounded-[32px] sm:p-8">
+              <div className="aspect-[4/3] rounded-[22px] bg-white p-4 sm:rounded-[28px] sm:p-6">
+                <img
+                  src={product.image}
+                  alt={t(product.nameKey)}
+                  width="1200"
+                  height="900"
+                  className="h-full w-full object-contain"
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                />
               </div>
             </div>
           </div>
         </div>
-      </div>
+        </div>
+      </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-14">
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-2 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-            <h2 className="text-2xl font-bold text-slate-900">{t('products_detail_overview')}</h2>
-            <p className="mt-4 text-slate-600 leading-relaxed">{t(product.descKey)}</p>
-            <p className="mt-4 text-slate-600 leading-relaxed">{seoProfile.overview}</p>
-            {language === 'en' ? (
-              <p className="mt-4 text-slate-600 leading-relaxed">{seoProfile.description}</p>
-            ) : null}
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+      <section className="page-shell mt-10 space-y-10 sm:mt-14 sm:space-y-12 md:space-y-14">
+        <section className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
+          <div className="md:col-span-2 page-soft-card page-accent-line p-6 sm:p-8">
+            <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">{t('products_detail_overview')}</h2>
+            <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:mt-4 sm:text-base">{t(product.descKey)}</p>
+            <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:mt-4 sm:text-base">{seoProfile.overview}</p>
+            <div className="mt-6 grid grid-cols-1 gap-5 sm:mt-8 md:grid-cols-2 md:gap-6">
               <div>
-                <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">{t('products_card_application')}</h3>
-                <div className="mt-3 flex flex-wrap gap-2">
+                <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{t('products_card_application')}</h3>
+                <div className="-mx-1 mt-3 flex gap-2 overflow-x-auto px-1 pb-2 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
                   {product.industryKeys.map((key) => (
-                    <span key={key} className="rounded-full bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-800">
+                    <span key={key} className="shrink-0 rounded-full border border-accent-400/16 bg-[linear-gradient(180deg,#ffffff_0%,#fff8dc_100%)] px-3 py-1.5 text-sm font-medium text-slate-800">
                       {t(key)}
                     </span>
                   ))}
                 </div>
               </div>
               <div>
-                <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">{t('products_card_process')}</h3>
-                <div className="mt-3 flex flex-wrap gap-2">
+                <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{t('products_card_process')}</h3>
+                <div className="-mx-1 mt-3 flex gap-2 overflow-x-auto px-1 pb-2 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
                   {product.processKeys.map((key) => (
-                    <span key={key} className="rounded-full bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-700">
+                    <span key={key} className="shrink-0 rounded-full bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-700">
                       {t(key)}
                     </span>
                   ))}
@@ -431,61 +500,36 @@ const ProductDetail: React.FC<{ product: ProductRecord; onNavigate: ProductsProp
             </div>
           </div>
 
-          <div className="rounded-3xl border border-blue-100 bg-gradient-to-br from-blue-50 via-white to-slate-50 p-8 shadow-sm">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">{t('products_detail_specs')}</div>
-            <div className="mt-4 space-y-4">
+          <div className="page-soft-card page-accent-line p-6 sm:p-8">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{t('products_detail_specs')}</div>
+            <div className="mt-4 space-y-3 sm:space-y-4">
               {product.specKeys.map((spec) => (
-                <div key={spec.titleKey} className="rounded-2xl border border-white bg-white/90 p-5">
-                  <div className="text-2xl font-bold text-slate-900">{t(spec.valueKey)}</div>
+                <div key={spec.titleKey} className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5">
+                  <div className="text-xl font-bold text-slate-900 sm:text-2xl">{t(spec.valueKey)}</div>
                   <div className="mt-2 text-sm font-semibold text-slate-900">{t(spec.titleKey)}</div>
-                  <p className="mt-2 text-sm text-slate-600 leading-relaxed">{t(spec.descKey)}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {language === 'en' ? (
-          <section className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-            <div className="max-w-4xl">
-              <h2 className="text-2xl font-bold text-slate-900">OEM sourcing and engineering fit</h2>
-              <p className="mt-3 text-slate-600 leading-relaxed">
-                Buyers searching for terms like {seoProfile.keywords.slice(0, 2).join(' and ')} are usually not looking for generic catalog copy.
-                They need to know whether the supplier can translate drawings, load targets, material constraints, and inspection requirements into a stable production route.
-              </p>
-            </div>
-            <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {capabilityNarrative.map((paragraph, index) => (
-                <div key={index} className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                  <h3 className="text-lg font-bold text-slate-900">
-                    {index === 0 ? 'Project evaluation' : index === 1 ? 'Manufacturing control' : 'Batch delivery readiness'}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-slate-600">{paragraph}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-        ) : null}
-
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-            <h2 className="text-2xl font-bold text-slate-900">{t('products_detail_solution_title')}</h2>
-            <p className="mt-3 text-slate-600 leading-relaxed">{t('products_detail_solution_desc')}</p>
-            <div className="mt-6 space-y-4">
+        <section className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
+          <div className="page-soft-card page-accent-line p-6 sm:p-8">
+            <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">{t('products_detail_solution_title')}</h2>
+            <div className="mt-5 space-y-3 sm:mt-6 sm:space-y-4">
               {solutionKeys.map((key) => (
-                <div key={key} className="rounded-2xl bg-slate-50 p-4 text-sm leading-relaxed text-slate-700">
+                <div key={key} className="rounded-2xl border border-slate-200 bg-white p-4 text-sm leading-relaxed text-slate-700">
                   {t(key)}
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-            <h2 className="text-2xl font-bold text-slate-900">{t('products_detail_risk_title')}</h2>
-            <p className="mt-3 text-slate-600 leading-relaxed">{t('products_detail_risk_desc')}</p>
-            <div className="mt-6 space-y-4">
+          <div className="page-soft-card page-accent-line p-6 sm:p-8">
+            <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">{t('products_detail_risk_title')}</h2>
+            <div className="mt-5 space-y-3 sm:mt-6 sm:space-y-4">
               {riskKeys.map((key) => (
-                <div key={key} className="rounded-2xl bg-orange-50 p-4 text-sm leading-relaxed text-slate-700">
+                <div key={key} className="rounded-2xl border border-accent-400/18 bg-[linear-gradient(180deg,#ffffff_0%,#fff8dc_100%)] p-4 text-sm leading-relaxed text-slate-700">
                   {t(key)}
                 </div>
               ))}
@@ -493,109 +537,71 @@ const ProductDetail: React.FC<{ product: ProductRecord; onNavigate: ProductsProp
           </div>
         </section>
 
-        <section className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-          <h2 className="text-2xl font-bold text-slate-900">{t('products_detail_keyword_title')}</h2>
-          <p className="mt-3 max-w-3xl text-slate-600 leading-relaxed">{t('products_detail_keyword_desc')}</p>
-          <div className="mt-6 flex flex-wrap gap-3">
+        <section className="page-soft-card page-accent-line p-6 sm:p-8">
+          <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">{t('products_detail_keyword_title')}</h2>
+          <div className="-mx-1 mt-5 flex gap-2 overflow-x-auto px-1 pb-2 sm:mx-0 sm:mt-6 sm:flex-wrap sm:gap-3 sm:overflow-visible sm:px-0 sm:pb-0">
             {seoProfile.keywords.map((keyword) => (
-              <span key={keyword} className="rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-900">
+              <span key={keyword} className="shrink-0 rounded-full border border-accent-400/18 bg-[linear-gradient(180deg,#ffffff_0%,#fff8dc_100%)] px-4 py-2 text-sm font-semibold text-slate-900">
                 {keyword}
               </span>
             ))}
           </div>
-          {language === 'en' ? (
-            <p className="mt-6 max-w-4xl text-slate-600 leading-relaxed">
-              These phrases are included intentionally because industrial buyers often search by manufacturer, supplier, or custom-production intent before they ever know a factory name.
-              Matching that language improves topical relevance for pages such as {productName.toLowerCase()} and helps connect commercial search demand to technical review content.
-            </p>
-          ) : null}
         </section>
 
-        {language === 'en' ? (
-          <section className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-            <h2 className="text-2xl font-bold text-slate-900">What buyers usually confirm before sampling</h2>
-            <p className="mt-3 max-w-4xl text-slate-600 leading-relaxed">
-              The fastest path to quotation is a clear drawing or sample plus the operating load, travel, life target, finish requirement, and batch expectation.
-              For custom programs, supplier fit is normally decided by how early those variables are clarified.
-            </p>
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-5">
-              {buyerChecklist.map((item) => (
-                <div key={item} className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                  <h3 className="text-lg font-bold text-slate-900">Review checkpoint</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-slate-600">{item}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-        ) : null}
-
-        <section className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-          <h2 className="text-2xl font-bold text-slate-900">{t('products_detail_specs')}</h2>
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-5">
-            {product.specKeys.map((spec) => (
-              <div key={spec.titleKey} className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                <h3 className="text-lg font-bold text-slate-900">{t(spec.titleKey)}</h3>
-                <div className="mt-3 text-2xl font-bold text-slate-900">{t(spec.valueKey)}</div>
-                <p className="mt-3 text-sm leading-relaxed text-slate-600">{t(spec.descKey)}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-          <div className="flex items-start justify-between gap-6 flex-col lg:flex-row">
+        <section className="page-dark-card p-6 sm:p-8">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between lg:gap-6">
             <div className="max-w-3xl">
-              <h2 className="text-2xl font-bold text-slate-900">{t('products_detail_cta_title')}</h2>
-              <p className="mt-3 text-slate-600 leading-relaxed">{t('products_detail_cta_desc')}</p>
+              <h2 className="text-xl font-bold text-white sm:text-2xl">{t('products_detail_cta_title')}</h2>
+              <p className="mt-3 text-slate-200 leading-relaxed">{t('products_detail_cta_desc')}</p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
               <button
                 type="button"
                 onClick={() => onNavigate(PageView.CONTACT, language)}
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white"
+                className="page-secondary-button w-full sm:w-auto"
               >
-                {t('products_detail_primary')} <ArrowRight className="w-4 h-4" />
+                {t('products_detail_primary')} <ArrowRight className="page-button-icon w-4 h-4" />
               </button>
               <a
-                href={`mailto:sales@wanjinspring.com?subject=${encodeURIComponent(`Technical Review - ${t(product.nameKey)}`)}`}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-900"
+                href={`mailto:sales@wanjinspring.com?subject=${encodeURIComponent(`${t('product_email_subject_technical_review')} - ${t(product.nameKey)}`)}`}
+                className="page-dark-button w-full sm:w-auto"
               >
-                {t('products_detail_secondary')} <ArrowRight className="w-4 h-4" />
+                {t('products_detail_secondary')} <ArrowRight className="w-4 h-4 text-accent-400" />
               </a>
             </div>
           </div>
         </section>
 
-        {relatedPosts.length > 0 ? (
-          <section className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-            <div className="flex items-start justify-between gap-6 flex-col lg:flex-row">
+        {blogState && relatedPosts.length > 0 ? (
+          <section className="page-soft-card page-accent-line p-6 sm:p-8">
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between lg:gap-6">
               <div className="max-w-3xl">
-                <h2 className="text-2xl font-bold text-slate-900">{t('products_detail_related')}</h2>
+                <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">{t('products_detail_related')}</h2>
                 <p className="mt-3 text-slate-600 leading-relaxed">{t('products_blog_desc')}</p>
               </div>
               <button
                 type="button"
                 onClick={() => onNavigate(PageView.BLOG, language)}
-                className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:border-slate-900"
+                className="page-secondary-button w-full sm:w-auto"
               >
-                {t('blog_view_all')} <ArrowRight className="w-4 h-4" />
+                {t('blog_view_all')} <ArrowRight className="page-button-icon w-4 h-4" />
               </button>
             </div>
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-5">
-              {relatedPosts.map((post) => {
-                const localized = getLocalizedPost(post, language);
+            <div className="mt-6 grid grid-cols-1 gap-4 md:mt-8 md:grid-cols-3 md:gap-5">
+              {relatedPosts.map((post, index) => {
+                const localized = blogState.blogModule.getLocalizedPost(post, language);
                 return (
-                  <article key={post.slug} className="rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
+                  <article key={post.slug} className={`page-soft-card p-5 sm:p-6 ${index === 2 ? 'hidden md:block' : ''}`}>
                     <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{localized.categoryLabel}</div>
-                    <h3 className="mt-3 text-lg font-bold text-slate-900 leading-snug">{localized.title}</h3>
-                    <p className="mt-3 text-sm text-slate-500">{formatBlogDate(post.publishedAt, language)}</p>
-                    <p className="mt-4 text-sm text-slate-600 leading-relaxed">{localized.excerpt}</p>
+                    <h3 className="mt-3 line-clamp-2 text-lg font-bold leading-snug text-slate-900">{localized.title}</h3>
+                    <p className="mt-3 text-sm text-slate-500">{blogState.blogModule.formatBlogDate(post.publishedAt, language)}</p>
+                    <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-slate-600 sm:mt-4">{localized.excerpt}</p>
                     <button
                       type="button"
                       onClick={() => onNavigate(PageView.BLOG, language, post.slug)}
-                      className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-blue-700 hover:text-blue-800"
+                      className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-brand-500 hover:text-accent-500"
                     >
-                      {t('products_blog_cta')} <ArrowRight className="w-4 h-4" />
+                      {t('products_blog_cta')} <ArrowRight className="w-4 h-4 text-accent-500" />
                     </button>
                   </article>
                 );
@@ -605,26 +611,34 @@ const ProductDetail: React.FC<{ product: ProductRecord; onNavigate: ProductsProp
         ) : null}
 
         {relatedProducts.length > 0 ? (
-          <section className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-            <h2 className="text-2xl font-bold text-slate-900">{t('blog_products_title')}</h2>
+          <section className="page-soft-card page-accent-line p-6 sm:p-8">
+            <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">{t('blog_products_title')}</h2>
             <p className="mt-3 text-slate-600 leading-relaxed">{t('blog_products_desc')}</p>
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-              {relatedProducts.map((entry) => (
+            <div className="mt-6 grid grid-cols-1 gap-4 md:mt-8 md:grid-cols-3 md:gap-6">
+              {relatedProducts.map((entry, index) => (
                 <button
                   key={entry.slug}
                   type="button"
                   onClick={() => onNavigate(PageView.PRODUCTS, language, entry.slug)}
-                  className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-50 text-left transition hover:-translate-y-1 hover:shadow-lg"
+                  className={`page-soft-card overflow-hidden text-left transition hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(15,23,42,0.12)] ${index === 2 ? 'hidden md:block' : ''}`}
                 >
-                  <div className="aspect-[16/10] bg-white p-6">
-                    <img src={entry.image} alt={t(entry.nameKey)} className="h-full w-full object-contain" loading="lazy" decoding="async" />
+                  <div className="aspect-[16/10] bg-white p-4 sm:p-6">
+                    <img
+                      src={entry.image}
+                      alt={t(entry.nameKey)}
+                      width="1600"
+                      height="1000"
+                      className="h-full w-full object-contain"
+                      loading="lazy"
+                      decoding="async"
+                    />
                   </div>
-                  <div className="p-6">
+                  <div className="p-5 sm:p-6">
                     <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">{t(entry.categoryKey)}</div>
-                    <h3 className="mt-3 text-xl font-bold text-slate-900">{t(entry.nameKey)}</h3>
-                    <p className="mt-3 text-slate-600 leading-relaxed">{t(entry.descKey)}</p>
-                    <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-blue-700">
-                      {t('blog_products_cta')} <ArrowRight className="w-4 h-4" />
+                    <h3 className="mt-3 line-clamp-2 text-lg font-bold text-slate-900 sm:text-xl">{t(entry.nameKey)}</h3>
+                    <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-600 sm:mt-3 sm:text-base">{t(entry.descKey)}</p>
+                    <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-brand-500">
+                      {t('blog_products_cta')} <ArrowRight className="w-4 h-4 text-accent-500" />
                     </span>
                   </div>
                 </button>
@@ -632,19 +646,20 @@ const ProductDetail: React.FC<{ product: ProductRecord; onNavigate: ProductsProp
             </div>
           </section>
         ) : null}
-      </div>
+      </section>
     </div>
   );
 };
 
 export const Products: React.FC<ProductsProps> = ({ slug, onNavigate }) => {
+  const blogState = useProductsBlogState();
   const product = getProductBySlug(slug);
 
   if (slug && product) {
-    return <ProductDetail product={product} onNavigate={onNavigate} />;
+    return <ProductDetail blogState={blogState} product={product} onNavigate={onNavigate} />;
   }
 
-  return <ProductList onNavigate={onNavigate} />;
+  return <ProductList blogState={blogState} onNavigate={onNavigate} />;
 };
 
 export default Products;

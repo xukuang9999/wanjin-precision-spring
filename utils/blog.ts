@@ -9,6 +9,9 @@ type BlogArchiveContext = {
 
 export type BlogPost = BlogPostRecord;
 export const BLOG_POSTS_PER_PAGE = 6;
+let cachedBlogPosts: BlogPost[] | null = null;
+let cachedFeaturedPosts: BlogPost[] | null = null;
+let cachedTagSlugs: string[] | null = null;
 
 const localize = <T>(value: LocalizedValue<T> | undefined, language: string, fallback: string = 'en'): T | undefined => {
   if (!value) {
@@ -18,28 +21,54 @@ const localize = <T>(value: LocalizedValue<T> | undefined, language: string, fal
   return value[language] ?? value[fallback] ?? Object.values(value)[0];
 };
 
-export const BLOG_CATEGORIES: Record<BlogCategory, { en: string; zh: string; ru: string }> = {
+export const BLOG_CATEGORIES: Record<BlogCategory, LocalizedValue<string>> = {
   guide: {
     en: 'Guide',
     zh: '指南',
     ru: 'Гайд',
+    es: 'Guia',
+    ar: 'دليل',
+    hi: 'गाइड',
+    pt: 'Guia',
+    ja: 'ガイド',
+    de: 'Leitfaden',
+    fr: 'Guide',
   },
   news: {
     en: 'News',
     zh: '新闻',
     ru: 'Новости',
+    es: 'Noticias',
+    ar: 'أخبار',
+    hi: 'समाचार',
+    pt: 'Noticias',
+    ja: 'ニュース',
+    de: 'Nachrichten',
+    fr: 'Actualites',
   },
   insight: {
     en: 'Insight',
     zh: '洞察',
     ru: 'Аналитика',
+    es: 'Perspectiva',
+    ar: 'رؤى',
+    hi: 'अंतर्दृष्टि',
+    pt: 'Insight',
+    ja: 'インサイト',
+    de: 'Einblicke',
+    fr: 'Analyse',
   },
 };
 
-export const getBlogPosts = (): BlogPost[] =>
-  [...BLOG_POSTS].sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+export const getLocalizedCategoryLabel = (category: BlogCategory, language: string): string =>
+  localize(BLOG_CATEGORIES[category], language) ?? BLOG_CATEGORIES[category].en;
 
-export const getFeaturedBlogPosts = (): BlogPost[] => getBlogPosts().filter((post) => post.featured);
+export const getBlogPosts = (): BlogPost[] =>
+  cachedBlogPosts ??=
+    ([...BLOG_POSTS] as BlogPost[]).sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+
+export const getFeaturedBlogPosts = (): BlogPost[] =>
+  cachedFeaturedPosts ??= getBlogPosts().filter((post) => post.featured);
 
 export const getBlogPostBySlug = (slug?: string): BlogPost | undefined =>
   getBlogPosts().find((post) => post.slug === slug);
@@ -94,7 +123,8 @@ export const getDisplayTagName = (tagSlug: string): string =>
     .join(' ');
 
 export const getAllBlogTagSlugs = (): string[] =>
-  Array.from(new Set(getBlogPosts().flatMap((post) => post.tags.map((tag) => getNormalizedTagSlug(tag))))).sort();
+  cachedTagSlugs ??=
+    Array.from(new Set(getBlogPosts().flatMap((post) => post.tags.map((tag) => getNormalizedTagSlug(tag))))).sort();
 
 export const getBlogPostsByTag = (tagSlug?: string): BlogPost[] =>
   tagSlug
@@ -166,11 +196,25 @@ export const getLocalizedPost = (post: BlogPost, language: string) => ({
   seoTitle: localize(post.seoTitle, language) ?? localize(post.title, language) ?? '',
   seoDescription: localize(post.seoDescription, language) ?? localize(post.excerpt, language) ?? '',
   content: localize(post.content, language) ?? [],
-  categoryLabel: localize(BLOG_CATEGORIES[post.category], language) ?? post.category,
+  takeaways: localize(post.takeaways, language) ?? [],
+  checklist: localize(post.checklist, language) ?? [],
+  categoryLabel: getLocalizedCategoryLabel(post.category, language),
 });
 
 export const formatBlogDate = (value: string, language: string): string => {
-  const locale = language === 'zh' ? 'zh-CN' : language === 'ru' ? 'ru-RU' : 'en-US';
+  const localeMap: Record<string, string> = {
+    zh: 'zh-CN',
+    en: 'en-US',
+    ru: 'ru-RU',
+    es: 'es-ES',
+    ar: 'ar',
+    hi: 'hi-IN',
+    pt: 'pt-PT',
+    ja: 'ja-JP',
+    de: 'de-DE',
+    fr: 'fr-FR',
+  };
+  const locale = localeMap[language] ?? localeMap.en;
   return new Intl.DateTimeFormat(locale, {
     year: 'numeric',
     month: 'short',

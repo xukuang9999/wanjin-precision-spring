@@ -1,4 +1,4 @@
-import type { Language } from './utils/translations';
+import { type Language, LANGUAGE_CODES } from './utils/languages';
 
 export interface Product {
   id: string;
@@ -39,6 +39,30 @@ export const PAGE_PATHS: Record<PageView, string> = {
 
 export const getPathForPage = (page: PageView): string => PAGE_PATHS[page];
 export const DEFAULT_LANGUAGE: Language = 'en';
+const SUPPORTED_LANGUAGE_PREFIXES = LANGUAGE_CODES;
+
+const parseLocalizedSegments = (segments: string[], language: Language): { language: Language; page: PageView; slug?: string } => {
+  const restPath = `/${segments.join('/')}`.replace(/\/+$/, '') || '/';
+  const restSegments = restPath.split('/').filter(Boolean);
+  if (restSegments[0] === 'products' && restSegments[1]) {
+    return {
+      language,
+      page: PageView.PRODUCTS,
+      slug: restSegments.slice(1).join('/'),
+    };
+  }
+  if (restSegments[0] === 'blog' && restSegments[1]) {
+    return {
+      language,
+      page: PageView.BLOG,
+      slug: restSegments.slice(1).join('/'),
+    };
+  }
+  return {
+    language,
+    page: getPageFromPath(restPath),
+  };
+};
 
 export const getPageFromPath = (pathname: string): PageView => {
   const normalized = pathname.replace(/\/+$/, '') || '/';
@@ -60,50 +84,13 @@ export const getLocalizedPath = (page: PageView, language: Language, slug?: stri
 export const getLocaleStateFromPath = (pathname: string): { language: Language; page: PageView; slug?: string } => {
   const normalized = pathname.replace(/\/+$/, '') || '/';
   const segments = normalized.split('/').filter(Boolean);
-  const maybeLanguage = segments[0] as Language | undefined;
-  const isKnownLanguage = maybeLanguage && ['zh', 'en', 'es', 'ar', 'hi', 'pt', 'ru', 'ja', 'de', 'fr'].includes(maybeLanguage);
+  const maybeLanguage = segments[0];
 
-  if (!isKnownLanguage) {
-    if (segments[0] === 'products' && segments[1]) {
-      return {
-        language: DEFAULT_LANGUAGE,
-        page: PageView.PRODUCTS,
-        slug: segments.slice(1).join('/'),
-      };
-    }
-    if (segments[0] === 'blog' && segments[1]) {
-      return {
-        language: DEFAULT_LANGUAGE,
-        page: PageView.BLOG,
-        slug: segments.slice(1).join('/'),
-      };
-    }
-    return {
-      language: DEFAULT_LANGUAGE,
-      page: getPageFromPath(normalized),
-    };
+  if (maybeLanguage && SUPPORTED_LANGUAGE_PREFIXES.includes(maybeLanguage as Language)) {
+    return parseLocalizedSegments(segments.slice(1), maybeLanguage as Language);
   }
 
-  const restPath = `/${segments.slice(1).join('/')}`.replace(/\/+$/, '') || '/';
-  const restSegments = restPath.split('/').filter(Boolean);
-  if (restSegments[0] === 'products' && restSegments[1]) {
-    return {
-      language: maybeLanguage,
-      page: PageView.PRODUCTS,
-      slug: restSegments.slice(1).join('/'),
-    };
-  }
-  if (restSegments[0] === 'blog' && restSegments[1]) {
-    return {
-      language: maybeLanguage,
-      page: PageView.BLOG,
-      slug: restSegments.slice(1).join('/'),
-    };
-  }
-  return {
-    language: maybeLanguage,
-    page: getPageFromPath(restPath),
-  };
+  return parseLocalizedSegments(segments, DEFAULT_LANGUAGE);
 };
 
 export interface CompanyInfo {

@@ -1,10 +1,12 @@
-import React, { Suspense, lazy, useState, useEffect } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { DEFAULT_LANGUAGE, getLocaleStateFromPath, getLocalizedPath, PageView } from './types';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { SeoManager } from './components/SeoManager';
-import { Language } from './utils/translations';
+import { type Language } from './utils/languages';
+import { scheduleIdleTask } from './utils/idle';
+import { type TranslationDictionary } from './utils/runtimeTranslations';
 
 const Home = lazy(() => import('./pages/Home').then((module) => ({ default: module.Home })));
 const About = lazy(() => import('./pages/About').then((module) => ({ default: module.About })));
@@ -15,15 +17,34 @@ const Contact = lazy(() => import('./pages/Contact').then((module) => ({ default
 const Blog = lazy(() => import('./pages/Blog').then((module) => ({ default: module.Blog })));
 const ChatWidget = lazy(() => import('./components/ChatWidget').then((module) => ({ default: module.ChatWidget })));
 
+const getInitialRouteState = () => {
+  if (typeof window === 'undefined') {
+    return {
+      language: DEFAULT_LANGUAGE as Language,
+      page: PageView.HOME,
+      slug: undefined as string | undefined,
+    };
+  }
+
+  return getLocaleStateFromPath(window.location.pathname);
+};
+
+type RouteState = ReturnType<typeof getInitialRouteState>;
+
 function AppContent({
   language,
   setLanguage,
+  initialPage,
+  initialSlug,
 }: {
   language: Language;
   setLanguage: (lang: Language) => void;
+  initialPage: PageView;
+  initialSlug?: string;
 }) {
-  const [currentPage, setCurrentPage] = useState<PageView>(PageView.HOME);
-  const [currentSlug, setCurrentSlug] = useState<string | undefined>();
+  const [currentPage, setCurrentPage] = useState<PageView>(initialPage);
+  const [currentSlug, setCurrentSlug] = useState<string | undefined>(initialSlug);
+  const [shouldLoadChat, setShouldLoadChat] = useState(false);
 
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
@@ -31,7 +52,7 @@ function AppContent({
     }
 
     const syncPageWithLocation = () => {
-      const { pathname, hash } = window.location;
+      const { pathname, hash, search } = window.location;
       if (hash) {
         const legacyPage = hash.replace('#', '');
         if (Object.values(PageView).includes(legacyPage as PageView)) {
@@ -60,6 +81,10 @@ function AppContent({
         window.history.scrollRestoration = 'auto';
       }
     };
+  }, []);
+
+  useEffect(() => {
+    return scheduleIdleTask(() => setShouldLoadChat(true), 2200);
   }, []);
 
   const navigateTo = (page: PageView, nextLanguage = language, slug?: string, search?: string) => {
@@ -101,25 +126,36 @@ function AppContent({
       <Navbar currentPage={currentPage} currentContentSlug={currentSlug} onNavigate={navigateTo} />
       
       <main className="flex-grow">
-        <Suspense fallback={<div className="min-h-[40vh]" />}>
-          {renderPage()}
-        </Suspense>
+        <Suspense fallback={<div className="min-h-[40vh]" />}>{renderPage()}</Suspense>
       </main>
 
       <Footer />
-      <Suspense fallback={null}>
-        <ChatWidget />
-      </Suspense>
+      {shouldLoadChat ? (
+        <Suspense fallback={null}>
+          <ChatWidget />
+        </Suspense>
+      ) : null}
     </div>
   );
 }
 
-export default function App() {
-  const [language, setLanguage] = useState<Language>(DEFAULT_LANGUAGE);
+export default function App({
+  initialDictionary,
+  initialRouteState = getInitialRouteState(),
+}: {
+  initialDictionary?: TranslationDictionary;
+  initialRouteState?: RouteState;
+}) {
+  const [language, setLanguage] = useState<Language>(initialRouteState.language);
 
   return (
-    <LanguageProvider language={language} onLanguageChange={setLanguage}>
-      <AppContent language={language} setLanguage={setLanguage} />
+    <LanguageProvider initialDictionary={initialDictionary} language={language} onLanguageChange={setLanguage}>
+      <AppContent
+        language={language}
+        setLanguage={setLanguage}
+        initialPage={initialRouteState.page}
+        initialSlug={initialRouteState.slug}
+      />
     </LanguageProvider>
   );
 }

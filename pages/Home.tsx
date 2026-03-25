@@ -1,381 +1,451 @@
-import React from 'react';
-import { ArrowRight, CheckCircle2, Factory, Zap, ShieldCheck, Cpu, Wrench, Cog, CalendarDays, FileCheck2, Boxes, Layers3 } from 'lucide-react';
-import { getLocalizedPath, PageView } from '../types';
+import React, { startTransition, useEffect, useState } from 'react';
+import {
+  ArrowRight,
+  ArrowUpRight,
+  CalendarDays,
+  Factory,
+  Gauge,
+  Layers3,
+  Mail,
+  ShieldCheck,
+  Zap,
+} from 'lucide-react';
+import { PRODUCT_DATA } from '../data/products';
 import { useLanguage } from '../contexts/LanguageContext';
-import { Language } from '../utils/translations';
-import { formatBlogDate, getFeaturedBlogPosts, getLocalizedPost, getRelevantBlogPosts } from '../utils/blog';
-import { getFeaturedProducts } from '../data/products';
+import { PageView } from '../types';
+import { type Language } from '../utils/languages';
+import { scheduleIdleTask } from '../utils/idle';
+import { loadBlogModule, type BlogModule } from '../utils/loadBlogModule';
 
 interface HomeProps {
   onNavigate: (page: PageView, language?: Language, slug?: string, search?: string) => void;
 }
 
+type HomeBlogState = {
+  articleByProductSlug: Record<string, string | undefined>;
+  blogModule: BlogModule;
+  featuredPosts: ReturnType<BlogModule['getFeaturedBlogPosts']>;
+};
+
 export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   const { t, language } = useLanguage();
-  const featuredPosts = getFeaturedBlogPosts().slice(0, 2);
-  const featuredProducts = getFeaturedProducts().map((product) => ({
-    ...product,
-    article: getRelevantBlogPosts(product.articleTerms, 1)[0],
-  }));
+  const [blogState, setBlogState] = useState<HomeBlogState | null>(null);
+  const coreProducts = PRODUCT_DATA;
+
+  const [activeProductSlug, setActiveProductSlug] = useState(coreProducts[0]?.slug ?? '');
+  const activeProduct = coreProducts.find((product) => product.slug === activeProductSlug) ?? coreProducts[0];
+  const activeProductArticleSlug = activeProduct ? blogState?.articleByProductSlug[activeProduct.slug] : undefined;
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const cancelIdleTask = scheduleIdleTask(() => {
+      void loadBlogModule()
+        .then((blogModule) => {
+          if (cancelled) {
+            return;
+          }
+
+          const articleByProductSlug = Object.fromEntries(
+            PRODUCT_DATA.map((product) => [product.slug, blogModule.getRelevantBlogPosts(product.articleTerms, 1)[0]?.slug]),
+          );
+
+          startTransition(() => {
+            setBlogState({
+              articleByProductSlug,
+              blogModule,
+              featuredPosts: blogModule.getFeaturedBlogPosts().slice(0, 2),
+            });
+          });
+        })
+        .catch((error) => {
+          console.error('Failed to load homepage blog insights:', error);
+        });
+    }, 900);
+
+    return () => {
+      cancelled = true;
+      cancelIdleTask();
+    };
+  }, []);
 
   return (
-    <div className="pt-24 space-y-12 pb-20">
-      {/* Hero Section */}
-      <div className="relative min-h-[700px] flex items-center">
-        <div className="absolute inset-0 z-0 overflow-hidden bg-slate-900">
-          <img
-            src="/factory/factory_1.jpg"
-            alt="Wanjin Manufacturing"
-            className="w-full h-full object-cover"
-            loading="eager"
-            fetchPriority="high"
-            decoding="async"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 to-slate-900/40" />
-        </div>
+    <div className="relative overflow-hidden bg-[linear-gradient(180deg,#f7fbff_0%,#eef4fb_26%,#f8fafc_58%,#ffffff_100%)] pt-20 pb-16 md:pt-24 md:pb-24">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[640px] bg-[radial-gradient(circle_at_top,_rgba(0,55,100,0.16),_transparent_56%)]" />
+      <div className="pointer-events-none absolute left-[-120px] top-20 h-[360px] w-[360px] rounded-full bg-[radial-gradient(circle,_rgba(250,204,21,0.22)_0%,rgba(250,204,21,0.09)_34%,transparent_72%)] blur-3xl" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl text-white">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-              {t('hero_title')}
-            </h1>
-            <p className="text-xl text-slate-200 mb-8 font-light">
-              {t('hero_desc')}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+      <section className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid items-stretch gap-6 lg:grid-cols-[minmax(0,1.02fr)_minmax(360px,0.98fr)] lg:gap-8">
+          <div className="flex flex-col justify-center">
+            <h1 className="apple-hero-title max-w-4xl text-slate-950">{t('hero_title')}</h1>
+            <p className="apple-body mt-4 max-w-2xl text-base text-slate-600 sm:mt-6 sm:text-[17px]">{t('hero_desc')}</p>
+
+            <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:gap-4">
               <button
+                type="button"
                 onClick={() => onNavigate(PageView.PRODUCTS)}
-                className="px-8 py-4 bg-accent-500 text-slate-900 rounded-md font-bold hover:bg-accent-400 transition flex items-center justify-center gap-2"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-accent-400/35 bg-[linear-gradient(145deg,#071427_0%,#0d2747_58%,#123765_100%)] px-7 py-4 text-sm font-semibold text-white shadow-[0_16px_40px_rgba(250,204,21,0.12)] transition hover:brightness-110 sm:w-auto"
               >
-                {t('btn_explore')} <ArrowRight className="w-5 h-5" />
+                {t('btn_explore')}
+                <ArrowRight className="h-4 w-4 text-accent-400" />
               </button>
-              <a
-                href={getLocalizedPath(PageView.CONTACT, language)}
-                onClick={(event) => {
-                  event.preventDefault();
-                  onNavigate(PageView.CONTACT);
-                }}
-                className="px-8 py-4 bg-transparent border border-white/30 text-white rounded-full font-semibold hover:bg-white/10 transition backdrop-blur-sm text-center"
+              <button
+                type="button"
+                onClick={() => onNavigate(PageView.CONTACT)}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-accent-400/30 bg-white/80 px-7 py-4 text-sm font-semibold text-slate-900 transition hover:border-accent-400/55 hover:bg-[linear-gradient(180deg,#ffffff_0%,#fff8dc_100%)] sm:w-auto"
               >
                 {t('btn_contact')}
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            {
-              icon: <Factory className="w-8 h-8 text-blue-600" />,
-              titleKey: 'feat_professional_title',
-              descKey: 'feat_professional_desc',
-            },
-            {
-              icon: <ShieldCheck className="w-8 h-8 text-blue-600" />,
-              titleKey: 'feat_certified_title',
-              descKey: 'feat_certified_desc',
-            },
-            {
-              icon: <Zap className="w-8 h-8 text-blue-600" />,
-              titleKey: 'feat_wide_app_title',
-              descKey: 'feat_wide_app_desc',
-            }
-          ].map((item, idx) => (
-            <div key={idx} className="bg-white p-8 rounded-2xl shadow-xl border border-slate-100 hover:-translate-y-1 transition-transform duration-300">
-              <div className="mb-4 p-3 bg-slate-50 rounded-xl w-fit">{item.icon}</div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">{t(item.titleKey)}</h3>
-              <p className="text-slate-500 leading-relaxed text-sm">{t(item.descKey)}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Quality Metrics - Moved from Capacity to Home Top */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-slate-900 rounded-3xl p-8 md:p-12 text-white shadow-2xl overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/20 blur-3xl -mr-32 -mt-32 rounded-full"></div>
-          <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center p-6 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition">
-              <div className="text-5xl font-bold text-white mb-2">≥99%</div>
-              <div className="text-blue-400 font-semibold text-sm mb-1">{t('cap_metric_pass_label')}</div>
-              <p className="text-slate-400 text-xs">{t('cap_metric_pass_target')}</p>
-            </div>
-            <div className="text-center p-6 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition">
-              <div className="text-5xl font-bold text-white mb-2">≥95%</div>
-              <div className="text-blue-400 font-semibold text-sm mb-1">{t('cap_metric_delivery_label')}</div>
-              <p className="text-slate-400 text-xs">{t('cap_metric_delivery_target')}</p>
-            </div>
-            <div className="text-center p-6 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition">
-              <div className="text-5xl font-bold text-white mb-2">98%</div>
-              <div className="text-blue-400 font-semibold text-sm mb-1">{t('cap_metric_satisfaction_label')}</div>
-              <p className="text-slate-400 text-xs">{t('cap_metric_satisfaction_target')}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Featured Products Preview */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-slate-900 mb-4">{t('core_products')}</h2>
-          <div className="w-16 h-1 bg-slate-900 mx-auto rounded-full"></div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featuredProducts.map((product, idx) => (
-            <div key={idx} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-              <button type="button" className="group w-full text-left" onClick={() => onNavigate(PageView.PRODUCTS, language, product.slug)}>
-                <div className="aspect-square rounded-2xl overflow-hidden mb-4 border border-slate-100 bg-gradient-to-br from-white via-slate-50 to-slate-100 p-4">
-                <img
-                  src={product.image}
-                  alt={t(product.nameKey)}
-                  className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
-                  loading="lazy"
-                  decoding="async"
-                />
-                </div>
-                <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition">{t(product.nameKey)}</h3>
+                <ArrowUpRight className="h-4 w-4 text-accent-500" />
               </button>
-              {product.article ? (
-                <button
-                  type="button"
-                  onClick={() => onNavigate(PageView.BLOG, language, product.article.slug)}
-                  className="mt-4 block w-full rounded-2xl bg-slate-50 p-4 text-left transition hover:bg-blue-50"
-                >
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                    {t('home_product_article_label')}
-                  </div>
-                  <div className="mt-2 text-sm font-semibold leading-snug text-slate-900">
-                    {getLocalizedPost(product.article, language).title}
-                  </div>
-                  <div className="mt-2 inline-flex items-center gap-2 text-xs font-semibold text-blue-700">
-                    {t('home_product_article_cta')} <ArrowRight className="w-3.5 h-3.5" />
-                  </div>
-                </button>
-              ) : null}
+              <button
+                type="button"
+                onClick={() => onNavigate(PageView.ABOUT)}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-accent-400/30 bg-white/80 px-7 py-4 text-sm font-semibold text-slate-900 transition hover:border-accent-400/55 hover:bg-[linear-gradient(180deg,#ffffff_0%,#fff8dc_100%)] sm:w-auto"
+              >
+                {t('nav_about')}
+                <ArrowUpRight className="h-4 w-4 text-accent-500" />
+              </button>
             </div>
-          ))}
-        </div>
-        <div className="text-center mt-12">
-          <button
-            onClick={() => onNavigate(PageView.PRODUCTS)}
-            className="text-slate-600 font-medium hover:text-slate-900 flex items-center gap-2 mx-auto"
-          >
-            {t('view_all')} <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
 
-      {/* Partner Section */}
-      <div className="bg-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="md:w-1/2">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">{t('trusted_by')}</h2>
-              <p className="text-slate-600 mb-6 leading-relaxed">
-                {t('client_section_desc')}
-              </p>
-              <ul className="space-y-3">
-                {[t('partner_major_group'), t('partner_auto_oem'), t('partner_custom_machinery')].map((item, i) => (
-                  <li key={i} className="flex items-center gap-3 text-slate-700 font-medium">
-                    <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" /> {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="md:w-1/2 grid grid-cols-2 gap-4">
-              <div className="bg-slate-50 h-32 rounded-xl border border-slate-100 flex flex-col items-center justify-center gap-2 p-4 hover:border-slate-300 transition">
-                <Zap className="w-7 h-7 text-slate-400" />
-                <span className="text-sm font-semibold text-slate-500">{t('industry_power_sector')}</span>
-                <span className="text-xs text-slate-400">{t('industry_hv')}</span>
+            <div className="mt-8 grid gap-3 sm:mt-10 sm:grid-cols-2 xl:grid-cols-4 xl:gap-4">
+              <div className="relative overflow-hidden rounded-[24px] border border-white/70 bg-white/80 p-4 ring-1 ring-accent-400/12 shadow-[0_20px_50px_rgba(15,23,42,0.06)] sm:rounded-[28px] sm:p-5">
+                <div className="absolute inset-x-5 top-0 h-[2px] rounded-full bg-[linear-gradient(90deg,transparent,rgba(250,204,21,0.95),transparent)]" />
+                <div className="text-2xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-3xl">≥99%</div>
+                <div className="mt-2 text-sm font-semibold text-slate-800">{t('cap_metric_pass_label')}</div>
               </div>
-              <div className="bg-slate-50 h-32 rounded-xl border border-slate-100 flex flex-col items-center justify-center gap-2 p-4 hover:border-slate-300 transition">
-                <Cog className="w-7 h-7 text-slate-400" />
-                <span className="text-sm font-semibold text-slate-500">{t('industry_auto')}</span>
-                <span className="text-xs text-slate-400">{t('industry_oem')}</span>
+              <div className="relative overflow-hidden rounded-[24px] border border-white/70 bg-white/80 p-4 ring-1 ring-accent-400/12 shadow-[0_20px_50px_rgba(15,23,42,0.06)] sm:rounded-[28px] sm:p-5">
+                <div className="absolute inset-x-5 top-0 h-[2px] rounded-full bg-[linear-gradient(90deg,transparent,rgba(250,204,21,0.95),transparent)]" />
+                <div className="text-2xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-3xl">{t('cap_band_hot_value')}</div>
+                <div className="mt-2 text-sm font-semibold text-slate-800">{t('cap_band_hot_title')}</div>
               </div>
-              <div className="bg-slate-50 h-32 rounded-xl border border-slate-100 flex flex-col items-center justify-center gap-2 p-4 hover:border-slate-300 transition">
-                <Wrench className="w-7 h-7 text-slate-400" />
-                <span className="text-sm font-semibold text-slate-500">{t('industry_heavy')}</span>
-                <span className="text-xs text-slate-400">{t('industry_machine')}</span>
+              <div className="relative overflow-hidden rounded-[24px] border border-white/70 bg-white/80 p-4 ring-1 ring-accent-400/12 shadow-[0_20px_50px_rgba(15,23,42,0.06)] sm:rounded-[28px] sm:p-5">
+                <div className="absolute inset-x-5 top-0 h-[2px] rounded-full bg-[linear-gradient(90deg,transparent,rgba(250,204,21,0.95),transparent)]" />
+                <div className="text-2xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-3xl">{t('cap_band_cold_value')}</div>
+                <div className="mt-2 text-sm font-semibold text-slate-800">{t('cap_band_cold_title')}</div>
               </div>
-              <div className="bg-slate-50 h-32 rounded-xl border border-slate-100 flex flex-col items-center justify-center gap-2 p-4 hover:border-slate-300 transition">
-                <Cpu className="w-7 h-7 text-slate-400" />
-                <span className="text-sm font-semibold text-slate-500">{t('industry_elec')}</span>
-                <span className="text-xs text-slate-400">{t('industry_power')}</span>
+              <div className="relative overflow-hidden rounded-[24px] border border-white/70 bg-white/80 p-4 ring-1 ring-accent-400/12 shadow-[0_20px_50px_rgba(15,23,42,0.06)] sm:rounded-[28px] sm:p-5">
+                <div className="absolute inset-x-5 top-0 h-[2px] rounded-full bg-[linear-gradient(90deg,transparent,rgba(250,204,21,0.95),transparent)]" />
+                <div className="text-2xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-3xl">{t('cap_band_standard_value')}</div>
+                <div className="mt-2 text-sm font-semibold text-slate-800">{t('cap_band_standard_title')}</div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl border border-slate-200 bg-slate-50 p-8 md:p-12">
-          <div className="max-w-4xl">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">{t('seo_scope_title')}</h2>
-            <p className="text-slate-600 leading-relaxed">{t('seo_scope_desc')}</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl border border-slate-200 bg-white p-8 md:p-12 shadow-sm">
-          <div className="max-w-4xl">
-            <h2 className="text-3xl font-bold text-slate-900">{t('home_keyword_title')}</h2>
-            <p className="mt-3 text-slate-600 leading-relaxed">{t('home_keyword_desc')}</p>
-          </div>
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-            {[
-              ['home_keyword_1_title', 'home_keyword_1_desc'],
-              ['home_keyword_2_title', 'home_keyword_2_desc'],
-              ['home_keyword_3_title', 'home_keyword_3_desc'],
-              ['home_keyword_4_title', 'home_keyword_4_desc'],
-              ['home_keyword_5_title', 'home_keyword_5_desc'],
-              ['home_keyword_6_title', 'home_keyword_6_desc'],
-            ].map(([titleKey, descKey]) => (
-              <div key={titleKey} className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
-                <div className="text-sm font-bold uppercase tracking-[0.08em] text-slate-900">{t(titleKey)}</div>
-                <p className="mt-3 text-sm leading-relaxed text-slate-600">{t(descKey)}</p>
+          <div className="relative overflow-hidden rounded-[28px] border border-white/70 bg-white/60 shadow-[0_40px_120px_rgba(15,23,42,0.14)] backdrop-blur-xl sm:rounded-[40px]">
+            <img
+              src="/factory/factory_1.jpg"
+              alt="Wanjin Manufacturing"
+              width="1600"
+              height="1200"
+              className="h-full min-h-[360px] w-full object-cover sm:min-h-[460px] lg:min-h-[540px]"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,20,35,0.08)_0%,rgba(5,20,35,0.28)_46%,rgba(5,20,35,0.88)_100%)]" />
+            <div className="absolute inset-x-0 bottom-0 p-5 sm:p-8">
+              <div className="inline-flex rounded-full border border-accent-400/35 bg-accent-400/10 px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ffe39a]">
+                {t('cap_unique')}
               </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
-          <div className="max-w-3xl">
-            <h2 className="text-3xl font-bold text-slate-900">{t('home_solutions_title')}</h2>
-            <p className="mt-3 text-slate-600 leading-relaxed">{t('home_solutions_desc')}</p>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            {
-              icon: <Zap className="w-7 h-7 text-blue-600" />,
-              titleKey: 'home_solution_power_title',
-              descKey: 'home_solution_power_desc',
-            },
-            {
-              icon: <Layers3 className="w-7 h-7 text-blue-600" />,
-              titleKey: 'home_solution_heavy_title',
-              descKey: 'home_solution_heavy_desc',
-            },
-            {
-              icon: <Cpu className="w-7 h-7 text-blue-600" />,
-              titleKey: 'home_solution_precision_title',
-              descKey: 'home_solution_precision_desc',
-            },
-          ].map((item) => (
-            <div key={item.titleKey} className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-              <div className="inline-flex rounded-2xl bg-blue-50 p-3">{item.icon}</div>
-              <h3 className="mt-5 text-xl font-bold text-slate-900">{t(item.titleKey)}</h3>
-              <p className="mt-3 text-slate-600 leading-relaxed">{t(item.descKey)}</p>
+              <h2 className="apple-card-title mt-4 text-white sm:mt-5">{t('nav_factory')}</h2>
+              <p className="apple-body mt-3 max-w-xl text-sm text-slate-200 line-clamp-3 sm:mt-4 sm:text-[17px]">{t('factory_desc')}</p>
             </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl bg-slate-900 p-8 md:p-12 text-white">
-          <div className="max-w-3xl">
-            <h2 className="text-3xl font-bold">{t('home_flow_title')}</h2>
-            <p className="mt-3 text-slate-300 leading-relaxed">{t('home_flow_desc')}</p>
-          </div>
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {[
-              ['home_flow_1_title', 'home_flow_1_desc', <FileCheck2 className="w-6 h-6 text-blue-300" />],
-              ['home_flow_2_title', 'home_flow_2_desc', <Cog className="w-6 h-6 text-blue-300" />],
-              ['home_flow_3_title', 'home_flow_3_desc', <Factory className="w-6 h-6 text-blue-300" />],
-              ['home_flow_4_title', 'home_flow_4_desc', <Boxes className="w-6 h-6 text-blue-300" />],
-            ].map(([titleKey, descKey, icon]) => (
-              <div key={titleKey} className="rounded-3xl border border-white/10 bg-white/5 p-6">
-                <div className="inline-flex rounded-2xl bg-white/10 p-3">{icon}</div>
-                <h3 className="mt-4 text-lg font-bold">{t(titleKey)}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-slate-300">{t(descKey)}</p>
-              </div>
-            ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="bg-white py-16 border-y border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+      <section className="relative mx-auto mt-16 max-w-7xl px-4 sm:mt-20 sm:px-6 lg:px-8">
+        <div className="overflow-hidden rounded-[28px] bg-[linear-gradient(145deg,#051423_0%,#0a3059_55%,#113f73_100%)] px-6 py-8 text-white shadow-[0_40px_120px_rgba(2,12,27,0.22)] sm:rounded-[40px] sm:px-10 sm:py-12">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
             <div className="max-w-3xl">
-              <span className="inline-flex rounded-full bg-slate-100 px-4 py-1 text-xs font-bold uppercase tracking-[0.2em] text-slate-700">
-                {t('blog_label')}
-              </span>
-              <h2 className="mt-4 text-3xl font-bold text-slate-900">{t('blog_home_title')}</h2>
-              <p className="mt-3 text-slate-600 leading-relaxed">{t('blog_home_desc')}</p>
+              <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#ffe39a]">
+                <span className="h-2 w-2 rounded-full bg-accent-400 shadow-[0_0_16px_rgba(250,204,21,0.65)]" />
+                {t('trusted_by')}
+              </p>
+              <h2 className="apple-section-title mt-4">{t('trusted_by')}</h2>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/10 px-4 py-2 text-sm text-white/90">
+                  <ShieldCheck className="h-4 w-4 text-accent-400" />
+                  {t('feat_certified_title')}
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/10 px-4 py-2 text-sm text-white/90">
+                  <Factory className="h-4 w-4 text-accent-400" />
+                  {t('feat_professional_title')}
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/10 px-4 py-2 text-sm text-white/90">
+                  <Zap className="h-4 w-4 text-accent-400" />
+                  {t('feat_wide_app_title')}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex">
+              <button
+                type="button"
+                onClick={() => onNavigate(PageView.CAPACITY)}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-7 py-4 text-sm font-semibold text-slate-950 shadow-[0_14px_34px_rgba(250,204,21,0.14)] transition hover:bg-slate-100 sm:w-auto"
+              >
+                {t('nav_capacity')}
+                <ArrowRight className="h-4 w-4 text-accent-500" />
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-3 sm:mt-8 sm:grid-cols-3 sm:gap-4">
+            <div className="rounded-[22px] border border-white/10 bg-white/10 p-4 sm:rounded-[28px] sm:p-5">
+              <div className="text-2xl font-semibold text-white sm:text-3xl">≥99%</div>
+              <div className="mt-2 text-sm font-semibold text-white">{t('cap_metric_pass_label')}</div>
+            </div>
+            <div className="rounded-[22px] border border-white/10 bg-white/10 p-4 sm:rounded-[28px] sm:p-5">
+              <div className="text-2xl font-semibold text-white sm:text-3xl">≥95%</div>
+              <div className="mt-2 text-sm font-semibold text-white">{t('cap_metric_delivery_label')}</div>
+            </div>
+            <div className="rounded-[22px] border border-white/10 bg-white/10 p-4 sm:rounded-[28px] sm:p-5">
+              <div className="text-2xl font-semibold text-white sm:text-3xl">98%</div>
+              <div className="mt-2 text-sm font-semibold text-white">{t('cap_metric_satisfaction_label')}</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {activeProduct ? (
+        <section className="relative mx-auto mt-16 max-w-7xl px-4 sm:mt-20 sm:px-6 lg:px-8">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-brand-500">
+                <span className="h-2 w-2 rounded-full bg-accent-400 shadow-[0_0_16px_rgba(250,204,21,0.65)]" />
+                {t('core_products')}
+              </p>
+              <h2 className="apple-section-title mt-3 text-slate-950">{t('core_products')}</h2>
             </div>
             <button
               type="button"
-              onClick={() => onNavigate(PageView.BLOG)}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-slate-900"
+              onClick={() => onNavigate(PageView.PRODUCTS)}
+              className="hidden items-center gap-2 text-sm font-semibold text-slate-900 transition hover:text-accent-500 sm:inline-flex"
             >
-              {t('blog_view_all')} <ArrowRight className="w-4 h-4" />
+              {t('view_all')}
+              <ArrowRight className="h-4 w-4 text-accent-500" />
             </button>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {featuredPosts.map((post) => {
-              const localized = getLocalizedPost(post, language);
-              return (
-                <button
-                  key={post.slug}
-                  type="button"
-                  onClick={() => onNavigate(PageView.BLOG, language, post.slug)}
-                  className="overflow-hidden rounded-[28px] border border-slate-200 bg-slate-50 text-left transition hover:-translate-y-1 hover:shadow-xl"
-                >
-                  <div className="aspect-[16/9] overflow-hidden">
-                    <img
-                      src={post.coverImage}
-                      alt={localized.title}
-                      className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
-                      <CalendarDays className="w-3.5 h-3.5" />
-                      <span>{formatBlogDate(post.publishedAt, language)}</span>
+          <div className="-mx-4 mt-6 overflow-x-auto px-4 pb-4 scrollbar-hide sm:mt-8">
+            <div className="inline-flex gap-3 rounded-[28px] border border-[#d9e4ef] bg-[linear-gradient(180deg,rgba(232,240,248,0.86)_0%,rgba(244,248,252,0.96)_100%)] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_24px_60px_rgba(15,23,42,0.08)] sm:gap-4 sm:rounded-[36px] sm:p-4">
+              {coreProducts.map((product) => {
+                const isActive = product.slug === activeProduct.slug;
+
+                return (
+                  <button
+                    key={product.slug}
+                    type="button"
+                    onClick={() => setActiveProductSlug(product.slug)}
+                    className={`group relative flex w-[104px] shrink-0 flex-col items-center overflow-hidden rounded-[22px] px-3 py-4 text-center transition sm:w-[118px] sm:rounded-[28px] ${
+                      isActive
+                        ? 'border border-accent-400/35 bg-[linear-gradient(145deg,#071427_0%,#0d2747_58%,#123765_100%)] text-white shadow-[0_24px_54px_rgba(3,15,33,0.26)]'
+                        : 'border border-[#d6e1ec] bg-white text-slate-950 shadow-[0_14px_34px_rgba(15,23,42,0.06)] hover:-translate-y-0.5 hover:border-accent-400/30 hover:bg-white'
+                    }`}
+                  >
+                    {isActive ? <span className="absolute inset-x-4 top-0 h-[2px] rounded-full bg-[linear-gradient(90deg,transparent,rgba(250,204,21,0.95),transparent)]" /> : null}
+                    <div className={`flex h-16 w-16 items-center justify-center rounded-[20px] p-2.5 sm:h-20 sm:w-20 sm:rounded-[24px] sm:p-3 ${isActive ? 'border border-accent-400/15 bg-[linear-gradient(145deg,rgba(250,204,21,0.16)_0%,rgba(255,255,255,0.16)_100%)]' : 'border border-[#e7eef5] bg-[linear-gradient(145deg,#ffffff_0%,#eef4fb_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]'}`}>
+                      <img
+                        src={product.image}
+                        alt={t(product.nameKey)}
+                        width="160"
+                        height="160"
+                        className="h-full w-full object-contain transition duration-500 group-hover:scale-105"
+                        loading="lazy"
+                        decoding="async"
+                      />
                     </div>
-                    <h3 className="mt-4 text-xl font-bold text-slate-900 leading-snug">{localized.title}</h3>
-                    <p className="mt-3 text-slate-600 leading-relaxed">{localized.excerpt}</p>
-                    <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-blue-700">
-                      {t('blog_read_more')} <ArrowRight className="w-4 h-4" />
-                    </span>
+                    <span className={`apple-nav-label mt-3 ${isActive ? 'text-white' : 'text-slate-950'}`}>{t(product.nameKey)}</span>
+                    <span className={`apple-nav-badge mt-1 ${isActive ? 'text-white/70' : 'text-slate-500'}`}>{t(product.categoryKey)}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="mt-5 overflow-hidden rounded-[28px] bg-[linear-gradient(140deg,#071427_0%,#0d2747_56%,#123765_100%)] text-white shadow-[0_30px_90px_rgba(3,15,33,0.22)] sm:mt-6 sm:rounded-[40px]">
+            <div className="grid gap-6 p-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(280px,0.7fr)] lg:gap-8 lg:p-10">
+              <div className="flex flex-col justify-between">
+                <div>
+                  <div className="apple-nav-badge inline-flex rounded-full border border-accent-400/35 bg-accent-400/10 px-4 py-1 text-[#ffe39a] backdrop-blur">
+                    {t(activeProduct.categoryKey)}
                   </div>
-                </button>
-              );
-            })}
+                  <h3 className="apple-section-title mt-5 text-white">
+                    {t(activeProduct.nameKey)}
+                  </h3>
+                  <p className="apple-body mt-4 max-w-xl text-slate-200">
+                    {t(activeProduct.descKey)}
+                  </p>
+
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {activeProduct.featureKeys.slice(0, 3).map((featureKey) => (
+                      <span
+                        key={featureKey}
+                        className="apple-nav-badge rounded-full border border-accent-400/25 bg-accent-400/10 px-3 py-1 text-[#ffe7a9] backdrop-blur"
+                      >
+                        {t(featureKey)}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row">
+                  <button
+                    type="button"
+                    onClick={() => onNavigate(PageView.PRODUCTS, language, activeProduct.slug)}
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 shadow-[0_14px_34px_rgba(250,204,21,0.14)] transition hover:bg-slate-100 sm:w-auto"
+                  >
+                    {t('btn_explore')}
+                    <ArrowRight className="h-4 w-4 text-accent-500" />
+                  </button>
+                  {activeProductArticleSlug ? (
+                    <button
+                      type="button"
+                      onClick={() => onNavigate(PageView.BLOG, language, activeProductArticleSlug)}
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-accent-400/25 bg-white/10 px-6 py-3 text-sm font-semibold text-white transition hover:bg-accent-400/10 sm:w-auto"
+                    >
+                      {t('home_product_article_cta')}
+                      <ArrowUpRight className="h-4 w-4 text-accent-400" />
+                    </button>
+                  ) : null}
+                </div>
+              </div>
+
+              <div className="rounded-[24px] border border-white/75 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(242,246,251,0.96)_100%)] p-4 shadow-[0_26px_60px_rgba(2,12,27,0.12)] sm:rounded-[32px] sm:p-5">
+                <div className="aspect-square overflow-hidden rounded-[20px] border border-slate-200/80 bg-[radial-gradient(circle_at_top,rgba(255,255,255,1)_0%,rgba(246,249,252,1)_100%)] p-3 sm:rounded-[24px] sm:p-4">
+                  <img
+                    src={activeProduct.image}
+                    alt={t(activeProduct.nameKey)}
+                    width="720"
+                    height="720"
+                    className="h-full w-full object-contain drop-shadow-[0_18px_36px_rgba(15,23,42,0.16)]"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+        <section className="relative mx-auto mt-16 max-w-7xl px-4 sm:mt-20 sm:px-6 lg:px-8">
+          <div className="grid gap-6 lg:grid-cols-12">
+          <button
+            type="button"
+            onClick={() => onNavigate(PageView.ABOUT)}
+            className="group overflow-hidden rounded-[36px] border border-slate-200 bg-white text-left shadow-[0_24px_70px_rgba(15,23,42,0.06)] lg:col-span-4"
+          >
+            <div className="aspect-[16/10] overflow-hidden">
+              <img
+                src="/factory/about-company.jpeg"
+                alt={t('nav_about')}
+                width="1200"
+                height="800"
+                className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div className="p-6 sm:p-7">
+              <h3 className="apple-card-title text-slate-950">{t('nav_about')}</h3>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onNavigate(PageView.CAPACITY)}
+            className="rounded-[28px] bg-[linear-gradient(145deg,#061322_0%,#0c2e57_100%)] p-6 text-left text-white shadow-[0_30px_80px_rgba(2,12,27,0.18)] sm:rounded-[36px] sm:p-8 lg:col-span-4"
+          >
+            <div className="inline-flex rounded-2xl border border-accent-400/20 bg-accent-400/10 p-3">
+              <Gauge className="h-6 w-6 text-accent-400" />
+            </div>
+            <h3 className="apple-card-title mt-5 text-white">{t('nav_capacity')}</h3>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-[24px] border border-accent-400/24 bg-[linear-gradient(180deg,rgba(250,204,21,0.14)_0%,rgba(255,255,255,0.1)_100%)] p-4 shadow-[0_16px_34px_rgba(250,204,21,0.1)]">
+                <div className="text-lg font-semibold text-white">{t('cap_band_hot_value')}</div>
+                <div className="apple-nav-badge mt-1 text-[#ffe39a]">{t('cap_band_hot_title')}</div>
+              </div>
+              <div className="rounded-[24px] border border-white/10 bg-white/10 p-4">
+                <div className="text-lg font-semibold text-white">{t('cap_band_cold_value')}</div>
+                <div className="apple-nav-badge mt-1 text-slate-300">{t('cap_band_cold_title')}</div>
+              </div>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onNavigate(PageView.FACTORY)}
+            className="group overflow-hidden rounded-[36px] border border-slate-200 bg-white text-left shadow-[0_24px_70px_rgba(15,23,42,0.06)] lg:col-span-4"
+          >
+            <div className="aspect-[16/10] overflow-hidden">
+              <img
+                src="/factory/factory_20.jpg"
+                alt={t('nav_factory')}
+                width="1200"
+                height="800"
+                className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div className="p-6 sm:p-7">
+              <div className="apple-nav-badge text-slate-500">{t('cap_unique')}</div>
+              <h3 className="apple-card-title mt-3 text-slate-950">{t('nav_factory')}</h3>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onNavigate(PageView.CONTACT)}
+            className="rounded-[28px] border border-slate-200 bg-white p-6 text-left shadow-[0_24px_70px_rgba(15,23,42,0.06)] sm:rounded-[36px] sm:p-8 lg:col-span-6"
+          >
+            <div className="inline-flex rounded-2xl bg-[linear-gradient(145deg,#071427_0%,#0d2747_58%,#123765_100%)] p-3 text-accent-400 shadow-[0_16px_34px_rgba(250,204,21,0.12)]">
+              <Mail className="h-6 w-6" />
+            </div>
+            <h3 className="apple-card-title mt-5 text-slate-950">{t('nav_contact')}</h3>
+            <p className="apple-body mt-3 text-slate-600 line-clamp-2">{t('email_us_desc')}</p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <span className="apple-nav-badge rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-slate-700">{t('phone_val')}</span>
+              <span className="apple-nav-badge rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-slate-700">sales@wanjinspring.com</span>
+            </div>
+          </button>
+
+          <div className="rounded-[28px] bg-[linear-gradient(145deg,#041221_0%,#0a3059_100%)] p-6 text-white shadow-[0_30px_80px_rgba(2,12,27,0.2)] sm:rounded-[36px] sm:p-8 lg:col-span-6">
+            <div className="inline-flex rounded-2xl bg-white/10 p-3">
+              <CalendarDays className="h-6 w-6" />
+            </div>
+            <h3 className="apple-card-title mt-5 text-white">{t('nav_blog')}</h3>
+            <div className="mt-4 space-y-3 sm:mt-5 sm:space-y-4">
+              {blogState
+                ? blogState.featuredPosts.map((post) => {
+                    const localized = blogState.blogModule.getLocalizedPost(post, language);
+
+                    return (
+                      <button
+                        key={post.slug}
+                        type="button"
+                        onClick={() => onNavigate(PageView.BLOG, language, post.slug)}
+                        className="block w-full rounded-[24px] border border-white/10 bg-white/10 p-4 text-left transition hover:bg-white/15"
+                      >
+                        <div className="apple-nav-badge text-slate-300">{blogState.blogModule.formatBlogDate(post.publishedAt, language)}</div>
+                        <div className="mt-2 text-base font-semibold leading-6 text-white line-clamp-2">{localized.title}</div>
+                      </button>
+                    );
+                  })
+                : Array.from({ length: 2 }).map((_, index) => (
+                    <div key={index} className="rounded-[24px] border border-white/10 bg-white/10 p-4">
+                      <div className="h-4 w-24 rounded-full bg-white/10" />
+                      <div className="mt-3 h-5 w-full rounded-full bg-white/10" />
+                      <div className="mt-2 h-5 w-3/4 rounded-full bg-white/10" />
+                    </div>
+                  ))}
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-slate-900 mb-4">{t('faq_title')}</h2>
-          <div className="w-16 h-1 bg-slate-900 mx-auto rounded-full"></div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {[
-            ['faq_q1', 'faq_a1'],
-            ['faq_q2', 'faq_a2'],
-            ['faq_q3', 'faq_a3'],
-            ['faq_q4', 'faq_a4'],
-          ].map(([questionKey, answerKey]) => (
-            <div key={questionKey} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h3 className="text-lg font-bold text-slate-900 mb-3">{t(questionKey)}</h3>
-              <p className="text-slate-600 leading-relaxed">{t(answerKey)}</p>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 };

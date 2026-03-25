@@ -1,18 +1,42 @@
 DirectoryIndex index.html index.php
+ErrorDocument 404 /404.html
+
+<IfModule mod_dir.c>
+  DirectorySlash Off
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html?)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+
+  <FilesMatch "\.(css|js|jpg|jpeg|png|webp|avif|svg|ico|xml|json|txt)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
+  RewriteOptions AllowNoSlash
 
   RewriteCond %{HTTP_HOST} ^www\.wanjinspring\.com$ [NC]
-  RewriteRule ^ https://wanjinspring.com%{REQUEST_URI} [R=301,L]
+  RewriteRule ^(.*)$ https://wanjinspring.com/$1 [R=301,L,NE]
+
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteCond %{REQUEST_URI} !/$
+  RewriteCond %{REQUEST_URI} !\.[^./]+$
+  RewriteRule ^(.+)$ $1/index.html [L]
 
   RewriteRule ^index\.html$ - [L]
+  RewriteRule ^404\.html$ - [L]
   RewriteRule ^assets/ - [L]
   RewriteRule ^factory/ - [L]
   RewriteRule ^products/.*\.(jpg|jpeg|png|webp|avif|svg)$ - [L,NC]
   RewriteRule ^(robots\.txt|sitemap\.xml|blog-feed\.xml|blog-feed\.json|llms\.txt|llms-full\.txt|.*\.json|favicon\.ico)$ - [L,NC]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
+  RewriteRule ^ /404.html [R=404,L]
 </IfModule>

@@ -14,9 +14,9 @@ const ogImage = `${siteUrl}/factory/factory_1.jpg`;
 const defaultLanguage = 'en';
 const blogPostsPerPage = 6;
 const blogCategoryLabels = {
-  guide: { en: 'Guide', zh: '指南', ru: 'Гайд' },
-  news: { en: 'News', zh: '新闻', ru: 'Новости' },
-  insight: { en: 'Insight', zh: '洞察', ru: 'Аналитика' },
+  guide: { en: 'Guide', zh: '指南', ru: 'Гайд', es: 'Guia', ar: 'دليل', hi: 'गाइड', pt: 'Guia', ja: 'ガイド', de: 'Leitfaden', fr: 'Guide' },
+  news: { en: 'News', zh: '新闻', ru: 'Новости', es: 'Noticias', ar: 'أخبار', hi: 'समाचार', pt: 'Noticias', ja: 'ニュース', de: 'Nachrichten', fr: 'Actualites' },
+  insight: { en: 'Insight', zh: '洞察', ru: 'Аналитика', es: 'Perspectiva', ar: 'رؤى', hi: 'अंतर्दृष्टि', pt: 'Insight', ja: 'インサイト', de: 'Einblicke', fr: 'Analyse' },
 };
 
 const routeMap = {
@@ -85,7 +85,7 @@ const pageConfigs = [
   },
   {
     page: 'BLOG',
-    title: (t) => `${t.nav_blog} | ${t.company_name_en}`,
+    title: (t) => `${t.blog_title} | ${t.company_name_en}`,
     description: (t) => t.blog_desc,
     heading: (t) => t.blog_title,
     body: (t) => [t.blog_desc, t.blog_featured_desc, t.blog_latest_desc],
@@ -93,16 +93,14 @@ const pageConfigs = [
 ];
 
 const localeMap = {
-  zh: { html: 'zh-CN', og: 'zh_CN' },
   en: { html: 'en', og: 'en_US' },
-  es: { html: 'es', og: 'es_ES' },
-  ar: { html: 'ar', og: 'ar_AR' },
-  hi: { html: 'hi', og: 'hi_IN' },
-  pt: { html: 'pt-BR', og: 'pt_BR' },
+  zh: { html: 'zh-CN', og: 'zh_CN' },
   ru: { html: 'ru', og: 'ru_RU' },
   ja: { html: 'ja', og: 'ja_JP' },
   de: { html: 'de', og: 'de_DE' },
   fr: { html: 'fr', og: 'fr_FR' },
+  es: { html: 'es', og: 'es_ES' },
+  pt: { html: 'pt-PT', og: 'pt_PT' },
 };
 
 const seoStructuredDataPattern =
@@ -138,6 +136,34 @@ const replaceStructuredData = (html, jsonLd) => {
 };
 
 const hashFile = (filePath) => crypto.createHash('md5').update(fs.readFileSync(filePath)).digest('hex');
+
+const knowsAboutTopics = [
+  'Custom spring manufacturing',
+  'Compression springs',
+  'Extension springs',
+  'Torsion springs',
+  'Wave springs',
+  'Disc springs',
+  'Stacked disc spring assemblies',
+  'Hot coil springs',
+  'Retaining rings',
+  'Wire forms',
+  'Power equipment springs',
+  'Automotive spring applications',
+  'Heavy-duty spring programs',
+  'Spring drawing review',
+  'Load and displacement testing',
+];
+
+const machineReadableResources = [
+  { name: 'LLMs Reference', url: `${siteUrl}/llms.txt`, encodingFormat: 'text/plain' },
+  { name: 'Extended LLMs Reference', url: `${siteUrl}/llms-full.txt`, encodingFormat: 'text/plain' },
+  { name: 'AI Search Profile', url: `${siteUrl}/ai-search-profile.json`, encodingFormat: 'application/json' },
+  { name: 'Company Profile JSON', url: `${siteUrl}/company-profile.json`, encodingFormat: 'application/json' },
+  { name: 'Products Catalog JSON', url: `${siteUrl}/products.json`, encodingFormat: 'application/json' },
+  { name: 'Products Catalog JSON-LD', url: `${siteUrl}/products-catalog.jsonld`, encodingFormat: 'application/ld+json' },
+  { name: 'Blog JSON Feed', url: `${siteUrl}/blog-feed.json`, encodingFormat: 'application/feed+json' },
+];
 
 const auditDuplicateProductAssets = (productRecords) => {
   const usageByAssetPath = new Map();
@@ -191,6 +217,7 @@ const loadTranslations = () => {
   const source = fs.readFileSync(translationsPath, 'utf8');
   const executable = source
     .replace(/export type[\s\S]*?;\n\n/, '')
+    .replace(/export const FULLY_LOCALIZED_LANGUAGES\s*=\s*[\s\S]*?as const;\n\n/, '')
     .replace(/export const LANGUAGES\s*:\s*[^=]+=/, 'const LANGUAGES =')
     .replace(/export const TRANSLATIONS\s*:\s*[^=]+=/, 'const TRANSLATIONS =')
     .concat('\nthis.LANGUAGES = LANGUAGES; this.TRANSLATIONS = TRANSLATIONS;');
@@ -249,7 +276,7 @@ const loadProductSeo = () => {
 
 const getLocalizedValue = (value, language) => value?.[language] ?? value?.en ?? Object.values(value ?? {})[0] ?? '';
 const getCategoryLabel = (category, language) =>
-  language === 'zh' ? blogCategoryLabels[category].zh : language === 'ru' ? blogCategoryLabels[category].ru : blogCategoryLabels[category].en;
+  blogCategoryLabels[category][language] ?? blogCategoryLabels[category].en ?? Object.values(blogCategoryLabels[category])[0];
 const normalizeTagSlug = (tag) => tag.trim().toLowerCase().replace(/\s+/g, '-');
 const getDisplayTagName = (tagSlug) =>
   tagSlug
@@ -267,13 +294,14 @@ const paginatePosts = (posts, page) => {
 const buildStaticContent = (heading, bodyLines) => {
   const paragraphs = bodyLines.map((line) => `<p>${escapeHtml(line)}</p>`).join('');
   return `
-<section id="seo-prerender" data-prerendered="true" style="max-width:960px;margin:0 auto;padding:120px 24px 40px;color:#0f172a;background:#f8fafc;">
-  <h1 style="font-size:2.25rem;line-height:1.2;font-weight:700;margin:0 0 20px;">${escapeHtml(heading)}</h1>
-  <div style="display:grid;gap:16px;color:#475569;font-size:1rem;line-height:1.8;">
-    ${paragraphs}
-  </div>
-</section>
-<script>window.addEventListener('DOMContentLoaded',function(){var n=document.getElementById('seo-prerender');if(n){n.remove();}});</script>`;
+<noscript>
+  <section id="seo-prerender" data-prerendered="true" style="max-width:960px;margin:0 auto;padding:120px 24px 40px;color:#0f172a;background:#f8fafc;">
+    <h1 style="font-size:2.25rem;line-height:1.2;font-weight:700;margin:0 0 20px;">${escapeHtml(heading)}</h1>
+    <div style="display:grid;gap:16px;color:#475569;font-size:1rem;line-height:1.8;">
+      ${paragraphs}
+    </div>
+  </section>
+</noscript>`;
 };
 
 const buildStructuredStaticContent = (heading, intro, sections) => {
@@ -293,14 +321,15 @@ const buildStructuredStaticContent = (heading, intro, sections) => {
     .join('');
 
   return `
-<section id="seo-prerender" data-prerendered="true" style="max-width:960px;margin:0 auto;padding:120px 24px 40px;color:#0f172a;background:#f8fafc;">
-  <h1 style="font-size:2.25rem;line-height:1.2;font-weight:700;margin:0 0 20px;">${escapeHtml(heading)}</h1>
-  <div style="display:grid;gap:16px;color:#475569;font-size:1rem;line-height:1.8;">
-    <p>${escapeHtml(intro)}</p>
-  </div>
-  ${sectionsHtml}
-</section>
-<script>window.addEventListener('DOMContentLoaded',function(){var n=document.getElementById('seo-prerender');if(n){n.remove();}});</script>`;
+<noscript>
+  <section id="seo-prerender" data-prerendered="true" style="max-width:960px;margin:0 auto;padding:120px 24px 40px;color:#0f172a;background:#f8fafc;">
+    <h1 style="font-size:2.25rem;line-height:1.2;font-weight:700;margin:0 0 20px;">${escapeHtml(heading)}</h1>
+    <div style="display:grid;gap:16px;color:#475569;font-size:1rem;line-height:1.8;">
+      <p>${escapeHtml(intro)}</p>
+    </div>
+    ${sectionsHtml}
+  </section>
+</noscript>`;
 };
 
 const buildAlternateLinks = (page, slug) =>
@@ -312,8 +341,56 @@ const buildAlternateLinks = (page, slug) =>
     .concat(`<link rel="alternate" hreflang="x-default" href="${siteUrl}${getLocalizedPath(page, defaultLanguage, slug)}" />`)
     .join('\n    ');
 
-const buildJsonLd = ({ type = 'WebPage', title, canonical, description, image = ogImage, publishedAt, updatedAt }) =>
-  serializeJsonLd({
+const buildSharedJsonLd = ({ title, canonical, description, image = ogImage, type = 'WebPage', publishedAt, updatedAt, language, t }) => [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: t.company_name_full ?? t.company_name_en,
+    alternateName: t.company_name_en,
+    url: siteUrl,
+    logo: `${siteUrl}/factory/logo.jpeg`,
+    image: ogImage,
+    email: 'sales@wanjinspring.com',
+    telephone: '+86 187 2938 3359',
+    foundingDate: '2018-04-24',
+    foundingLocation: "Xi'an, Shaanxi, China",
+    knowsAbout: knowsAboutTopics,
+    subjectOf: machineReadableResources.map((resource) => ({
+      '@type': 'DigitalDocument',
+      name: resource.name,
+      url: resource.url,
+      encodingFormat: resource.encodingFormat,
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: t.company_name_en,
+    url: siteUrl,
+    inLanguage: language,
+    description: t.hero_desc,
+    potentialAction: [
+      {
+        '@type': 'SearchAction',
+        name: `${t.nav_blog} Search`,
+        target: `${siteUrl}${getLocalizedPath('BLOG', language)}?q={search_term_string}`,
+        'query-input': 'required name=search_term_string',
+      },
+      {
+        '@type': 'SearchAction',
+        name: `${t.nav_products} Search`,
+        target: `${siteUrl}${getLocalizedPath('PRODUCTS', language)}?q={search_term_string}`,
+        'query-input': 'required name=search_term_string',
+      },
+    ],
+    hasPart: machineReadableResources.map((resource) => ({
+      '@type': 'DigitalDocument',
+      name: resource.name,
+      url: resource.url,
+      encodingFormat: resource.encodingFormat,
+    })),
+  },
+  {
     '@context': 'https://schema.org',
     '@type': type,
     name: title,
@@ -321,37 +398,51 @@ const buildJsonLd = ({ type = 'WebPage', title, canonical, description, image = 
     url: canonical,
     description,
     image,
-    ...(publishedAt ? { datePublished: publishedAt } : {}),
-    ...(updatedAt ? { dateModified: updatedAt } : {}),
-  });
-
-const buildProductJsonLd = ({ productName, title, canonical, description, image, product, t, seoProfile }) =>
-  serializeJsonLd({
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: productName,
-    alternateName: title,
-    url: canonical,
-    description,
-    image,
-    category: t[product.categoryKey],
-    keywords: seoProfile.keywords.join(', '),
-    brand: {
-      '@type': 'Brand',
+    inLanguage: language,
+    mainEntityOfPage: canonical,
+    isPartOf: {
+      '@type': 'WebSite',
       name: t.company_name_en,
-    },
-    manufacturer: {
-      '@type': 'Organization',
-      name: t.company_name_full ?? t.company_name_en,
       url: siteUrl,
     },
-    additionalProperty: product.specKeys.map((spec) => ({
-      '@type': 'PropertyValue',
-      name: t[spec.titleKey],
-      value: t[spec.valueKey],
-      description: t[spec.descKey],
-    })),
-  });
+    ...(publishedAt ? { datePublished: publishedAt } : {}),
+    ...(updatedAt ? { dateModified: updatedAt } : {}),
+  },
+];
+
+const buildJsonLd = ({ type = 'WebPage', title, canonical, description, image = ogImage, publishedAt, updatedAt, language, t }) =>
+  serializeJsonLd(buildSharedJsonLd({ type, title, canonical, description, image, publishedAt, updatedAt, language, t }));
+
+const buildProductJsonLd = ({ productName, title, canonical, description, image, product, t, seoProfile, language }) =>
+  serializeJsonLd([
+    ...buildSharedJsonLd({ title, canonical, description, image, language, t }),
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      name: productName,
+      alternateName: title,
+      url: canonical,
+      description,
+      image,
+      category: t[product.categoryKey],
+      keywords: seoProfile.keywords.join(', '),
+      brand: {
+        '@type': 'Brand',
+        name: t.company_name_en,
+      },
+      manufacturer: {
+        '@type': 'Organization',
+        name: t.company_name_full ?? t.company_name_en,
+        url: siteUrl,
+      },
+      additionalProperty: product.specKeys.map((spec) => ({
+        '@type': 'PropertyValue',
+        name: t[spec.titleKey],
+        value: t[spec.valueKey],
+        description: t[spec.descKey],
+      })),
+    },
+  ]);
 
 const writeSitemap = (entries) => {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -464,7 +555,7 @@ for (const language of Object.keys(languages)) {
           .replace(/<meta name="twitter:description" content=".*?" \/>/, `<meta name="twitter:description" content="${escapeHtml(description)}" />`)
           .replace('</head>', `    ${buildAlternateLinks(config.page, pageSlug)}\n  </head>`)
           .replace('<div id="root"></div>', `${buildStaticContent(heading, body)}\n    <div id="root"></div>`);
-        html = replaceStructuredData(html, buildJsonLd({ title, canonical, description }));
+        html = replaceStructuredData(html, buildJsonLd({ title, canonical, description, language, t }));
 
         fs.mkdirSync(path.dirname(outputFile), { recursive: true });
         fs.writeFileSync(outputFile, html);
@@ -502,7 +593,7 @@ for (const language of Object.keys(languages)) {
       .replace(/<meta name="twitter:description" content=".*?" \/>/, `<meta name="twitter:description" content="${escapeHtml(description)}" />`)
       .replace('</head>', `    ${buildAlternateLinks(config.page)}\n  </head>`)
       .replace('<div id="root"></div>', `${buildStaticContent(heading, body)}\n    <div id="root"></div>`);
-    html = replaceStructuredData(html, buildJsonLd({ title, canonical, description }));
+    html = replaceStructuredData(html, buildJsonLd({ title, canonical, description, language, t }));
 
     fs.mkdirSync(path.dirname(outputFile), { recursive: true });
     fs.writeFileSync(outputFile, html);
@@ -518,12 +609,14 @@ for (const language of Object.keys(languages)) {
     const canonical = `${siteUrl}${localizedPath}`;
     const dir = language === 'ar' ? 'rtl' : 'ltr';
     const outputFile = path.join(distDir, localizedPath.replace(/^\//, ''), 'index.html');
-    const seoProfile = getProductSeoProfile(product.slug, t[product.nameKey]);
-    const title = language === 'en' ? `${seoProfile.title} | ${t.company_name_en}` : `${t[product.nameKey]} | ${t.company_name_en}`;
-    const description = language === 'en' ? seoProfile.description : t[product.descKey];
+    const seoProfile = getProductSeoProfile(product.slug, t[product.nameKey], language);
+    const title = `${seoProfile.title} | ${t.company_name_en}`;
+    const description = seoProfile.description;
     const productName = t[product.nameKey];
     const heading = productName;
     const body = [
+      seoProfile.overview,
+      seoProfile.description,
       t[product.descKey],
       ...product.featureKeys.map((key) => t[key]),
       ...product.industryKeys.map((key) => `${t.products_card_application}: ${t[key]}`),
@@ -531,44 +624,7 @@ for (const language of Object.keys(languages)) {
       ...product.specKeys.map((spec) => `${t[spec.titleKey]}: ${t[spec.valueKey]} - ${t[spec.descKey]}`),
     ];
     const image = `${siteUrl}${product.image}`;
-    const productContent =
-      language === 'en'
-        ? buildStructuredStaticContent(heading, seoProfile.overview, [
-            {
-              title: 'OEM sourcing and engineering fit',
-              paragraphs: [
-                seoProfile.description,
-                `${t[product.nameKey]} sourcing usually depends on load targets, installation space, material route, and downstream assembly requirements. Buyers using phrases like ${seoProfile.keywords.slice(0, 2).join(' and ')} are generally comparing supplier fit, not just browsing a catalog image.`,
-              ],
-            },
-            {
-              title: 'Manufacturing scope and validation',
-              paragraphs: [
-                `Typical programs combine ${product.featureKeys.map((key) => t[key]).join(', ')} with process requirements such as ${product.processKeys.map((key) => t[key]).join(', ')}.`,
-                `Industrial buyers in ${product.industryKeys.map((key) => t[key]).join(', ')} usually need a clearer view of tolerance control, load verification, finish, and batch consistency before they move into sampling.`,
-              ],
-              items: product.specKeys.map((spec) => `${t[spec.titleKey]}: ${t[spec.valueKey]} - ${t[spec.descKey]}`),
-            },
-            {
-              title: 'What buyers usually confirm before sampling',
-              paragraphs: [
-                'The fastest quotation path is a clear drawing or sample plus target load, stroke, life expectation, finish requirement, and order volume.',
-              ],
-              items: [
-                `Application fit: ${product.industryKeys.map((key) => t[key]).join(', ')}.`,
-                `Manufacturing route: ${product.processKeys.map((key) => t[key]).join(', ')}.`,
-                `Validation scope: ${product.specKeys.map((spec) => `${t[spec.titleKey]} ${t[spec.valueKey]}`).join('; ')}.`,
-              ],
-            },
-            {
-              title: 'Search terms covered by this page',
-              paragraphs: [
-                'These phrases are intentionally reflected on the page because overseas buyers often search by manufacturer, supplier, or custom-production intent before they know a factory name.',
-              ],
-              items: seoProfile.keywords,
-            },
-          ])
-        : buildStaticContent(heading, body);
+    const productContent = buildStaticContent(heading, body);
 
     let html = baseHtml
       .replace(/<html lang="[^"]*">/, `<html lang="${locale.html}" dir="${dir}">`)
@@ -588,7 +644,7 @@ for (const language of Object.keys(languages)) {
       .replace('<div id="root"></div>', `${productContent}\n    <div id="root"></div>`);
     html = replaceStructuredData(
       html,
-      buildProductJsonLd({ productName, title, canonical, description, image, product, t, seoProfile })
+      buildProductJsonLd({ productName, title, canonical, description, image, product, t, seoProfile, language })
     );
 
     fs.mkdirSync(path.dirname(outputFile), { recursive: true });
@@ -627,7 +683,7 @@ for (const language of Object.keys(languages)) {
         .replace(/<meta name="twitter:description" content=".*?" \/>/, `<meta name="twitter:description" content="${escapeHtml(description)}" />`)
         .replace('</head>', `    ${buildAlternateLinks('BLOG', pageSlug)}\n  </head>`)
         .replace('<div id="root"></div>', `${buildStaticContent(`${categoryLabel} ${t.nav_blog}${page > 1 ? ` - ${t.blog_page_status} ${page}` : ''}`, body)}\n    <div id="root"></div>`);
-      html = replaceStructuredData(html, buildJsonLd({ title, canonical, description }));
+      html = replaceStructuredData(html, buildJsonLd({ title, canonical, description, language, t }));
 
       fs.mkdirSync(path.dirname(outputFile), { recursive: true });
       fs.writeFileSync(outputFile, html);
@@ -670,7 +726,7 @@ for (const language of Object.keys(languages)) {
         .replace(/<meta name="twitter:description" content=".*?" \/>/, `<meta name="twitter:description" content="${escapeHtml(description)}" />`)
         .replace('</head>', `    ${buildAlternateLinks('BLOG', pageSlug)}\n  </head>`)
         .replace('<div id="root"></div>', `${buildStaticContent(`${tagLabel} ${t.blog_tag_archive_title}${page > 1 ? ` - ${t.blog_page_status} ${page}` : ''}`, body)}\n    <div id="root"></div>`);
-      html = replaceStructuredData(html, buildJsonLd({ title, canonical, description }));
+      html = replaceStructuredData(html, buildJsonLd({ title, canonical, description, language, t }));
 
       fs.mkdirSync(path.dirname(outputFile), { recursive: true });
       fs.writeFileSync(outputFile, html);
@@ -719,6 +775,8 @@ for (const language of Object.keys(languages)) {
         image,
         publishedAt: post.publishedAt,
         updatedAt: post.updatedAt,
+        language,
+        t,
       })
     );
 

@@ -4,9 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build && node generate-prerender-pages.mjs",
+    "dev": "node scripts/generate-runtime-translations.mjs && vite",
+    "build": "node scripts/generate-runtime-translations.mjs && vite build && node generate-prerender-pages.mjs",
     "preview": "vite preview",
+    "sync:runtime-translations": "node scripts/generate-runtime-translations.mjs",
+    "check:translations": "node scripts/check-translations.mjs",
     "deploy:godaddy": "./scripts/deploy-godaddy.sh"
   },
   "dependencies": {

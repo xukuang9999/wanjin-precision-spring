@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Page Not Found | Wanjin Precision Spring</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f8fafc;
+        --panel: #ffffff;
+        --text: #0f172a;
+        --muted: #475569;
+        --accent: #f59e0b;
+        --border: rgba(15, 23, 42, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background:
+          radial-gradient(circle at top, rgba(245, 158, 11, 0.18), transparent 32%),
+          linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+        color: var(--text);
+        font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      }
+
+      main {
+        width: min(100%, 720px);
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        background: rgba(255, 255, 255, 0.92);
+        padding: 40px;
+        box-shadow: 0 30px 80px rgba(15, 23, 42, 0.12);
+      }
+
+      .eyebrow {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(245, 158, 11, 0.12);
+        color: #92400e;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 20px 0 12px;
+        font-size: clamp(32px, 5vw, 48px);
+        line-height: 1.05;
+      }
+
+      p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 17px;
+        line-height: 1.7;
+      }
+
+      .actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 28px;
+      }
+
+      a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0 18px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .primary {
+        background: #0f172a;
+        color: #ffffff;
+      }
+
+      .secondary {
+        border: 1px solid var(--border);
+        color: var(--text);
+        background: #ffffff;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="eyebrow">404</div>
+      <h1>Page not found</h1>
+      <p>
+        The requested page does not exist, may have moved, or may not be published.
+        Return to the homepage or open the product catalog.
+      </p>
+      <div class="actions">
+        <a class="primary" href="/">Go to homepage</a>
+        <a class="secondary" href="/products">Browse products</a>
+      </div>
+    </main>
+  </body>
+</html>
