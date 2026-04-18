@@ -62,7 +62,7 @@ Downloaded on 2026-03-11 for local use in `public/products`.
   - Source page: https://rpk-global.com/contact-springs
   - Image URL: https://rpk-global.com/thumbs/mobile_image/6458c69df1fcb_muelle-espiral.jpg
 
-- `variable-force-spring.png`
+- `variable-force-spring.jpg`
   - Source page: https://www.cens.com/cens/supplier/product/20060816/23399.html
   - Image URL: https://www.cens.com/cens/supplier/product/20060816/23399_big.jpg
   - Note: local version background adjusted to white for catalog consistency.

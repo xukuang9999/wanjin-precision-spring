@@ -265,7 +265,7 @@ export const PRODUCT_DATA: ProductRecord[] = [
     industryKeys: ['industry_machine', 'industry_elec'],
     processKeys: ['process_cold_title', 'cat_testing'],
     articleTerms: ['motion control', 'long travel', 'spring selection'],
-    image: '/products/variable-force-spring.png',
+    image: '/products/variable-force-spring.jpg',
     specKeys: [
       { valueKey: 'products_spec_cold_value', titleKey: 'products_spec_cold_title', descKey: 'products_spec_cold_desc' },
       { valueKey: 'products_spec_application_value', titleKey: 'products_spec_application_title', descKey: 'products_spec_application_desc' },
@@ -282,7 +282,7 @@ export const PRODUCT_DATA: ProductRecord[] = [
     industryKeys: ['industry_machine', 'industry_elec'],
     processKeys: ['process_cold_title', 'cat_testing'],
     articleTerms: ['motion control', 'long travel', 'batch production'],
-    image: '/products/spiral-spring.jpg',
+    image: '/products/power-spring.jpg',
     specKeys: [
       { valueKey: 'products_spec_cold_value', titleKey: 'products_spec_cold_title', descKey: 'products_spec_cold_desc' },
       { valueKey: 'products_spec_application_value', titleKey: 'products_spec_application_title', descKey: 'products_spec_application_desc' },
@@ -299,7 +299,7 @@ export const PRODUCT_DATA: ProductRecord[] = [
     industryKeys: ['industry_elec', 'industry_power'],
     processKeys: ['cat_surface', 'cat_testing'],
     articleTerms: ['contact springs', 'electrical reliability', 'precision assembly'],
-    image: '/products/contact-clips.jpg',
+    image: '/products/contact-spring.jpg',
     specKeys: [
       { valueKey: 'products_spec_cold_value', titleKey: 'products_spec_cold_title', descKey: 'products_spec_cold_desc' },
       { valueKey: 'products_spec_application_value', titleKey: 'products_spec_application_title', descKey: 'products_spec_application_desc' },

@@ -1,10 +1,12 @@
 import React, { startTransition, useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, ArrowRight, Cable, Filter, Layers3, Search, Wrench } from 'lucide-react';
+import { ResponsiveImage } from '../components/ResponsiveImage';
 import { useLanguage } from '../contexts/LanguageContext';
 import { PageView } from '../types';
 import { type Language } from '../utils/languages';
 import { getProductSeoProfile } from '../utils/productSeo';
 import { getProductBySlug, PRODUCT_DATA, type ProductRecord } from '../data/products';
+import { scheduleIdleTask } from '../utils/idle';
 import { loadBlogModule, type BlogModule } from '../utils/loadBlogModule';
 
 interface ProductsProps {
@@ -22,27 +24,29 @@ const useProductsBlogState = () => {
 
   useEffect(() => {
     let cancelled = false;
+    const cancelIdleTask = scheduleIdleTask(() => {
+      void loadBlogModule()
+        .then((blogModule) => {
+          if (cancelled) {
+            return;
+          }
 
-    void loadBlogModule()
-      .then((blogModule) => {
-        if (cancelled) {
-          return;
-        }
+          const productArticleBySlug = Object.fromEntries(
+            PRODUCT_DATA.map((product) => [product.slug, blogModule.getRelevantBlogPosts(product.articleTerms, 1)[0]]),
+          );
 
-        const productArticleBySlug = Object.fromEntries(
-          PRODUCT_DATA.map((product) => [product.slug, blogModule.getRelevantBlogPosts(product.articleTerms, 1)[0]]),
-        );
-
-        startTransition(() => {
-          setBlogState({ blogModule, productArticleBySlug });
+          startTransition(() => {
+            setBlogState({ blogModule, productArticleBySlug });
+          });
+        })
+        .catch((error) => {
+          console.error('Failed to load product page blog content:', error);
         });
-      })
-      .catch((error) => {
-        console.error('Failed to load product page blog content:', error);
-      });
+    }, 1200);
 
     return () => {
       cancelled = true;
+      cancelIdleTask();
     };
   }, []);
 
@@ -59,14 +63,6 @@ const ProductList: React.FC<ProductsProps & { blogState: ProductsBlogState | nul
     ['products_spec_hot_value', 'products_spec_hot_title'],
     ['products_spec_test_value', 'products_spec_test_title'],
     ['products_spec_application_value', 'products_spec_application_title'],
-  ] as const;
-  const keywordKeys = [
-    'home_keyword_1_title',
-    'home_keyword_2_title',
-    'home_keyword_3_title',
-    'home_keyword_4_title',
-    'home_keyword_5_title',
-    'home_keyword_6_title',
   ] as const;
   const supportCards = [
     { titleKey: 'product_power_eq_name', descKey: 'product_power_eq_desc', icon: <Cable className="w-6 h-6 text-accent-500" /> },
@@ -161,18 +157,11 @@ const ProductList: React.FC<ProductsProps & { blogState: ProductsBlogState | nul
         </div>
       </section>
 
-      <section className="page-shell mt-12 space-y-8 sm:mt-16 sm:space-y-10 xl:mt-24 xl:space-y-12">
+      <section className="page-shell page-deferred-section mt-12 space-y-8 sm:mt-16 sm:space-y-10 xl:mt-24 xl:space-y-12">
         <div className="page-soft-card page-accent-line p-6 md:p-10">
           <div className="max-w-2xl">
             <p className="page-kicker">{t('products_spec_title')}</p>
             <h2 className="apple-card-title mt-4 text-slate-950">{t('products_spec_title')}</h2>
-            <div className="-mx-1 mt-5 flex gap-2 overflow-x-auto px-1 pb-2 sm:mx-0 sm:mt-6 sm:flex-wrap sm:gap-3 sm:overflow-visible sm:px-0 sm:pb-0">
-              {keywordKeys.map((key) => (
-                <span key={key} className="shrink-0 rounded-full border border-accent-400/18 bg-[linear-gradient(180deg,#ffffff_0%,#fff8dc_100%)] px-4 py-2 text-sm font-semibold text-slate-800">
-                  {t(key)}
-                </span>
-              ))}
-            </div>
           </div>
 
           <div className="mt-6 grid gap-4 md:mt-8 md:grid-cols-2 md:gap-5 xl:grid-cols-4 xl:gap-5">
@@ -206,7 +195,7 @@ const ProductList: React.FC<ProductsProps & { blogState: ProductsBlogState | nul
               </div>
             </div>
 
-            <div className="-mx-1 mt-4 flex gap-2 overflow-x-auto px-1 pb-2 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
+            <div className="mobile-scroll-fade -mx-1 mt-4 flex gap-2 overflow-x-auto px-1 pb-2 pr-8 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0 sm:pr-0">
               {categories.map((cat) => (
                 <button
                   key={cat}
@@ -241,13 +230,16 @@ const ProductList: React.FC<ProductsProps & { blogState: ProductsBlogState | nul
                     className="flex flex-1 flex-col text-left"
                     onClick={() => onNavigate(PageView.PRODUCTS, language, product.slug)}
                   >
-                    <div className="relative aspect-[4/3] bg-[linear-gradient(180deg,#ffffff_0%,#eef4fb_100%)] p-3 sm:p-4">
-                      <img
+                    <div className="relative aspect-[4/3] overflow-hidden">
+                      <ResponsiveImage
                         src={product.image}
                         alt={t(product.nameKey)}
                         width="1200"
                         height="900"
-                        className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
+                        responsiveWidths={[640, 960]}
+                        originalWidth={1200}
+                        sizes="(min-width: 1280px) 22vw, (min-width: 1024px) 30vw, (min-width: 768px) 45vw, 92vw"
+                        imgClassName="block h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
                         loading="lazy"
                         decoding="async"
                       />
@@ -263,8 +255,8 @@ const ProductList: React.FC<ProductsProps & { blogState: ProductsBlogState | nul
                           </span>
                         ))}
                       </div>
-                      <h3 className="min-h-[3.1rem] line-clamp-2 text-lg font-bold text-slate-900 transition-colors group-hover:text-brand-500 sm:min-h-[3.5rem]">{t(product.nameKey)}</h3>
-                      <p className="mt-2 line-clamp-2 text-sm text-slate-500 sm:mt-3">{t(product.descKey)}</p>
+                      <h3 className="min-h-[2.75rem] line-clamp-2 text-lg font-bold text-slate-900 transition-colors group-hover:text-brand-500 sm:min-h-[3.5rem]">{t(product.nameKey)}</h3>
+                      <p className="mt-2 line-clamp-3 text-sm text-slate-500 sm:mt-3">{t(product.descKey)}</p>
                       <div className="mt-3 flex flex-wrap gap-2 sm:mt-4">
                         {product.industryKeys.slice(0, 2).map((key) => (
                           <span key={key} className="rounded-full border border-accent-400/16 bg-[linear-gradient(180deg,#ffffff_0%,#fff8dc_100%)] px-2.5 py-1 text-[11px] font-medium text-slate-800">
@@ -286,21 +278,12 @@ const ProductList: React.FC<ProductsProps & { blogState: ProductsBlogState | nul
                         </button>
                       ) : null}
                     </div>
-                    <div className="mt-3 grid grid-cols-2 gap-2.5 sm:mt-4 sm:gap-3">
-                      <button
-                        type="button"
-                        onClick={() => onNavigate(PageView.PRODUCTS, language, product.slug)}
-                        className="flex min-h-[72px] items-center justify-center rounded-lg border border-accent-400/20 px-3 py-2 text-center text-sm font-medium text-slate-700 transition hover:bg-[linear-gradient(145deg,#071427_0%,#0d2747_58%,#123765_100%)] hover:text-white sm:min-h-[88px]"
-                      >
-                        {t('product_details')}
-                      </button>
-                      <a
-                        href={`mailto:sales@wanjinspring.com?subject=${encodeURIComponent(`${t('product_email_subject_inquiry')} - ${t(product.nameKey)}`)}`}
-                        className="flex min-h-[72px] w-full items-center justify-center rounded-lg border border-accent-400/20 px-3 py-2 text-center text-sm font-medium text-slate-700 transition-colors hover:bg-[linear-gradient(145deg,#071427_0%,#0d2747_58%,#123765_100%)] hover:text-white sm:min-h-[88px]"
-                      >
-                        {t('btn_send_email')}
-                      </a>
-                    </div>
+                    <a
+                      href={`mailto:sales@wanjinspring.com?subject=${encodeURIComponent(`${t('product_email_subject_inquiry')} - ${t(product.nameKey)}`)}`}
+                      className="mt-3 flex min-h-[56px] w-full items-center justify-center rounded-lg border border-accent-400/20 px-3 py-2 text-center text-sm font-medium text-slate-700 transition-colors hover:bg-[linear-gradient(145deg,#071427_0%,#0d2747_58%,#123765_100%)] hover:text-white sm:mt-4 sm:min-h-[72px]"
+                    >
+                      {t('btn_send_email')}
+                    </a>
                   </div>
                 </div>
               );
@@ -451,26 +434,27 @@ const ProductDetail: React.FC<{
                 </a>
               </div>
             </div>
-            <div className="rounded-[24px] border border-white/10 bg-white/5 p-5 backdrop-blur-sm sm:rounded-[32px] sm:p-8">
-              <div className="aspect-[4/3] rounded-[22px] bg-white p-4 sm:rounded-[28px] sm:p-6">
-                <img
-                  src={product.image}
-                  alt={t(product.nameKey)}
-                  width="1200"
-                  height="900"
-                  className="h-full w-full object-contain"
-                  loading="eager"
-                  fetchPriority="high"
-                  decoding="async"
-                />
-              </div>
+            <div className="flex aspect-[4/3] items-center justify-center overflow-hidden">
+              <ResponsiveImage
+                src={product.image}
+                alt={t(product.nameKey)}
+                width="1200"
+                height="900"
+                responsiveWidths={[640, 960]}
+                originalWidth={1200}
+                sizes="(min-width: 1024px) 42vw, 100vw"
+                imgClassName="block h-full w-full object-contain"
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+              />
             </div>
           </div>
         </div>
         </div>
       </section>
 
-      <section className="page-shell mt-10 space-y-10 sm:mt-14 sm:space-y-12 md:space-y-14">
+      <section className="page-shell page-deferred-section mt-10 space-y-10 sm:mt-14 sm:space-y-12 md:space-y-14">
         <section className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
           <div className="md:col-span-2 page-soft-card page-accent-line p-6 sm:p-8">
             <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">{t('products_detail_overview')}</h2>
@@ -507,6 +491,7 @@ const ProductDetail: React.FC<{
                 <div key={spec.titleKey} className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5">
                   <div className="text-xl font-bold text-slate-900 sm:text-2xl">{t(spec.valueKey)}</div>
                   <div className="mt-2 text-sm font-semibold text-slate-900">{t(spec.titleKey)}</div>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-500">{t(spec.descKey)}</p>
                 </div>
               ))}
             </div>
@@ -539,7 +524,7 @@ const ProductDetail: React.FC<{
 
         <section className="page-soft-card page-accent-line p-6 sm:p-8">
           <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">{t('products_detail_keyword_title')}</h2>
-          <div className="-mx-1 mt-5 flex gap-2 overflow-x-auto px-1 pb-2 sm:mx-0 sm:mt-6 sm:flex-wrap sm:gap-3 sm:overflow-visible sm:px-0 sm:pb-0">
+          <div className="mobile-scroll-fade -mx-1 mt-5 flex gap-2 overflow-x-auto px-1 pb-2 pr-8 sm:mx-0 sm:mt-6 sm:flex-wrap sm:gap-3 sm:overflow-visible sm:px-0 sm:pb-0 sm:pr-0">
             {seoProfile.keywords.map((keyword) => (
               <span key={keyword} className="shrink-0 rounded-full border border-accent-400/18 bg-[linear-gradient(180deg,#ffffff_0%,#fff8dc_100%)] px-4 py-2 text-sm font-semibold text-slate-900">
                 {keyword}
@@ -622,13 +607,16 @@ const ProductDetail: React.FC<{
                   onClick={() => onNavigate(PageView.PRODUCTS, language, entry.slug)}
                   className={`page-soft-card overflow-hidden text-left transition hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(15,23,42,0.12)] ${index === 2 ? 'hidden md:block' : ''}`}
                 >
-                  <div className="aspect-[16/10] bg-white p-4 sm:p-6">
-                    <img
+                  <div className="aspect-[16/10] overflow-hidden">
+                    <ResponsiveImage
                       src={entry.image}
                       alt={t(entry.nameKey)}
                       width="1600"
                       height="1000"
-                      className="h-full w-full object-contain"
+                      responsiveWidths={[640, 960]}
+                      originalWidth={1200}
+                      sizes="(min-width: 768px) 33vw, 92vw"
+                      imgClassName="block h-full w-full object-contain"
                       loading="lazy"
                       decoding="async"
                     />

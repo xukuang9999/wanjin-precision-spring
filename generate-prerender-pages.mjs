@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import vm from 'vm';
+import BLOG_CONTENT_OVERRIDES from './data/blog/contentOverrides.js';
 
 const distDir = path.resolve('dist');
 const indexPath = path.join(distDir, 'index.html');
@@ -18,6 +19,20 @@ const blogCategoryLabels = {
   news: { en: 'News', zh: '新闻', ru: 'Новости', es: 'Noticias', ar: 'أخبار', hi: 'समाचार', pt: 'Noticias', ja: 'ニュース', de: 'Nachrichten', fr: 'Actualites' },
   insight: { en: 'Insight', zh: '洞察', ru: 'Аналитика', es: 'Perspectiva', ar: 'رؤى', hi: 'अंतर्दृष्टि', pt: 'Insight', ja: 'インサイト', de: 'Einblicke', fr: 'Analyse' },
 };
+const FAQ_KEYS = [
+  ['faq_q1', 'faq_a1'],
+  ['faq_q2', 'faq_a2'],
+  ['faq_q3', 'faq_a3'],
+  ['faq_q4', 'faq_a4'],
+  ['faq_q5', 'faq_a5'],
+  ['faq_q6', 'faq_a6'],
+  ['faq_q7', 'faq_a7'],
+  ['faq_q8', 'faq_a8'],
+  ['faq_q9', 'faq_a9'],
+  ['faq_q10', 'faq_a10'],
+  ['faq_q11', 'faq_a11'],
+  ['faq_q12', 'faq_a12'],
+];
 
 const routeMap = {
   HOME: '/',
@@ -26,6 +41,7 @@ const routeMap = {
   CAPACITY: '/capacity',
   FACTORY: '/factory',
   CONTACT: '/contact',
+  FAQ: '/faq',
   BLOG: '/blog',
 };
 
@@ -82,6 +98,13 @@ const pageConfigs = [
     description: (t) => t.email_us_desc,
     heading: (t) => t.contact_title,
     body: (t) => [t.email_us_desc, `${t.address_label}: ${t.address_val}`, `${t.form_phone}: ${t.phone_val}`],
+  },
+  {
+    page: 'FAQ',
+    title: (t) => `${t.nav_faq} | ${t.company_name_en}`,
+    description: (t) => t.blog_questions_desc,
+    heading: (t) => t.nav_faq,
+    body: (t) => FAQ_KEYS.flatMap(([questionKey, answerKey]) => [t[questionKey], t[answerKey]]),
   },
   {
     page: 'BLOG',
@@ -164,6 +187,106 @@ const machineReadableResources = [
   { name: 'Products Catalog JSON-LD', url: `${siteUrl}/products-catalog.jsonld`, encodingFormat: 'application/ld+json' },
   { name: 'Blog JSON Feed', url: `${siteUrl}/blog-feed.json`, encodingFormat: 'application/feed+json' },
 ];
+
+const blogAuthorProfile = {
+  name: 'Jenny Xu',
+  url: 'https://www.linkedin.com/in/jenny-xu-412a303b9/',
+  knowsAbout: [
+    'Custom spring sourcing',
+    'Industrial spring manufacturing',
+    'Spring drawing review',
+    'Export spring projects',
+    'Supplier qualification',
+    'Load testing and inspection reporting',
+  ],
+};
+
+const baseSeoKeywords = [
+  '万锦精密弹簧',
+  '工业弹簧',
+  'Wanjin Precision Spring',
+  "Xi'an Wanjin Precision Spring",
+  'precision springs',
+  'industrial springs',
+  'heavy duty springs',
+  'compression springs',
+  'hot coil springs',
+  'disc springs',
+  'die springs',
+  'custom springs',
+  'wave springs',
+  'retaining rings',
+];
+
+const localizedSeoKeywords = {
+  zh: [
+    '重载弹簧',
+    '压缩弹簧',
+    '定制弹簧',
+    '精密弹簧',
+  ],
+  ru: [
+    'промышленные пружины',
+    'тяжелонагруженные пружины',
+    'пружины сжатия',
+    'пружины на заказ',
+  ],
+  ja: [
+    '工業用ばね',
+    '圧縮ばね',
+    '特注ばね',
+  ],
+  de: [
+    'Industriefedern',
+    'Schwerlastfedern',
+    'Druckfedern',
+    'Sonderfedern',
+    'Federn nach Maß',
+  ],
+  fr: [
+    'ressorts industriels',
+    'ressorts de compression',
+    'ressorts sur mesure',
+  ],
+  es: [
+    'muelles industriales',
+    'muelles de compresión',
+    'muelles a medida',
+    'muelles de carga pesada',
+  ],
+  pt: [
+    'molas industriais',
+    'molas de compressão',
+    'molas sob medida',
+    'molas de alta carga',
+  ],
+};
+
+const buildKeywordContent = (...keywordGroups) => {
+  const seen = new Set();
+  const keywords = [];
+
+  keywordGroups.forEach((group) => {
+    group?.forEach((keyword) => {
+      const normalized = keyword?.trim();
+      if (!normalized) {
+        return;
+      }
+
+      const dedupeKey = normalized.toLowerCase();
+      if (seen.has(dedupeKey)) {
+        return;
+      }
+
+      seen.add(dedupeKey);
+      keywords.push(normalized);
+    });
+  });
+
+  return keywords.join(', ');
+};
+
+const getBaseSeoKeywords = (language) => [...baseSeoKeywords, ...(localizedSeoKeywords[language] ?? [])];
 
 const auditDuplicateProductAssets = (productRecords) => {
   const usageByAssetPath = new Map();
@@ -277,6 +400,22 @@ const loadProductSeo = () => {
 const getLocalizedValue = (value, language) => value?.[language] ?? value?.en ?? Object.values(value ?? {})[0] ?? '';
 const getCategoryLabel = (category, language) =>
   blogCategoryLabels[category][language] ?? blogCategoryLabels[category].en ?? Object.values(blogCategoryLabels[category])[0];
+const applyBlogOverride = (post) => {
+  const override = BLOG_CONTENT_OVERRIDES[post.slug];
+  if (!override) {
+    return post;
+  }
+
+  return {
+    ...post,
+    updatedAt: override.updatedAt ?? post.updatedAt,
+    title: override.title ? { ...post.title, ...override.title } : post.title,
+    seoTitle: override.seoTitle ? { ...post.seoTitle, ...override.seoTitle } : post.seoTitle,
+    seoDescription: override.seoDescription ? { ...post.seoDescription, ...override.seoDescription } : post.seoDescription,
+    excerpt: override.excerpt ? { ...post.excerpt, ...override.excerpt } : post.excerpt,
+    content: override.content ? { ...post.content, ...override.content } : post.content,
+  };
+};
 const normalizeTagSlug = (tag) => tag.trim().toLowerCase().replace(/\s+/g, '-');
 const getDisplayTagName = (tagSlug) =>
   tagSlug
@@ -291,6 +430,104 @@ const paginatePosts = (posts, page) => {
   return { page: safePage, totalPages, items: posts.slice(start, start + blogPostsPerPage) };
 };
 
+const buildProductSpecifications = (product, en, zh) =>
+  product.specKeys.map((spec, index) => ({
+    order: index + 1,
+    title_en: en[spec.titleKey],
+    title_zh: zh[spec.titleKey],
+    value_en: en[spec.valueKey],
+    value_zh: zh[spec.valueKey],
+    description_en: en[spec.descKey],
+    description_zh: zh[spec.descKey],
+  }));
+
+const buildProductCatalogRecord = (product, en, zh, index) => ({
+  id: product.id,
+  slug: product.slug,
+  sort_order: index + 1,
+  category_en: en[product.categoryKey],
+  category_zh: zh[product.categoryKey],
+  name_en: en[product.nameKey],
+  name_zh: zh[product.nameKey],
+  description_en: en[product.descKey],
+  description_zh: zh[product.descKey],
+  features_en: product.featureKeys.map((key) => en[key]),
+  features_zh: product.featureKeys.map((key) => zh[key]),
+  image_url: `${siteUrl}${product.image}`,
+  page_url: `${siteUrl}/products/${product.slug}`,
+  page_url_zh: `${siteUrl}/zh/products/${product.slug}`,
+  application_areas_en: product.industryKeys.map((key) => en[key]),
+  application_areas_zh: product.industryKeys.map((key) => zh[key]),
+  related_industries_en: product.industryKeys.map((key) => en[key]),
+  related_industries_zh: product.industryKeys.map((key) => zh[key]),
+  manufacturing_process_en: product.processKeys.map((key) => en[key]),
+  manufacturing_process_zh: product.processKeys.map((key) => zh[key]),
+  search_terms: product.articleTerms,
+  specifications: buildProductSpecifications(product, en, zh),
+  specification_count: product.specKeys.length,
+});
+
+const buildProductCatalogJson = (products, en, zh) => {
+  const baseCatalog = JSON.parse(fs.readFileSync(path.resolve('public/products.json'), 'utf8'));
+  const productBySlug = new Map(products.map((product) => [product.slug, product]));
+
+  return {
+    ...baseCatalog,
+    catalog_version: new Date().toISOString().slice(0, 10),
+    products: baseCatalog.products.map((entry) => {
+      const product = productBySlug.get(entry.slug);
+      if (!product) {
+        return entry;
+      }
+
+      return {
+        ...entry,
+        search_terms: product.articleTerms,
+        specifications: buildProductSpecifications(product, en, zh),
+        specification_count: product.specKeys.length,
+      };
+    }),
+  };
+};
+
+const buildProductCatalogJsonLd = (products, en, zh) => {
+  const baseCatalog = JSON.parse(fs.readFileSync(path.resolve('public/products-catalog.jsonld'), 'utf8'));
+  const productBySlug = new Map(products.map((product) => [product.slug, product]));
+
+  return {
+    ...baseCatalog,
+    itemListElement: baseCatalog.itemListElement.map((listItem) => {
+      const slug = listItem.item?.['@id']?.split('#')[1];
+      const product = slug ? productBySlug.get(slug) : undefined;
+      if (!product) {
+        return listItem;
+      }
+
+      const specifications = buildProductSpecifications(product, en, zh);
+      return {
+        ...listItem,
+        item: {
+          ...listItem.item,
+          specifications,
+          specification_count: product.specKeys.length,
+          search_terms: product.articleTerms,
+          additionalProperty: [
+            ...(listItem.item.additionalProperty ?? []),
+            ...specifications.flatMap((spec) => [
+              { '@type': 'PropertyValue', name: `spec_${spec.order}_title_en`, value: spec.title_en },
+              { '@type': 'PropertyValue', name: `spec_${spec.order}_title_zh`, value: spec.title_zh },
+              { '@type': 'PropertyValue', name: `spec_${spec.order}_value_en`, value: spec.value_en },
+              { '@type': 'PropertyValue', name: `spec_${spec.order}_value_zh`, value: spec.value_zh },
+              { '@type': 'PropertyValue', name: `spec_${spec.order}_description_en`, value: spec.description_en },
+              { '@type': 'PropertyValue', name: `spec_${spec.order}_description_zh`, value: spec.description_zh },
+            ]),
+          ],
+        },
+      };
+    }),
+  };
+};
+
 const buildStaticContent = (heading, bodyLines) => {
   const paragraphs = bodyLines.map((line) => `<p>${escapeHtml(line)}</p>`).join('');
   return `
@@ -300,6 +537,46 @@ const buildStaticContent = (heading, bodyLines) => {
     <div style="display:grid;gap:16px;color:#475569;font-size:1rem;line-height:1.8;">
       ${paragraphs}
     </div>
+  </section>
+</noscript>`;
+};
+
+const buildStaticArticleContent = (heading, metaLines, bodyLines) => {
+  const meta = metaLines.map((line) => `<p style="margin:0;color:#64748b;font-size:0.95rem;line-height:1.7;">${escapeHtml(line)}</p>`).join('');
+  const paragraphs = bodyLines.map((line) => `<p>${escapeHtml(line)}</p>`).join('');
+
+  return `
+<noscript>
+  <article id="seo-prerender" data-prerendered="true" style="max-width:960px;margin:0 auto;padding:120px 24px 40px;color:#0f172a;background:#f8fafc;">
+    <h1 style="font-size:2.25rem;line-height:1.2;font-weight:700;margin:0 0 14px;">${escapeHtml(heading)}</h1>
+    <div style="display:grid;gap:6px;margin-bottom:22px;">${meta}</div>
+    <div style="display:grid;gap:16px;color:#475569;font-size:1rem;line-height:1.8;">
+      ${paragraphs}
+    </div>
+  </article>
+</noscript>`;
+};
+
+const buildStaticArticleList = (heading, intro, articles) => {
+  const items = articles
+    .map(
+      (article) => `<article style="padding:24px 0;border-top:1px solid #e2e8f0;">
+  <h2 style="font-size:1.375rem;line-height:1.35;font-weight:700;margin:0;">
+    <a href="${escapeHtml(article.href)}" style="color:#0f172a;text-decoration:none;">${escapeHtml(article.title)}</a>
+  </h2>
+  <p style="margin:12px 0 0;color:#475569;font-size:1rem;line-height:1.8;">${escapeHtml(article.excerpt)}</p>
+</article>`
+    )
+    .join('');
+
+  return `
+<noscript>
+  <section id="seo-prerender" data-prerendered="true" style="max-width:960px;margin:0 auto;padding:120px 24px 40px;color:#0f172a;background:#f8fafc;">
+    <h1 style="font-size:2.25rem;line-height:1.2;font-weight:700;margin:0 0 20px;">${escapeHtml(heading)}</h1>
+    <p style="margin:0 0 28px;color:#475569;font-size:1rem;line-height:1.8;">${escapeHtml(intro)}</p>
+    <section style="border-top:1px solid #e2e8f0;">
+      ${items}
+    </section>
   </section>
 </noscript>`;
 };
@@ -341,7 +618,18 @@ const buildAlternateLinks = (page, slug) =>
     .concat(`<link rel="alternate" hreflang="x-default" href="${siteUrl}${getLocalizedPath(page, defaultLanguage, slug)}" />`)
     .join('\n    ');
 
-const buildSharedJsonLd = ({ title, canonical, description, image = ogImage, type = 'WebPage', publishedAt, updatedAt, language, t }) => [
+const buildSharedJsonLd = ({
+  title,
+  canonical,
+  description,
+  image = ogImage,
+  type = 'WebPage',
+  publishedAt,
+  updatedAt,
+  language,
+  t,
+  keywords,
+}) => [
   {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -372,12 +660,6 @@ const buildSharedJsonLd = ({ title, canonical, description, image = ogImage, typ
     potentialAction: [
       {
         '@type': 'SearchAction',
-        name: `${t.nav_blog} Search`,
-        target: `${siteUrl}${getLocalizedPath('BLOG', language)}?q={search_term_string}`,
-        'query-input': 'required name=search_term_string',
-      },
-      {
-        '@type': 'SearchAction',
         name: `${t.nav_products} Search`,
         target: `${siteUrl}${getLocalizedPath('PRODUCTS', language)}?q={search_term_string}`,
         'query-input': 'required name=search_term_string',
@@ -399,23 +681,61 @@ const buildSharedJsonLd = ({ title, canonical, description, image = ogImage, typ
     description,
     image,
     inLanguage: language,
+    ...(keywords ? { keywords } : {}),
     mainEntityOfPage: canonical,
     isPartOf: {
       '@type': 'WebSite',
       name: t.company_name_en,
       url: siteUrl,
     },
+    ...(type === 'BlogPosting'
+      ? {
+          author: {
+            '@type': 'Person',
+            name: blogAuthorProfile.name,
+            url: blogAuthorProfile.url,
+            knowsAbout: blogAuthorProfile.knowsAbout,
+          },
+          publisher: {
+            '@type': 'Organization',
+            name: t.company_name_full ?? t.company_name_en,
+            alternateName: t.company_name_en,
+            url: siteUrl,
+            logo: {
+              '@type': 'ImageObject',
+              url: `${siteUrl}/factory/logo.jpeg`,
+            },
+          },
+        }
+      : {}),
     ...(publishedAt ? { datePublished: publishedAt } : {}),
     ...(updatedAt ? { dateModified: updatedAt } : {}),
   },
 ];
 
-const buildJsonLd = ({ type = 'WebPage', title, canonical, description, image = ogImage, publishedAt, updatedAt, language, t }) =>
-  serializeJsonLd(buildSharedJsonLd({ type, title, canonical, description, image, publishedAt, updatedAt, language, t }));
+const buildJsonLd = ({ type = 'WebPage', title, canonical, description, image = ogImage, publishedAt, updatedAt, language, t, keywords }) =>
+  serializeJsonLd(buildSharedJsonLd({ type, title, canonical, description, image, publishedAt, updatedAt, language, t, keywords }));
 
-const buildProductJsonLd = ({ productName, title, canonical, description, image, product, t, seoProfile, language }) =>
+const buildFaqJsonLd = ({ title, canonical, description, language, t, keywords }) =>
   serializeJsonLd([
-    ...buildSharedJsonLd({ title, canonical, description, image, language, t }),
+    ...buildSharedJsonLd({ title, canonical, description, language, t, keywords }),
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: FAQ_KEYS.map(([questionKey, answerKey]) => ({
+        '@type': 'Question',
+        name: t[questionKey],
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: t[answerKey],
+        },
+      })),
+    },
+  ]);
+
+const buildProductJsonLd = ({ productName, title, canonical, description, image, product, t, seoProfile, language, keywords }) =>
+  serializeJsonLd([
+    ...buildSharedJsonLd({ title, canonical, description, image, language, t, keywords }),
     {
       '@context': 'https://schema.org',
       '@type': 'Product',
@@ -425,7 +745,7 @@ const buildProductJsonLd = ({ productName, title, canonical, description, image,
       description,
       image,
       category: t[product.categoryKey],
-      keywords: seoProfile.keywords.join(', '),
+      keywords: keywords ?? seoProfile.keywords.join(', '),
       brand: {
         '@type': 'Brand',
         name: t.company_name_en,
@@ -517,28 +837,79 @@ const writeJsonFeed = (posts) => {
 
 const baseHtml = fs.readFileSync(indexPath, 'utf8');
 const { languages, translations } = loadTranslations();
-const blogPosts = loadBlogPosts();
+const blogPosts = loadBlogPosts().map(applyBlogOverride);
 const products = loadProducts();
 const getProductSeoProfile = loadProductSeo();
 const sitemapEntries = [];
+const englishCatalog = translations.en;
+const chineseCatalog = translations.zh ?? translations.en;
 
 auditDuplicateProductAssets(products);
+
+fs.writeFileSync(path.join(distDir, 'products.json'), JSON.stringify(buildProductCatalogJson(products, englishCatalog, chineseCatalog), null, 2));
+fs.writeFileSync(path.join(distDir, 'products-catalog.jsonld'), JSON.stringify(buildProductCatalogJsonLd(products, englishCatalog, chineseCatalog), null, 2));
 
 for (const language of Object.keys(languages)) {
   const locale = localeMap[language];
   const t = translations[language];
 
   for (const config of pageConfigs) {
+    if (config.page === 'FAQ') {
+      const localizedPath = getLocalizedPath(config.page, language);
+      const canonical = `${siteUrl}${localizedPath}`;
+      const title = config.title(t);
+      const description = config.description(t);
+      const keywords = buildKeywordContent(getBaseSeoKeywords(language), [t.nav_faq, t.faq_title, t.blog_questions_title]);
+      const heading = config.heading(t);
+      const dir = language === 'ar' ? 'rtl' : 'ltr';
+      const outputFile = path.join(distDir, localizedPath.replace(/^\//, ''), 'index.html');
+      const sections = FAQ_KEYS.map(([questionKey, answerKey]) => ({
+        title: t[questionKey],
+        paragraphs: [t[answerKey]],
+      }));
+
+      let html = baseHtml
+        .replace(/<html lang="[^"]*">/, `<html lang="${locale.html}" dir="${dir}">`)
+        .replace(/<title>.*?<\/title>/, `<title>${escapeHtml(title)}</title>`)
+        .replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${escapeHtml(description)}" />`)
+        .replace(/<meta name="keywords" content=".*?" \/>/, `<meta name="keywords" content="${escapeHtml(keywords)}" />`)
+        .replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${escapeHtml(canonical)}" />`)
+        .replace(/<meta property="og:title" content=".*?" \/>/, `<meta property="og:title" content="${escapeHtml(title)}" />`)
+        .replace(/<meta property="og:description" content=".*?" \/>/, `<meta property="og:description" content="${escapeHtml(description)}" />`)
+        .replace(/<meta property="og:url" content=".*?" \/>/, `<meta property="og:url" content="${escapeHtml(canonical)}" />`)
+        .replace(/<meta property="og:locale" content=".*?" \/>/, `<meta property="og:locale" content="${locale.og}" />`)
+        .replace(/<meta name="twitter:title" content=".*?" \/>/, `<meta name="twitter:title" content="${escapeHtml(title)}" />`)
+        .replace(/<meta name="twitter:description" content=".*?" \/>/, `<meta name="twitter:description" content="${escapeHtml(description)}" />`)
+        .replace('</head>', `    ${buildAlternateLinks(config.page)}\n  </head>`)
+        .replace('<div id="root"></div>', `${buildStructuredStaticContent(heading, description, sections)}\n    <div id="root"></div>`);
+      html = replaceStructuredData(html, buildFaqJsonLd({ title, canonical, description, language, t, keywords }));
+
+      fs.mkdirSync(path.dirname(outputFile), { recursive: true });
+      fs.writeFileSync(outputFile, html);
+      sitemapEntries.push({
+        loc: canonical,
+        priority: '0.7',
+        changefreq: 'monthly',
+      });
+      continue;
+    }
+
     if (config.page === 'BLOG') {
       const paginated = paginatePosts(blogPosts, 1);
       for (let page = 1; page <= paginated.totalPages; page += 1) {
+        const paginatedPage = paginatePosts(blogPosts, page);
         const pageSlug = page > 1 ? `page/${page}` : undefined;
         const localizedPath = getLocalizedPath(config.page, language, pageSlug);
         const canonical = `${siteUrl}${localizedPath}`;
         const title = `${config.title(t)}${page > 1 ? ` | ${t.blog_page_status} ${page}` : ''}`;
         const description = config.description(t);
+        const keywords = buildKeywordContent(getBaseSeoKeywords(language));
         const heading = `${config.heading(t)}${page > 1 ? ` - ${t.blog_page_status} ${page}` : ''}`;
-        const body = paginatePosts(blogPosts, page).items.map((post) => getLocalizedValue(post.excerpt, language));
+        const articles = paginatedPage.items.map((post) => ({
+          title: getLocalizedValue(post.title, language),
+          excerpt: getLocalizedValue(post.excerpt, language),
+          href: getLocalizedPath('BLOG', language, post.slug),
+        }));
         const dir = language === 'ar' ? 'rtl' : 'ltr';
         const outputFile = path.join(distDir, localizedPath.replace(/^\//, ''), 'index.html');
 
@@ -546,6 +917,7 @@ for (const language of Object.keys(languages)) {
           .replace(/<html lang="[^"]*">/, `<html lang="${locale.html}" dir="${dir}">`)
           .replace(/<title>.*?<\/title>/, `<title>${escapeHtml(title)}</title>`)
           .replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${escapeHtml(description)}" />`)
+          .replace(/<meta name="keywords" content=".*?" \/>/, `<meta name="keywords" content="${escapeHtml(keywords)}" />`)
           .replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${escapeHtml(canonical)}" />`)
           .replace(/<meta property="og:title" content=".*?" \/>/, `<meta property="og:title" content="${escapeHtml(title)}" />`)
           .replace(/<meta property="og:description" content=".*?" \/>/, `<meta property="og:description" content="${escapeHtml(description)}" />`)
@@ -554,8 +926,8 @@ for (const language of Object.keys(languages)) {
           .replace(/<meta name="twitter:title" content=".*?" \/>/, `<meta name="twitter:title" content="${escapeHtml(title)}" />`)
           .replace(/<meta name="twitter:description" content=".*?" \/>/, `<meta name="twitter:description" content="${escapeHtml(description)}" />`)
           .replace('</head>', `    ${buildAlternateLinks(config.page, pageSlug)}\n  </head>`)
-          .replace('<div id="root"></div>', `${buildStaticContent(heading, body)}\n    <div id="root"></div>`);
-        html = replaceStructuredData(html, buildJsonLd({ title, canonical, description, language, t }));
+          .replace('<div id="root"></div>', `${buildStaticArticleList(heading, description, articles)}\n    <div id="root"></div>`);
+        html = replaceStructuredData(html, buildJsonLd({ title, canonical, description, language, t, keywords }));
 
         fs.mkdirSync(path.dirname(outputFile), { recursive: true });
         fs.writeFileSync(outputFile, html);
@@ -572,6 +944,7 @@ for (const language of Object.keys(languages)) {
     const canonical = `${siteUrl}${localizedPath}`;
     const title = config.title(t);
     const description = config.description(t);
+    const keywords = buildKeywordContent(getBaseSeoKeywords(language));
     const heading = config.heading(t);
     const body = config.body(t);
     const dir = language === 'ar' ? 'rtl' : 'ltr';
@@ -584,6 +957,7 @@ for (const language of Object.keys(languages)) {
       .replace(/<html lang="[^"]*">/, `<html lang="${locale.html}" dir="${dir}">`)
       .replace(/<title>.*?<\/title>/, `<title>${escapeHtml(title)}</title>`)
       .replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${escapeHtml(description)}" />`)
+      .replace(/<meta name="keywords" content=".*?" \/>/, `<meta name="keywords" content="${escapeHtml(keywords)}" />`)
       .replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${escapeHtml(canonical)}" />`)
       .replace(/<meta property="og:title" content=".*?" \/>/, `<meta property="og:title" content="${escapeHtml(title)}" />`)
       .replace(/<meta property="og:description" content=".*?" \/>/, `<meta property="og:description" content="${escapeHtml(description)}" />`)
@@ -593,7 +967,7 @@ for (const language of Object.keys(languages)) {
       .replace(/<meta name="twitter:description" content=".*?" \/>/, `<meta name="twitter:description" content="${escapeHtml(description)}" />`)
       .replace('</head>', `    ${buildAlternateLinks(config.page)}\n  </head>`)
       .replace('<div id="root"></div>', `${buildStaticContent(heading, body)}\n    <div id="root"></div>`);
-    html = replaceStructuredData(html, buildJsonLd({ title, canonical, description, language, t }));
+    html = replaceStructuredData(html, buildJsonLd({ title, canonical, description, language, t, keywords }));
 
     fs.mkdirSync(path.dirname(outputFile), { recursive: true });
     fs.writeFileSync(outputFile, html);
@@ -613,6 +987,7 @@ for (const language of Object.keys(languages)) {
     const title = `${seoProfile.title} | ${t.company_name_en}`;
     const description = seoProfile.description;
     const productName = t[product.nameKey];
+    const keywords = buildKeywordContent(getBaseSeoKeywords(language), seoProfile.keywords, [productName]);
     const heading = productName;
     const body = [
       seoProfile.overview,
@@ -630,6 +1005,7 @@ for (const language of Object.keys(languages)) {
       .replace(/<html lang="[^"]*">/, `<html lang="${locale.html}" dir="${dir}">`)
       .replace(/<title>.*?<\/title>/, `<title>${escapeHtml(title)}</title>`)
       .replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${escapeHtml(description)}" />`)
+      .replace(/<meta name="keywords" content=".*?" \/>/, `<meta name="keywords" content="${escapeHtml(keywords)}" />`)
       .replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${escapeHtml(canonical)}" />`)
       .replace(/<meta property="og:title" content=".*?" \/>/, `<meta property="og:title" content="${escapeHtml(title)}" />`)
       .replace(/<meta property="og:description" content=".*?" \/>/, `<meta property="og:description" content="${escapeHtml(description)}" />`)
@@ -644,7 +1020,7 @@ for (const language of Object.keys(languages)) {
       .replace('<div id="root"></div>', `${productContent}\n    <div id="root"></div>`);
     html = replaceStructuredData(
       html,
-      buildProductJsonLd({ productName, title, canonical, description, image, product, t, seoProfile, language })
+      buildProductJsonLd({ productName, title, canonical, description, image, product, t, seoProfile, language, keywords })
     );
 
     fs.mkdirSync(path.dirname(outputFile), { recursive: true });
@@ -661,6 +1037,7 @@ for (const language of Object.keys(languages)) {
     const categoryLabel = getCategoryLabel(category, language);
     const paginated = paginatePosts(categoryPosts, 1);
     for (let page = 1; page <= paginated.totalPages; page += 1) {
+      const paginatedPage = paginatePosts(categoryPosts, page);
       const pageSlug = page > 1 ? `category/${category}/page/${page}` : `category/${category}`;
       const localizedPath = getLocalizedPath('BLOG', language, pageSlug);
       const canonical = `${siteUrl}${localizedPath}`;
@@ -668,12 +1045,18 @@ for (const language of Object.keys(languages)) {
       const outputFile = path.join(distDir, localizedPath.replace(/^\//, ''), 'index.html');
       const title = `${categoryLabel} ${t.nav_blog}${page > 1 ? ` | ${t.blog_page_status} ${page}` : ''} | ${t.company_name_en}`;
       const description = `${t.blog_desc} ${categoryLabel}.`;
-      const body = paginatePosts(categoryPosts, page).items.map((post) => getLocalizedValue(post.excerpt, language));
+      const keywords = buildKeywordContent(getBaseSeoKeywords(language), [categoryLabel]);
+      const articles = paginatedPage.items.map((post) => ({
+        title: getLocalizedValue(post.title, language),
+        excerpt: getLocalizedValue(post.excerpt, language),
+        href: getLocalizedPath('BLOG', language, post.slug),
+      }));
 
       let html = baseHtml
         .replace(/<html lang="[^"]*">/, `<html lang="${locale.html}" dir="${dir}">`)
         .replace(/<title>.*?<\/title>/, `<title>${escapeHtml(title)}</title>`)
         .replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${escapeHtml(description)}" />`)
+        .replace(/<meta name="keywords" content=".*?" \/>/, `<meta name="keywords" content="${escapeHtml(keywords)}" />`)
         .replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${escapeHtml(canonical)}" />`)
         .replace(/<meta property="og:title" content=".*?" \/>/, `<meta property="og:title" content="${escapeHtml(title)}" />`)
         .replace(/<meta property="og:description" content=".*?" \/>/, `<meta property="og:description" content="${escapeHtml(description)}" />`)
@@ -682,8 +1065,8 @@ for (const language of Object.keys(languages)) {
         .replace(/<meta name="twitter:title" content=".*?" \/>/, `<meta name="twitter:title" content="${escapeHtml(title)}" />`)
         .replace(/<meta name="twitter:description" content=".*?" \/>/, `<meta name="twitter:description" content="${escapeHtml(description)}" />`)
         .replace('</head>', `    ${buildAlternateLinks('BLOG', pageSlug)}\n  </head>`)
-        .replace('<div id="root"></div>', `${buildStaticContent(`${categoryLabel} ${t.nav_blog}${page > 1 ? ` - ${t.blog_page_status} ${page}` : ''}`, body)}\n    <div id="root"></div>`);
-      html = replaceStructuredData(html, buildJsonLd({ title, canonical, description, language, t }));
+        .replace('<div id="root"></div>', `${buildStaticArticleList(`${categoryLabel} ${t.nav_blog}${page > 1 ? ` - ${t.blog_page_status} ${page}` : ''}`, description, articles)}\n    <div id="root"></div>`);
+      html = replaceStructuredData(html, buildJsonLd({ title, canonical, description, language, t, keywords }));
 
       fs.mkdirSync(path.dirname(outputFile), { recursive: true });
       fs.writeFileSync(outputFile, html);
@@ -704,6 +1087,7 @@ for (const language of Object.keys(languages)) {
     const tagLabel = getDisplayTagName(tagSlug);
     const paginated = paginatePosts(tagPosts, 1);
     for (let page = 1; page <= paginated.totalPages; page += 1) {
+      const paginatedPage = paginatePosts(tagPosts, page);
       const pageSlug = page > 1 ? `tag/${tagSlug}/page/${page}` : `tag/${tagSlug}`;
       const localizedPath = getLocalizedPath('BLOG', language, pageSlug);
       const canonical = `${siteUrl}${localizedPath}`;
@@ -711,12 +1095,18 @@ for (const language of Object.keys(languages)) {
       const outputFile = path.join(distDir, localizedPath.replace(/^\//, ''), 'index.html');
       const title = `${tagLabel} ${t.blog_tag_archive_title}${page > 1 ? ` | ${t.blog_page_status} ${page}` : ''} | ${t.company_name_en}`;
       const description = `${t.blog_tag_archive_desc} ${tagLabel}.`;
-      const body = paginatePosts(tagPosts, page).items.map((post) => getLocalizedValue(post.excerpt, language));
+      const keywords = buildKeywordContent(getBaseSeoKeywords(language), [tagLabel]);
+      const articles = paginatedPage.items.map((post) => ({
+        title: getLocalizedValue(post.title, language),
+        excerpt: getLocalizedValue(post.excerpt, language),
+        href: getLocalizedPath('BLOG', language, post.slug),
+      }));
 
       let html = baseHtml
         .replace(/<html lang="[^"]*">/, `<html lang="${locale.html}" dir="${dir}">`)
         .replace(/<title>.*?<\/title>/, `<title>${escapeHtml(title)}</title>`)
         .replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${escapeHtml(description)}" />`)
+        .replace(/<meta name="keywords" content=".*?" \/>/, `<meta name="keywords" content="${escapeHtml(keywords)}" />`)
         .replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${escapeHtml(canonical)}" />`)
         .replace(/<meta property="og:title" content=".*?" \/>/, `<meta property="og:title" content="${escapeHtml(title)}" />`)
         .replace(/<meta property="og:description" content=".*?" \/>/, `<meta property="og:description" content="${escapeHtml(description)}" />`)
@@ -725,8 +1115,8 @@ for (const language of Object.keys(languages)) {
         .replace(/<meta name="twitter:title" content=".*?" \/>/, `<meta name="twitter:title" content="${escapeHtml(title)}" />`)
         .replace(/<meta name="twitter:description" content=".*?" \/>/, `<meta name="twitter:description" content="${escapeHtml(description)}" />`)
         .replace('</head>', `    ${buildAlternateLinks('BLOG', pageSlug)}\n  </head>`)
-        .replace('<div id="root"></div>', `${buildStaticContent(`${tagLabel} ${t.blog_tag_archive_title}${page > 1 ? ` - ${t.blog_page_status} ${page}` : ''}`, body)}\n    <div id="root"></div>`);
-      html = replaceStructuredData(html, buildJsonLd({ title, canonical, description, language, t }));
+        .replace('<div id="root"></div>', `${buildStaticArticleList(`${tagLabel} ${t.blog_tag_archive_title}${page > 1 ? ` - ${t.blog_page_status} ${page}` : ''}`, description, articles)}\n    <div id="root"></div>`);
+      html = replaceStructuredData(html, buildJsonLd({ title, canonical, description, language, t, keywords }));
 
       fs.mkdirSync(path.dirname(outputFile), { recursive: true });
       fs.writeFileSync(outputFile, html);
@@ -748,11 +1138,21 @@ for (const language of Object.keys(languages)) {
     const outputFile = path.join(distDir, localizedPath.replace(/^\//, ''), 'index.html');
     const title = getLocalizedValue(post.seoTitle, language) || heading;
     const image = `${siteUrl}${post.coverImage}`;
+    const keywords = buildKeywordContent(getBaseSeoKeywords(language), post.tags, [title]);
+    const localeCode = localeMap[language]?.html ?? 'en';
+    const publishedDate = new Intl.DateTimeFormat(localeCode, { year: 'numeric', month: 'short', day: 'numeric' }).format(new Date(post.publishedAt));
+    const updatedDate = new Intl.DateTimeFormat(localeCode, { year: 'numeric', month: 'short', day: 'numeric' }).format(new Date(post.updatedAt));
+    const articleMeta = [
+      `Author: ${blogAuthorProfile.name}`,
+      `Published: ${publishedDate}`,
+      `Updated: ${updatedDate}`,
+    ];
 
     let html = baseHtml
       .replace(/<html lang="[^"]*">/, `<html lang="${locale.html}" dir="${dir}">`)
       .replace(/<title>.*?<\/title>/, `<title>${escapeHtml(title)}</title>`)
       .replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${escapeHtml(description)}" />`)
+      .replace(/<meta name="keywords" content=".*?" \/>/, `<meta name="keywords" content="${escapeHtml(keywords)}" />`)
       .replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${escapeHtml(canonical)}" />`)
       .replace(/<meta property="og:title" content=".*?" \/>/, `<meta property="og:title" content="${escapeHtml(title)}" />`)
       .replace(/<meta property="og:description" content=".*?" \/>/, `<meta property="og:description" content="${escapeHtml(description)}" />`)
@@ -764,7 +1164,7 @@ for (const language of Object.keys(languages)) {
       .replace(/<meta name="twitter:image" content=".*?" \/>/, `<meta name="twitter:image" content="${escapeHtml(image)}" />`)
       .replace(/<meta property="og:type" content=".*?" \/>/, `<meta property="og:type" content="article" />`)
       .replace('</head>', `    ${buildAlternateLinks('BLOG', post.slug)}\n  </head>`)
-      .replace('<div id="root"></div>', `${buildStaticContent(heading, body)}\n    <div id="root"></div>`);
+      .replace('<div id="root"></div>', `${buildStaticArticleContent(heading, articleMeta, body)}\n    <div id="root"></div>`);
     html = replaceStructuredData(
       html,
       buildJsonLd({
@@ -777,6 +1177,7 @@ for (const language of Object.keys(languages)) {
         updatedAt: post.updatedAt,
         language,
         t,
+        keywords,
       })
     );
 

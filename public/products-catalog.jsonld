@@ -122,6 +122,96 @@
             "@type": "PropertyValue",
             "name": "inspection_methods_zh",
             "value": "载荷检测, 尺寸检测, 按需求进行疲劳相关验证"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_en",
+            "value": "Hot Coiling and Heavy-Duty Parts"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_zh",
+            "value": "热卷与重载弹性件"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_en",
+            "value": "14-50 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_zh",
+            "value": "14-50 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_en",
+            "value": "Highlights large-wire hot coiling, heavy-load buffering, and high-load clamping products for power equipment, heavy machinery, and industrial actuation systems."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_zh",
+            "value": "强调大线径热卷、重载缓冲和高载荷夹紧类产品，适配电力装备、重型机械和工业执行机构。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_en",
+            "value": "Heavy-Load Validation"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_zh",
+            "value": "重载验证思路"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_en",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_zh",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_en",
+            "value": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_zh",
+            "value": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_en",
+            "value": "Project and Standards Coverage"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_zh",
+            "value": "项目与标准覆盖"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_en",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_zh",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_en",
+            "value": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_zh",
+            "value": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
           }
         ],
         "material": "Spring steel, Alloy spring steel, Custom material on request",
@@ -139,7 +229,42 @@
             "url": "https://wanjinspring.com/",
             "email": "sales@wanjinspring.com"
           }
-        }
+        },
+        "specifications": [
+          {
+            "order": 1,
+            "title_en": "Hot Coiling and Heavy-Duty Parts",
+            "title_zh": "热卷与重载弹性件",
+            "value_en": "14-50 mm",
+            "value_zh": "14-50 mm",
+            "description_en": "Highlights large-wire hot coiling, heavy-load buffering, and high-load clamping products for power equipment, heavy machinery, and industrial actuation systems.",
+            "description_zh": "强调大线径热卷、重载缓冲和高载荷夹紧类产品，适配电力装备、重型机械和工业执行机构。"
+          },
+          {
+            "order": 2,
+            "title_en": "Heavy-Load Validation",
+            "title_zh": "重载验证思路",
+            "value_en": "5-50 tonf",
+            "value_zh": "5-50 tonf",
+            "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+            "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+          },
+          {
+            "order": 3,
+            "title_en": "Project and Standards Coverage",
+            "title_zh": "项目与标准覆盖",
+            "value_en": "GB / ISO / JIS",
+            "value_zh": "GB / ISO / JIS",
+            "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+            "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+          }
+        ],
+        "specification_count": 3,
+        "search_terms": [
+          "hot coiling",
+          "large diameter springs",
+          "fatigue life"
+        ]
       }
     },
     {
@@ -148,7 +273,7 @@
       "url": "https://wanjinspring.com/products",
       "item": {
         "@type": "Product",
-        "@id": "https://wanjinspring.com/products.json#stacked-disc-spring-assemblies",
+        "@id": "https://wanjinspring.com/products.json#disc-spring-stacks",
         "name": "Stacked Disc Spring Assemblies",
         "alternateName": "叠装碟簧组",
         "category": "Heavy Duty",
@@ -366,6 +491,96 @@
             "@type": "PropertyValue",
             "name": "inspection_methods_zh",
             "value": "尺寸检测, 载荷检测, 外观检查"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_en",
+            "value": "Cold Coiling and Precision Forming"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_zh",
+            "value": "冷卷与精密成形"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_en",
+            "value": "0.1-10 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_zh",
+            "value": "0.1-10 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_en",
+            "value": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_zh",
+            "value": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_en",
+            "value": "Heavy-Load Validation"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_zh",
+            "value": "重载验证思路"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_en",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_zh",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_en",
+            "value": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_zh",
+            "value": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_en",
+            "value": "Project and Standards Coverage"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_zh",
+            "value": "项目与标准覆盖"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_en",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_zh",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_en",
+            "value": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_zh",
+            "value": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
           }
         ],
         "material": "Spring steel wire, Stainless steel, Special alloy on request",
@@ -383,7 +598,42 @@
             "url": "https://wanjinspring.com/",
             "email": "sales@wanjinspring.com"
           }
-        }
+        },
+        "specifications": [
+          {
+            "order": 1,
+            "title_en": "Cold Coiling and Precision Forming",
+            "title_zh": "冷卷与精密成形",
+            "value_en": "0.1-10 mm",
+            "value_zh": "0.1-10 mm",
+            "description_en": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs.",
+            "description_zh": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+          },
+          {
+            "order": 2,
+            "title_en": "Heavy-Load Validation",
+            "title_zh": "重载验证思路",
+            "value_en": "5-50 tonf",
+            "value_zh": "5-50 tonf",
+            "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+            "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+          },
+          {
+            "order": 3,
+            "title_en": "Project and Standards Coverage",
+            "title_zh": "项目与标准覆盖",
+            "value_en": "GB / ISO / JIS",
+            "value_zh": "GB / ISO / JIS",
+            "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+            "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+          }
+        ],
+        "specification_count": 3,
+        "search_terms": [
+          "die springs",
+          "tooling",
+          "stamping dies"
+        ]
       }
     },
     {
@@ -488,6 +738,96 @@
             "@type": "PropertyValue",
             "name": "inspection_methods_zh",
             "value": "尺寸检测, 载荷检测, 外观检查"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_en",
+            "value": "Cold Coiling and Precision Forming"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_zh",
+            "value": "冷卷与精密成形"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_en",
+            "value": "0.1-10 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_zh",
+            "value": "0.1-10 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_en",
+            "value": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_zh",
+            "value": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_en",
+            "value": "Heavy-Load Validation"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_zh",
+            "value": "重载验证思路"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_en",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_zh",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_en",
+            "value": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_zh",
+            "value": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_en",
+            "value": "Project and Standards Coverage"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_zh",
+            "value": "项目与标准覆盖"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_en",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_zh",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_en",
+            "value": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_zh",
+            "value": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
           }
         ],
         "material": "Spring steel wire, Stainless steel, Special alloy on request",
@@ -505,7 +845,42 @@
             "url": "https://wanjinspring.com/",
             "email": "sales@wanjinspring.com"
           }
-        }
+        },
+        "specifications": [
+          {
+            "order": 1,
+            "title_en": "Cold Coiling and Precision Forming",
+            "title_zh": "冷卷与精密成形",
+            "value_en": "0.1-10 mm",
+            "value_zh": "0.1-10 mm",
+            "description_en": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs.",
+            "description_zh": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+          },
+          {
+            "order": 2,
+            "title_en": "Heavy-Load Validation",
+            "title_zh": "重载验证思路",
+            "value_en": "5-50 tonf",
+            "value_zh": "5-50 tonf",
+            "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+            "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+          },
+          {
+            "order": 3,
+            "title_en": "Project and Standards Coverage",
+            "title_zh": "项目与标准覆盖",
+            "value_en": "GB / ISO / JIS",
+            "value_zh": "GB / ISO / JIS",
+            "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+            "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+          }
+        ],
+        "specification_count": 3,
+        "search_terms": [
+          "compression springs",
+          "spring materials",
+          "cold coiling"
+        ]
       }
     },
     {
@@ -610,6 +985,96 @@
             "@type": "PropertyValue",
             "name": "inspection_methods_zh",
             "value": "尺寸检测, 载荷检测, 外观检查"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_en",
+            "value": "Cold Coiling and Precision Forming"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_zh",
+            "value": "冷卷与精密成形"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_en",
+            "value": "0.1-10 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_zh",
+            "value": "0.1-10 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_en",
+            "value": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_zh",
+            "value": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_en",
+            "value": "Project and Standards Coverage"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_zh",
+            "value": "项目与标准覆盖"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_en",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_zh",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_en",
+            "value": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_zh",
+            "value": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_en",
+            "value": "Heavy-Load Validation"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_zh",
+            "value": "重载验证思路"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_en",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_zh",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_en",
+            "value": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_zh",
+            "value": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
           }
         ],
         "material": "Spring steel wire, Stainless steel, Special alloy on request",
@@ -627,7 +1092,42 @@
             "url": "https://wanjinspring.com/",
             "email": "sales@wanjinspring.com"
           }
-        }
+        },
+        "specifications": [
+          {
+            "order": 1,
+            "title_en": "Cold Coiling and Precision Forming",
+            "title_zh": "冷卷与精密成形",
+            "value_en": "0.1-10 mm",
+            "value_zh": "0.1-10 mm",
+            "description_en": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs.",
+            "description_zh": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+          },
+          {
+            "order": 2,
+            "title_en": "Project and Standards Coverage",
+            "title_zh": "项目与标准覆盖",
+            "value_en": "GB / ISO / JIS",
+            "value_zh": "GB / ISO / JIS",
+            "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+            "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+          },
+          {
+            "order": 3,
+            "title_en": "Heavy-Load Validation",
+            "title_zh": "重载验证思路",
+            "value_en": "5-50 tonf",
+            "value_zh": "5-50 tonf",
+            "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+            "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+          }
+        ],
+        "specification_count": 3,
+        "search_terms": [
+          "spring materials",
+          "cold coiling",
+          "engineering workflow"
+        ]
       }
     },
     {
@@ -732,6 +1232,96 @@
             "@type": "PropertyValue",
             "name": "inspection_methods_zh",
             "value": "尺寸检测, 载荷检测, 外观检查"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_en",
+            "value": "Cold Coiling and Precision Forming"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_zh",
+            "value": "冷卷与精密成形"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_en",
+            "value": "0.1-10 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_zh",
+            "value": "0.1-10 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_en",
+            "value": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_zh",
+            "value": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_en",
+            "value": "Project and Standards Coverage"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_zh",
+            "value": "项目与标准覆盖"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_en",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_zh",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_en",
+            "value": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_zh",
+            "value": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_en",
+            "value": "Heavy-Load Validation"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_zh",
+            "value": "重载验证思路"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_en",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_zh",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_en",
+            "value": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_zh",
+            "value": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
           }
         ],
         "material": "Spring steel wire, Stainless steel, Special alloy on request",
@@ -749,7 +1339,42 @@
             "url": "https://wanjinspring.com/",
             "email": "sales@wanjinspring.com"
           }
-        }
+        },
+        "specifications": [
+          {
+            "order": 1,
+            "title_en": "Cold Coiling and Precision Forming",
+            "title_zh": "冷卷与精密成形",
+            "value_en": "0.1-10 mm",
+            "value_zh": "0.1-10 mm",
+            "description_en": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs.",
+            "description_zh": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+          },
+          {
+            "order": 2,
+            "title_en": "Project and Standards Coverage",
+            "title_zh": "项目与标准覆盖",
+            "value_en": "GB / ISO / JIS",
+            "value_zh": "GB / ISO / JIS",
+            "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+            "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+          },
+          {
+            "order": 3,
+            "title_en": "Heavy-Load Validation",
+            "title_zh": "重载验证思路",
+            "value_en": "5-50 tonf",
+            "value_zh": "5-50 tonf",
+            "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+            "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+          }
+        ],
+        "specification_count": 3,
+        "search_terms": [
+          "spring design",
+          "precision assembly",
+          "cold coiling"
+        ]
       }
     },
     {
@@ -854,6 +1479,96 @@
             "@type": "PropertyValue",
             "name": "inspection_methods_zh",
             "value": "尺寸检测, 载荷检测, 外观检查"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_en",
+            "value": "Cold Coiling and Precision Forming"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_zh",
+            "value": "冷卷与精密成形"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_en",
+            "value": "0.1-10 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_zh",
+            "value": "0.1-10 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_en",
+            "value": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_zh",
+            "value": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_en",
+            "value": "Project and Standards Coverage"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_zh",
+            "value": "项目与标准覆盖"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_en",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_zh",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_en",
+            "value": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_zh",
+            "value": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_en",
+            "value": "Heavy-Load Validation"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_zh",
+            "value": "重载验证思路"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_en",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_zh",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_en",
+            "value": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_zh",
+            "value": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
           }
         ],
         "material": "Spring steel wire, Stainless steel, Special alloy on request",
@@ -871,7 +1586,42 @@
             "url": "https://wanjinspring.com/",
             "email": "sales@wanjinspring.com"
           }
-        }
+        },
+        "specifications": [
+          {
+            "order": 1,
+            "title_en": "Cold Coiling and Precision Forming",
+            "title_zh": "冷卷与精密成形",
+            "value_en": "0.1-10 mm",
+            "value_zh": "0.1-10 mm",
+            "description_en": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs.",
+            "description_zh": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+          },
+          {
+            "order": 2,
+            "title_en": "Project and Standards Coverage",
+            "title_zh": "项目与标准覆盖",
+            "value_en": "GB / ISO / JIS",
+            "value_zh": "GB / ISO / JIS",
+            "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+            "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+          },
+          {
+            "order": 3,
+            "title_en": "Heavy-Load Validation",
+            "title_zh": "重载验证思路",
+            "value_en": "5-50 tonf",
+            "value_zh": "5-50 tonf",
+            "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+            "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+          }
+        ],
+        "specification_count": 3,
+        "search_terms": [
+          "wave springs",
+          "compact assemblies",
+          "preload control"
+        ]
       }
     },
     {
@@ -976,6 +1726,96 @@
             "@type": "PropertyValue",
             "name": "inspection_methods_zh",
             "value": "尺寸检测, 按需求进行接触力验证, 外观检查"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_en",
+            "value": "Cold Coiling and Precision Forming"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_zh",
+            "value": "冷卷与精密成形"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_en",
+            "value": "0.1-10 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_zh",
+            "value": "0.1-10 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_en",
+            "value": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_zh",
+            "value": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_en",
+            "value": "Project and Standards Coverage"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_zh",
+            "value": "项目与标准覆盖"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_en",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_zh",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_en",
+            "value": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_zh",
+            "value": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_en",
+            "value": "Heavy-Load Validation"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_zh",
+            "value": "重载验证思路"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_en",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_zh",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_en",
+            "value": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_zh",
+            "value": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
           }
         ],
         "material": "Strip steel, Stainless steel strip, Conductive alloy on request",
@@ -993,7 +1833,42 @@
             "url": "https://wanjinspring.com/",
             "email": "sales@wanjinspring.com"
           }
-        }
+        },
+        "specifications": [
+          {
+            "order": 1,
+            "title_en": "Cold Coiling and Precision Forming",
+            "title_zh": "冷卷与精密成形",
+            "value_en": "0.1-10 mm",
+            "value_zh": "0.1-10 mm",
+            "description_en": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs.",
+            "description_zh": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+          },
+          {
+            "order": 2,
+            "title_en": "Project and Standards Coverage",
+            "title_zh": "项目与标准覆盖",
+            "value_en": "GB / ISO / JIS",
+            "value_zh": "GB / ISO / JIS",
+            "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+            "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+          },
+          {
+            "order": 3,
+            "title_en": "Heavy-Load Validation",
+            "title_zh": "重载验证思路",
+            "value_en": "5-50 tonf",
+            "value_zh": "5-50 tonf",
+            "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+            "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+          }
+        ],
+        "specification_count": 3,
+        "search_terms": [
+          "contact springs",
+          "electrical reliability",
+          "precision assembly"
+        ]
       }
     },
     {
@@ -1002,7 +1877,7 @@
       "url": "https://wanjinspring.com/products",
       "item": {
         "@type": "Product",
-        "@id": "https://wanjinspring.com/products.json#retaining-rings-snap-rings",
+        "@id": "https://wanjinspring.com/products.json#retaining-rings",
         "name": "Retaining Rings / Snap Rings",
         "alternateName": "卡簧 / 挡圈弹性件",
         "category": "Custom",
@@ -1124,7 +1999,7 @@
       "url": "https://wanjinspring.com/products",
       "item": {
         "@type": "Product",
-        "@id": "https://wanjinspring.com/products.json#custom-special-shaped-springs",
+        "@id": "https://wanjinspring.com/products.json#custom-wire-forms",
         "name": "Custom / Special-Shaped Springs",
         "alternateName": "精密异形弹簧",
         "category": "Custom",
@@ -1342,6 +2217,96 @@
             "@type": "PropertyValue",
             "name": "inspection_methods_zh",
             "value": "力值行程验证, 尺寸检测, 按需求进行循环寿命相关验证"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_en",
+            "value": "Cold Coiling and Precision Forming"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_zh",
+            "value": "冷卷与精密成形"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_en",
+            "value": "0.1-10 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_zh",
+            "value": "0.1-10 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_en",
+            "value": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_zh",
+            "value": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_en",
+            "value": "Project and Standards Coverage"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_zh",
+            "value": "项目与标准覆盖"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_en",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_zh",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_en",
+            "value": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_zh",
+            "value": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_en",
+            "value": "Heavy-Load Validation"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_zh",
+            "value": "重载验证思路"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_en",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_zh",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_en",
+            "value": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_zh",
+            "value": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
           }
         ],
         "material": "Strip spring steel, Stainless steel strip, Custom strip material on request",
@@ -1359,7 +2324,42 @@
             "url": "https://wanjinspring.com/",
             "email": "sales@wanjinspring.com"
           }
-        }
+        },
+        "specifications": [
+          {
+            "order": 1,
+            "title_en": "Cold Coiling and Precision Forming",
+            "title_zh": "冷卷与精密成形",
+            "value_en": "0.1-10 mm",
+            "value_zh": "0.1-10 mm",
+            "description_en": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs.",
+            "description_zh": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+          },
+          {
+            "order": 2,
+            "title_en": "Project and Standards Coverage",
+            "title_zh": "项目与标准覆盖",
+            "value_en": "GB / ISO / JIS",
+            "value_zh": "GB / ISO / JIS",
+            "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+            "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+          },
+          {
+            "order": 3,
+            "title_en": "Heavy-Load Validation",
+            "title_zh": "重载验证思路",
+            "value_en": "5-50 tonf",
+            "value_zh": "5-50 tonf",
+            "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+            "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+          }
+        ],
+        "specification_count": 3,
+        "search_terms": [
+          "constant force springs",
+          "motion control",
+          "long travel"
+        ]
       }
     },
     {
@@ -1464,6 +2464,96 @@
             "@type": "PropertyValue",
             "name": "inspection_methods_zh",
             "value": "尺寸检测, 载荷检测, 外观检查"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_en",
+            "value": "Cold Coiling and Precision Forming"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_zh",
+            "value": "冷卷与精密成形"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_en",
+            "value": "0.1-10 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_zh",
+            "value": "0.1-10 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_en",
+            "value": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_zh",
+            "value": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_en",
+            "value": "Project and Standards Coverage"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_zh",
+            "value": "项目与标准覆盖"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_en",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_zh",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_en",
+            "value": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_zh",
+            "value": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_en",
+            "value": "Heavy-Load Validation"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_zh",
+            "value": "重载验证思路"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_en",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_zh",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_en",
+            "value": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_zh",
+            "value": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
           }
         ],
         "material": "Spring steel wire, Stainless steel, Special alloy on request",
@@ -1481,7 +2571,42 @@
             "url": "https://wanjinspring.com/",
             "email": "sales@wanjinspring.com"
           }
-        }
+        },
+        "specifications": [
+          {
+            "order": 1,
+            "title_en": "Cold Coiling and Precision Forming",
+            "title_zh": "冷卷与精密成形",
+            "value_en": "0.1-10 mm",
+            "value_zh": "0.1-10 mm",
+            "description_en": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs.",
+            "description_zh": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+          },
+          {
+            "order": 2,
+            "title_en": "Project and Standards Coverage",
+            "title_zh": "项目与标准覆盖",
+            "value_en": "GB / ISO / JIS",
+            "value_zh": "GB / ISO / JIS",
+            "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+            "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+          },
+          {
+            "order": 3,
+            "title_en": "Heavy-Load Validation",
+            "title_zh": "重载验证思路",
+            "value_en": "5-50 tonf",
+            "value_zh": "5-50 tonf",
+            "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+            "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+          }
+        ],
+        "specification_count": 3,
+        "search_terms": [
+          "spring materials",
+          "precision assembly",
+          "batch production"
+        ]
       }
     },
     {
@@ -1586,6 +2711,96 @@
             "@type": "PropertyValue",
             "name": "inspection_methods_zh",
             "value": "尺寸检测, 按需求进行接触力验证, 外观检查"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_en",
+            "value": "Cold Coiling and Precision Forming"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_zh",
+            "value": "冷卷与精密成形"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_en",
+            "value": "0.1-10 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_zh",
+            "value": "0.1-10 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_en",
+            "value": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_zh",
+            "value": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_en",
+            "value": "Project and Standards Coverage"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_zh",
+            "value": "项目与标准覆盖"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_en",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_zh",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_en",
+            "value": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_zh",
+            "value": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_en",
+            "value": "Heavy-Load Validation"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_zh",
+            "value": "重载验证思路"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_en",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_zh",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_en",
+            "value": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_zh",
+            "value": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
           }
         ],
         "material": "Strip steel, Stainless steel strip, Conductive alloy on request",
@@ -1603,7 +2818,42 @@
             "url": "https://wanjinspring.com/",
             "email": "sales@wanjinspring.com"
           }
-        }
+        },
+        "specifications": [
+          {
+            "order": 1,
+            "title_en": "Cold Coiling and Precision Forming",
+            "title_zh": "冷卷与精密成形",
+            "value_en": "0.1-10 mm",
+            "value_zh": "0.1-10 mm",
+            "description_en": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs.",
+            "description_zh": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+          },
+          {
+            "order": 2,
+            "title_en": "Project and Standards Coverage",
+            "title_zh": "项目与标准覆盖",
+            "value_en": "GB / ISO / JIS",
+            "value_zh": "GB / ISO / JIS",
+            "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+            "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+          },
+          {
+            "order": 3,
+            "title_en": "Heavy-Load Validation",
+            "title_zh": "重载验证思路",
+            "value_en": "5-50 tonf",
+            "value_zh": "5-50 tonf",
+            "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+            "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+          }
+        ],
+        "specification_count": 3,
+        "search_terms": [
+          "contact springs",
+          "precision assembly",
+          "material selection"
+        ]
       }
     },
     {
@@ -1612,7 +2862,7 @@
       "url": "https://wanjinspring.com/products",
       "item": {
         "@type": "Product",
-        "@id": "https://wanjinspring.com/products.json#power-clock-springs",
+        "@id": "https://wanjinspring.com/products.json#power-springs",
         "name": "Power / Clock Springs",
         "alternateName": "螺旋发条弹簧",
         "category": "Custom",
@@ -1739,7 +2989,7 @@
         "alternateName": "变力弹簧",
         "category": "Custom",
         "description": "Designed to change output force over travel, suitable for mechanisms that need staged load response or progressive return characteristics.",
-        "image": "https://wanjinspring.com/products/variable-force-spring.png",
+        "image": "https://wanjinspring.com/products/variable-force-spring.jpg",
         "additionalProperty": [
           {
             "@type": "PropertyValue",
@@ -1830,6 +3080,96 @@
             "@type": "PropertyValue",
             "name": "inspection_methods_zh",
             "value": "力值行程验证, 尺寸检测, 按需求进行循环寿命相关验证"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_en",
+            "value": "Cold Coiling and Precision Forming"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_zh",
+            "value": "冷卷与精密成形"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_en",
+            "value": "0.1-10 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_zh",
+            "value": "0.1-10 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_en",
+            "value": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_zh",
+            "value": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_en",
+            "value": "Project and Standards Coverage"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_zh",
+            "value": "项目与标准覆盖"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_en",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_zh",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_en",
+            "value": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_zh",
+            "value": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_en",
+            "value": "Heavy-Load Validation"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_zh",
+            "value": "重载验证思路"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_en",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_zh",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_en",
+            "value": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_zh",
+            "value": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
           }
         ],
         "material": "Strip spring steel, Stainless steel strip, Custom strip material on request",
@@ -1847,7 +3187,42 @@
             "url": "https://wanjinspring.com/",
             "email": "sales@wanjinspring.com"
           }
-        }
+        },
+        "specifications": [
+          {
+            "order": 1,
+            "title_en": "Cold Coiling and Precision Forming",
+            "title_zh": "冷卷与精密成形",
+            "value_en": "0.1-10 mm",
+            "value_zh": "0.1-10 mm",
+            "description_en": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs.",
+            "description_zh": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+          },
+          {
+            "order": 2,
+            "title_en": "Project and Standards Coverage",
+            "title_zh": "项目与标准覆盖",
+            "value_en": "GB / ISO / JIS",
+            "value_zh": "GB / ISO / JIS",
+            "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+            "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+          },
+          {
+            "order": 3,
+            "title_en": "Heavy-Load Validation",
+            "title_zh": "重载验证思路",
+            "value_en": "5-50 tonf",
+            "value_zh": "5-50 tonf",
+            "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+            "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+          }
+        ],
+        "specification_count": 3,
+        "search_terms": [
+          "motion control",
+          "long travel",
+          "spring selection"
+        ]
       }
     },
     {
@@ -1861,7 +3236,7 @@
         "alternateName": "涡卷弹簧",
         "category": "Custom",
         "description": "Flat spiral springs formed from strip material, suitable for rewind, energy storage, travel limiting, and compact transmission mechanisms.",
-        "image": "https://wanjinspring.com/products/spiral-spring.jpg",
+        "image": "https://wanjinspring.com/products/power-spring.jpg",
         "additionalProperty": [
           {
             "@type": "PropertyValue",
@@ -1952,6 +3327,96 @@
             "@type": "PropertyValue",
             "name": "inspection_methods_zh",
             "value": "力值行程验证, 尺寸检测, 按需求进行循环寿命相关验证"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_en",
+            "value": "Cold Coiling and Precision Forming"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_zh",
+            "value": "冷卷与精密成形"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_en",
+            "value": "0.1-10 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_zh",
+            "value": "0.1-10 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_en",
+            "value": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_zh",
+            "value": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_en",
+            "value": "Project and Standards Coverage"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_zh",
+            "value": "项目与标准覆盖"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_en",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_zh",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_en",
+            "value": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_zh",
+            "value": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_en",
+            "value": "Heavy-Load Validation"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_zh",
+            "value": "重载验证思路"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_en",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_zh",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_en",
+            "value": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_zh",
+            "value": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
           }
         ],
         "material": "Strip spring steel, Stainless steel strip, Custom strip material on request",
@@ -1969,7 +3434,42 @@
             "url": "https://wanjinspring.com/",
             "email": "sales@wanjinspring.com"
           }
-        }
+        },
+        "specifications": [
+          {
+            "order": 1,
+            "title_en": "Cold Coiling and Precision Forming",
+            "title_zh": "冷卷与精密成形",
+            "value_en": "0.1-10 mm",
+            "value_zh": "0.1-10 mm",
+            "description_en": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs.",
+            "description_zh": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+          },
+          {
+            "order": 2,
+            "title_en": "Project and Standards Coverage",
+            "title_zh": "项目与标准覆盖",
+            "value_en": "GB / ISO / JIS",
+            "value_zh": "GB / ISO / JIS",
+            "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+            "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+          },
+          {
+            "order": 3,
+            "title_en": "Heavy-Load Validation",
+            "title_zh": "重载验证思路",
+            "value_en": "5-50 tonf",
+            "value_zh": "5-50 tonf",
+            "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+            "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+          }
+        ],
+        "specification_count": 3,
+        "search_terms": [
+          "motion control",
+          "long travel",
+          "batch production"
+        ]
       }
     },
     {
@@ -1978,12 +3478,12 @@
       "url": "https://wanjinspring.com/products",
       "item": {
         "@type": "Product",
-        "@id": "https://wanjinspring.com/products.json#contact-clips-leaf-type-elastic-parts",
+        "@id": "https://wanjinspring.com/products.json#contact-clips",
         "name": "Contact Clips / Leaf-Type Elastic Parts",
         "alternateName": "簧片 / 导电弹片",
         "category": "Precision",
         "description": "Stamped or formed elastic parts for conductive connection, clamping, latching, and contact compensation in electrical and precision assemblies.",
-        "image": "https://wanjinspring.com/products/contact-clips.jpg",
+        "image": "https://wanjinspring.com/products/contact-spring.jpg",
         "additionalProperty": [
           {
             "@type": "PropertyValue",
@@ -2100,7 +3600,7 @@
       "url": "https://wanjinspring.com/products",
       "item": {
         "@type": "Product",
-        "@id": "https://wanjinspring.com/products.json#multi-turn-wave-spring-assemblies",
+        "@id": "https://wanjinspring.com/products.json#multi-turn-wave-springs",
         "name": "Multi-Turn Wave Spring Assemblies",
         "alternateName": "多波峰波形弹簧组",
         "category": "Precision",
@@ -2318,6 +3818,96 @@
             "@type": "PropertyValue",
             "name": "inspection_methods_zh",
             "value": "载荷位移验证, 尺寸检测, 组件装配验证"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_en",
+            "value": "Hot Coiling and Heavy-Duty Parts"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_title_zh",
+            "value": "热卷与重载弹性件"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_en",
+            "value": "14-50 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_value_zh",
+            "value": "14-50 mm"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_en",
+            "value": "Highlights large-wire hot coiling, heavy-load buffering, and high-load clamping products for power equipment, heavy machinery, and industrial actuation systems."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_1_description_zh",
+            "value": "强调大线径热卷、重载缓冲和高载荷夹紧类产品，适配电力装备、重型机械和工业执行机构。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_en",
+            "value": "Heavy-Load Validation"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_title_zh",
+            "value": "重载验证思路"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_en",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_value_zh",
+            "value": "5-50 tonf"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_en",
+            "value": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_2_description_zh",
+            "value": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_en",
+            "value": "Project and Standards Coverage"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_title_zh",
+            "value": "项目与标准覆盖"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_en",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_value_zh",
+            "value": "GB / ISO / JIS"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_en",
+            "value": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "spec_3_description_zh",
+            "value": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
           }
         ],
         "material": "Spring steel, Alloy spring steel, Custom material on request",
@@ -2335,7 +3925,42 @@
             "url": "https://wanjinspring.com/",
             "email": "sales@wanjinspring.com"
           }
-        }
+        },
+        "specifications": [
+          {
+            "order": 1,
+            "title_en": "Hot Coiling and Heavy-Duty Parts",
+            "title_zh": "热卷与重载弹性件",
+            "value_en": "14-50 mm",
+            "value_zh": "14-50 mm",
+            "description_en": "Highlights large-wire hot coiling, heavy-load buffering, and high-load clamping products for power equipment, heavy machinery, and industrial actuation systems.",
+            "description_zh": "强调大线径热卷、重载缓冲和高载荷夹紧类产品，适配电力装备、重型机械和工业执行机构。"
+          },
+          {
+            "order": 2,
+            "title_en": "Heavy-Load Validation",
+            "title_zh": "重载验证思路",
+            "value_en": "5-50 tonf",
+            "value_zh": "5-50 tonf",
+            "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+            "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+          },
+          {
+            "order": 3,
+            "title_en": "Project and Standards Coverage",
+            "title_zh": "项目与标准覆盖",
+            "value_en": "GB / ISO / JIS",
+            "value_zh": "GB / ISO / JIS",
+            "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+            "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+          }
+        ],
+        "specification_count": 3,
+        "search_terms": [
+          "disc springs",
+          "power equipment",
+          "high load"
+        ]
       }
     }
   ]

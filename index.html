@@ -2,8 +2,40 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+    <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />
+    <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="//www.google-analytics.com" />
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = window.gtag || function(){window.dataLayer.push(arguments);};
+      window.gtag('js', new Date());
+      window.gtag('config', 'G-G11EPQVYHF', { send_page_view: false });
+
+      (function() {
+        const loadAnalytics = function() {
+          if (window.__wanjinAnalyticsLoaded) {
+            return;
+          }
+
+          window.__wanjinAnalyticsLoaded = true;
+          const script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://www.googletagmanager.com/gtag/js?id=G-G11EPQVYHF';
+          document.head.appendChild(script);
+        };
+
+        if ('requestIdleCallback' in window) {
+          window.requestIdleCallback(loadAnalytics, { timeout: 4000 });
+          return;
+        }
+
+        window.addEventListener('load', loadAnalytics, { once: true });
+        window.setTimeout(loadAnalytics, 4000);
+      })();
+    </script>
     <link rel="icon" type="image/jpeg" href="/factory/logo.jpeg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
     <meta name="author" content="Xi'an Wanjin Precision Spring Co., Ltd." />
     <meta name="theme-color" content="#0f172a" />
@@ -13,7 +45,7 @@
     <meta name="ICBM" content="34.3416, 108.9398" />
     <title>Wanjin Precision Spring | Precision Industrial Manufacturing</title>
     <meta name="description" content="Xi'an Wanjin Precision Spring Co., Ltd. specializes in precision spring manufacturing for power, automotive, and heavy industrial sectors since 1982. Dual-certified ISO 9001 quality." />
-    <meta name="keywords" content="precision springs, hot coil springs, disc springs, die springs, custom springs, wave springs, retaining rings, Xi'an Wanjin Precision Spring" />
+    <meta name="keywords" content="万锦精密弹簧, 工业弹簧, Wanjin Precision Spring, Xi'an Wanjin Precision Spring, precision springs, industrial springs, heavy duty springs, compression springs, hot coil springs, disc springs, die springs, custom springs, wave springs, retaining rings" />
     <link rel="canonical" href="https://wanjinspring.com/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Wanjin Precision Spring" />
@@ -26,6 +58,7 @@
     <meta name="twitter:title" content="Wanjin Precision Spring | Precision Industrial Manufacturing" />
     <meta name="twitter:description" content="Xi'an Wanjin Precision Spring Co., Ltd. specializes in precision spring manufacturing for power, automotive, and heavy industrial sectors since 1982. Dual-certified ISO 9001 quality." />
     <meta name="twitter:image" content="https://wanjinspring.com/factory/factory_1.jpg" />
+    <link rel="preload" as="image" href="/factory/factory_1.jpg" />
     <link rel="alternate" type="text/plain" href="https://wanjinspring.com/llms.txt" title="LLMs Reference" />
     <link rel="alternate" type="text/plain" href="https://wanjinspring.com/llms-full.txt" title="Extended LLMs Reference" />
     <link rel="alternate" type="application/json" href="https://wanjinspring.com/ai-search-profile.json" title="AI Search Profile JSON" />

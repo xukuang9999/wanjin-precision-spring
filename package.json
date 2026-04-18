@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "node scripts/generate-runtime-translations.mjs && vite",
-    "build": "node scripts/generate-runtime-translations.mjs && vite build && node generate-prerender-pages.mjs",
+    "build": "rm -rf dist && node scripts/generate-runtime-translations.mjs && vite build && node generate-prerender-pages.mjs && node scripts/inline-html-assets.mjs && node scripts/generate-legacy-runtime-assets.mjs",
     "preview": "vite preview",
+    "optimize:images": "node scripts/optimize-images.mjs",
     "sync:runtime-translations": "node scripts/generate-runtime-translations.mjs",
     "check:translations": "node scripts/check-translations.mjs",
     "deploy:godaddy": "./scripts/deploy-godaddy.sh"
@@ -20,9 +21,8 @@
     "@types/node": "^22.14.0",
     "@vitejs/plugin-react": "^5.0.0",
     "autoprefixer": "^10.4.20",
-    "jimp": "^0.16.13",
-    "playwright": "^1.58.2",
     "postcss": "^8.4.49",
+    "sharp": "^0.34.5",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"

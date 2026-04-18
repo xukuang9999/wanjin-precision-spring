@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useRef, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, ReactNode } from 'react';
 import { type Language } from '../utils/languages';
 import {
   loadTranslationDictionary,
@@ -12,7 +12,7 @@ interface LanguageContextType {
   t: (key: string) => string;
 }
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+export const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{
   children: ReactNode;
@@ -26,9 +26,10 @@ export const LanguageProvider: React.FC<{
     initialDictionary ? { [language]: initialDictionary } : {},
   );
   const fallbackLanguageRef = useRef(language);
+  const dictionaryForLanguage = dictionaries[language];
 
   useEffect(() => {
-    if (!dictionaries[language]) {
+    if (!dictionaryForLanguage) {
       let cancelled = false;
 
       void loadTranslationDictionary(language)
@@ -54,26 +55,35 @@ export const LanguageProvider: React.FC<{
 
     fallbackLanguageRef.current = language;
     return undefined;
-  }, [dictionaries, language]);
+  }, [dictionaryForLanguage, language]);
 
-  const setLanguage = (lang: Language) => {
+  const setLanguage = useCallback((lang: Language) => {
     preloadTranslationDictionary(lang);
     if (onLanguageChange) {
       onLanguageChange(lang);
       return;
     }
     setInternalLanguage(lang);
-  };
+  }, [onLanguageChange]);
 
-  const activeLanguage = dictionaries[language] ? language : fallbackLanguageRef.current;
+  const activeLanguage = dictionaryForLanguage ? language : fallbackLanguageRef.current;
   const activeDictionary = dictionaries[activeLanguage];
 
-  const t = (key: string): string => {
+  const t = useCallback((key: string): string => {
     return activeDictionary?.[key] || key;
-  };
+  }, [activeDictionary]);
+
+  const contextValue = useMemo(
+    () => ({
+      language,
+      setLanguage,
+      t,
+    }),
+    [language, setLanguage, t],
+  );
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={contextValue}>
       {children}
     </LanguageContext.Provider>
   );

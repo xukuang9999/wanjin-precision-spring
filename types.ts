@@ -24,6 +24,7 @@ export enum PageView {
   CAPACITY = 'CAPACITY',
   FACTORY = 'FACTORY',
   CONTACT = 'CONTACT',
+  FAQ = 'FAQ',
   BLOG = 'BLOG',
 }
 
@@ -34,6 +35,7 @@ export const PAGE_PATHS: Record<PageView, string> = {
   [PageView.CAPACITY]: '/capacity',
   [PageView.FACTORY]: '/factory',
   [PageView.CONTACT]: '/contact',
+  [PageView.FAQ]: '/faq',
   [PageView.BLOG]: '/blog',
 };
 
@@ -92,12 +94,3 @@ export const getLocaleStateFromPath = (pathname: string): { language: Language; 
 
   return parseLocalizedSegments(segments, DEFAULT_LANGUAGE);
 };
-
-export interface CompanyInfo {
-  name: string;
-  founded: string;
-  location: string;
-  phone: string;
-  email: string;
-  employees: number;
-}

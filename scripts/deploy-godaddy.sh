@@ -14,11 +14,13 @@ GODADDY_HOST="${GODADDY_HOST:-gzn.15a.myftpupload.com}"
 GODADDY_PORT="${GODADDY_PORT:-22}"
 GODADDY_USER="${GODADDY_USER:-client_eb6ee9feaa_1101247}"
 GODADDY_PASS="${GODADDY_PASS:-}"
+GODADDY_UPLOAD_RETRIES="${GODADDY_UPLOAD_RETRIES:-3}"
+GODADDY_SFTP_REQUESTS="${GODADDY_SFTP_REQUESTS:-64}"
+GODADDY_SSH_SERVER_ALIVE_INTERVAL="${GODADDY_SSH_SERVER_ALIVE_INTERVAL:-15}"
+GODADDY_SSH_SERVER_ALIVE_COUNT_MAX="${GODADDY_SSH_SERVER_ALIVE_COUNT_MAX:-4}"
 # This hosting account currently serves the site from this directory, not /html.
 GODADDY_REMOTE_DIR="${GODADDY_REMOTE_DIR:-/home/${GODADDY_USER}/html-backup-20260323-170417}"
 GODADDY_SITE_URL="${GODADDY_SITE_URL:-https://wanjinspring.com}"
-GODADDY_COMPAT_JS_NAMES="${GODADDY_COMPAT_JS_NAMES:-index-D_T-v_k8.js,index-DDbV8HHO.js,index--nbCFyX8.js}"
-GODADDY_COMPAT_CSS_NAMES="${GODADDY_COMPAT_CSS_NAMES:-style-BpTPA4Tz.css,index-D_ncdTRu.css}"
 
 if [[ -z "$GODADDY_PASS" ]]; then
   echo "GODADDY_PASS is required."
@@ -26,28 +28,7 @@ if [[ -z "$GODADDY_PASS" ]]; then
 fi
 
 echo "Building site..."
-node scripts/generate-runtime-translations.mjs
-npx vite build
-node generate-prerender-pages.mjs
-
-main_js_candidates=("${(@f)$(find dist/assets -maxdepth 1 -type f -name 'index-*.js' | sort)}")
-main_css_candidates=("${(@f)$(find dist/assets -maxdepth 1 -type f -name '*.css' | sort)}")
-
-main_js_path="${main_js_candidates[1]:-}"
-main_css_path="${main_css_candidates[1]:-}"
-
-if [[ -z "$main_js_path" || ! -f "$main_js_path" ]]; then
-  echo "Could not find the main JS bundle in dist/assets."
-  exit 1
-fi
-
-if [[ -z "$main_css_path" || ! -f "$main_css_path" ]]; then
-  echo "Could not find the main CSS bundle in dist/assets."
-  exit 1
-fi
-
-main_js="${main_js_path:t}"
-main_css="${main_css_path:t}"
+npm run build
 
 staging_dir="$(mktemp -d /tmp/wanjin-dist-staging.XXXXXX)"
 batch_file="$(mktemp /tmp/wanjin-sftp-batch.XXXXXX)"
@@ -59,63 +40,42 @@ cleanup() {
 
 trap cleanup EXIT
 
-trim() {
-  local value="$1"
-  value="${value#"${value%%[![:space:]]*}"}"
-  value="${value%"${value##*[![:space:]]}"}"
-  printf '%s' "$value"
-}
+if [[ ! -f dist/index.html ]]; then
+  echo "Could not find dist/index.html after build."
+  exit 1
+fi
+
+if [[ ! -f dist/app-runtime/index.html ]]; then
+  echo "Could not find dist/app-runtime/index.html after build."
+  exit 1
+fi
 
 echo "Snapshotting build output to ${staging_dir}..."
 cp -R dist/. "$staging_dir"/
 
-main_js_candidates=("${(@f)$(find "$staging_dir/assets" -maxdepth 1 -type f -name 'index-*.js' | sort)}")
-main_css_candidates=("${(@f)$(find "$staging_dir/assets" -maxdepth 1 -type f -name '*.css' | sort)}")
-
-main_js_path="${main_js_candidates[1]:-}"
-main_css_path="${main_css_candidates[1]:-}"
-
-if [[ -z "$main_js_path" || ! -f "$main_js_path" ]]; then
-  echo "Could not find the main JS bundle in staged assets."
+if ! grep -q '/app-runtime/runtime.js' "$staging_dir/index.html"; then
+  echo "Staged index.html is missing the runtime entry script."
   exit 1
 fi
 
-if [[ -z "$main_css_path" || ! -f "$main_css_path" ]]; then
-  echo "Could not find the main CSS bundle in staged assets."
+if ! grep -q 'id="wanjin-runtime-script"' "$staging_dir/app-runtime/index.html"; then
+  echo "Staged app-runtime/index.html is missing the inlined runtime script."
   exit 1
 fi
 
-main_js="${main_js_path:t}"
-main_css="${main_css_path:t}"
+if [[ ! -f "$staging_dir/app-runtime/runtime-manifest.json" ]]; then
+  echo "Staged app-runtime/runtime-manifest.json is missing."
+  exit 1
+fi
 
 {
   print -- "cd ${GODADDY_REMOTE_DIR}"
-
-  for dir_path in "${(@f)$(cd "$staging_dir" && find . -mindepth 1 -type d | sed 's#^\./##' | sort)}"; do
-    remote_dir="${dir_path}"
-    print -- "-mkdir ${remote_dir}"
-  done
-
-  for file_path in "${(@f)$(cd "$staging_dir" && find . -type f | sed 's#^\./##' | sort)}"; do
-    remote_file="${file_path}"
-    print -- "put ${staging_dir}/${file_path} ${remote_file}"
-  done
-
-  for legacy_js in ${(s:,:)GODADDY_COMPAT_JS_NAMES}; do
-    legacy_js="$(trim "$legacy_js")"
-    [[ -z "$legacy_js" || "$legacy_js" == "$main_js" ]] && continue
-    print -- "put ${staging_dir}/assets/${main_js} assets/${legacy_js}"
-  done
-
-  for legacy_css in ${(s:,:)GODADDY_COMPAT_CSS_NAMES}; do
-    legacy_css="$(trim "$legacy_css")"
-    [[ -z "$legacy_css" || "$legacy_css" == "$main_css" ]] && continue
-    print -- "put ${staging_dir}/assets/${main_css} assets/${legacy_css}"
-  done
+  print -- "lcd ${staging_dir}"
+  print -- "put -r * ."
 
   print -- "ls -l index.html"
   print -- "ls -l zh/index.html"
-  print -- "ls -l assets/${main_js}"
+  print -- "ls -l app-runtime/index.html"
 } > "$batch_file"
 
 run_sftp_batch() {
@@ -126,10 +86,13 @@ run_sftp_batch() {
   GODADDY_USER_VALUE="$GODADDY_USER" \
   GODADDY_HOST_VALUE="$GODADDY_HOST" \
   GODADDY_PORT_VALUE="$GODADDY_PORT" \
+  GODADDY_SFTP_REQUESTS_VALUE="$GODADDY_SFTP_REQUESTS" \
+  GODADDY_SSH_SERVER_ALIVE_INTERVAL_VALUE="$GODADDY_SSH_SERVER_ALIVE_INTERVAL" \
+  GODADDY_SSH_SERVER_ALIVE_COUNT_MAX_VALUE="$GODADDY_SSH_SERVER_ALIVE_COUNT_MAX" \
   /usr/bin/expect <<'EOF'
 set timeout 1800
 set fp [open $env(BATCH_FILE) r]
-spawn sftp -P $env(GODADDY_PORT_VALUE) -o StrictHostKeyChecking=no $env(GODADDY_USER_VALUE)@$env(GODADDY_HOST_VALUE)
+spawn sftp -R $env(GODADDY_SFTP_REQUESTS_VALUE) -P $env(GODADDY_PORT_VALUE) -o StrictHostKeyChecking=no -o ServerAliveInterval=$env(GODADDY_SSH_SERVER_ALIVE_INTERVAL_VALUE) -o ServerAliveCountMax=$env(GODADDY_SSH_SERVER_ALIVE_COUNT_MAX_VALUE) $env(GODADDY_USER_VALUE)@$env(GODADDY_HOST_VALUE)
 expect {
   -re ".*yes/no.*" { send "yes\r"; exp_continue }
   -re ".*assword:.*" { send "$env(GODADDY_PASS_VALUE)\r"; exp_continue }
@@ -156,16 +119,25 @@ EOF
 }
 
 echo "Uploading dist to ${GODADDY_REMOTE_DIR}..."
-run_sftp_batch "$batch_file"
+attempt=1
+until run_sftp_batch "$batch_file"; do
+  if (( attempt >= GODADDY_UPLOAD_RETRIES )); then
+    echo "Upload failed after ${attempt} attempts."
+    exit 1
+  fi
+  echo "Upload attempt ${attempt} failed. Retrying resume upload..."
+  attempt=$((attempt + 1))
+  sleep 5
+done
 
 timestamp="$(date +%Y%m%d-%H%M%S)"
 
 echo "Verifying public files..."
 curl -fsSI "${GODADDY_SITE_URL}/index.html?deploy=${timestamp}" | head -n 10
-curl -fsSI "${GODADDY_SITE_URL}/assets/${main_js}?deploy=${timestamp}" | head -n 10
+curl -fsSI "${GODADDY_SITE_URL}/app-runtime/?deploy=${timestamp}" | head -n 10
+curl -fsS "${GODADDY_SITE_URL}/app-runtime/?deploy=${timestamp}" | rg -n -m 2 'wanjin-runtime-(style|script)'
 
 echo
 echo "Deploy complete."
 echo "Remote directory: ${GODADDY_REMOTE_DIR}"
-echo "Main JS: ${main_js}"
-echo "Main CSS: ${main_css}"
+echo "Runtime bridge: ${GODADDY_SITE_URL}/app-runtime/"

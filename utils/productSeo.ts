@@ -149,9 +149,9 @@ const PRODUCT_SEO_COPY = {
     overview: (productName: string) => `Проекты по ${productName} обычно оцениваются по нагрузке, монтажному пространству, выбору материала и плану валидации до начала котировки и образцов.`,
   },
   es: {
-    titleSuffix: 'fabricacion y suministro',
-    description: (productName: string) => `Wanjin respalda proyectos de ${productName} con revision de planos, planificacion del proceso, validacion de muestras y entrega por lotes para compras OEM e industriales.`,
-    overview: (productName: string) => `Los programas de ${productName} suelen revisarse en torno a la carga objetivo, el espacio de instalacion, la ruta del material y el plan de validacion antes de cotizar o muestrear.`,
+    titleSuffix: 'fabricación y suministro',
+    description: (productName: string) => `Wanjin respalda proyectos de ${productName} con revisión de planos, planificación del proceso, validación de muestras y entregas por lote para compras industriales y OEM.`,
+    overview: (productName: string) => `Los proyectos de ${productName} suelen evaluarse en función de la carga objetivo, el espacio de instalación, la ruta de material y el plan de validación antes de cotizar o muestrear.`,
   },
   ar: {
     titleSuffix: 'التصنيع والتوريد',
@@ -164,9 +164,9 @@ const PRODUCT_SEO_COPY = {
     overview: (productName: string) => `${productName} परियोजनाओं में आमतौर पर कोटेशन या सैंपलिंग से पहले लक्ष्य लोड, इंस्टॉलेशन स्पेस, सामग्री मार्ग और वैलिडेशन योजना की समीक्षा की जाती है।`,
   },
   pt: {
-    titleSuffix: 'fabricacao e fornecimento',
-    description: (productName: string) => `A Wanjin apoia programas de ${productName} com revisao de desenhos, planejamento de processo, validacao de amostras e entrega em lote para compras OEM e industriais.`,
-    overview: (productName: string) => `Os programas de ${productName} normalmente sao analisados quanto a carga alvo, espaco de instalacao, rota de material e plano de validacao antes da cotacao ou da amostragem.`,
+    titleSuffix: 'fabricação e fornecimento',
+    description: (productName: string) => `A Wanjin apoia projetos de ${productName} com revisão de desenhos, planejamento de processo, validação de amostras e entregas em lote para compras industriais e OEM.`,
+    overview: (productName: string) => `Os projetos de ${productName} normalmente são avaliados quanto à carga-alvo, ao espaço de instalação, à rota de material e ao plano de validação antes da cotação ou da amostragem.`,
   },
   ja: {
     titleSuffix: '製造と供給',
@@ -175,13 +175,13 @@ const PRODUCT_SEO_COPY = {
   },
   de: {
     titleSuffix: 'Fertigung und Lieferung',
-    description: (productName: string) => `Wanjin unterstutzt ${productName}-Projekte mit Zeichnungsprufung, Prozessplanung, Musterfreigabe und Serienlieferung fur industrielle und OEM-Beschaffung.`,
-    overview: (productName: string) => `${productName}-Programme werden in der Regel im Hinblick auf Ziellast, Bauraum, Werkstoffpfad und Validierungsplanung gepruft, bevor Angebot oder Bemusterung startet.`,
+    description: (productName: string) => `Wanjin unterstützt ${productName}-Projekte mit Zeichnungsprüfung, Prozessplanung, Mustervalidierung und Serienlieferung für Industrie- und OEM-Beschaffung.`,
+    overview: (productName: string) => `${productName}-Projekte werden in der Regel hinsichtlich Ziellast, Bauraum, Werkstoffroute und Validierungsplanung bewertet, bevor Angebot oder Bemusterung beginnt.`,
   },
   fr: {
     titleSuffix: 'fabrication et fourniture',
-    description: (productName: string) => `Wanjin accompagne les projets ${productName} avec revue de plans, planification du procede, validation d'echantillons et livraison en serie pour les achats OEM et industriels.`,
-    overview: (productName: string) => `Les programmes ${productName} sont generalement examines selon la charge cible, l'espace d'installation, la filiere matiere et le plan de validation avant devis ou echantillonnage.`,
+    description: (productName: string) => `Wanjin accompagne les projets ${productName} avec revue de plans, planification du procédé, validation d'échantillons et livraisons en série pour les achats OEM et industriels.`,
+    overview: (productName: string) => `Les projets ${productName} sont généralement évalués selon la charge cible, l'espace d'installation, la filière matière et le plan de validation avant devis ou échantillonnage.`,
   },
 };
 

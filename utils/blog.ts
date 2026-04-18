@@ -1,10 +1,19 @@
 import { BLOG_POSTS, type BlogCategory, type BlogPostRecord } from '../data/blog';
+import BLOG_CONTENT_OVERRIDES from '../data/blog/contentOverrides.js';
 
 type LocalizedValue<T> = Record<string, T>;
 type BlogArchiveContext = {
   category?: BlogCategory;
   tag?: string;
   page: number;
+};
+type BlogPostOverride = {
+  updatedAt?: string;
+  title?: LocalizedValue<string>;
+  seoTitle?: LocalizedValue<string>;
+  seoDescription?: LocalizedValue<string>;
+  excerpt?: LocalizedValue<string>;
+  content?: LocalizedValue<string[]>;
 };
 
 export type BlogPost = BlogPostRecord;
@@ -21,12 +30,29 @@ const localize = <T>(value: LocalizedValue<T> | undefined, language: string, fal
   return value[language] ?? value[fallback] ?? Object.values(value)[0];
 };
 
+const applyBlogOverride = (post: BlogPost): BlogPost => {
+  const override = BLOG_CONTENT_OVERRIDES[post.slug] as BlogPostOverride | undefined;
+  if (!override) {
+    return post;
+  }
+
+  return {
+    ...post,
+    updatedAt: override.updatedAt ?? post.updatedAt,
+    title: override.title ? { ...post.title, ...override.title } : post.title,
+    seoTitle: override.seoTitle ? { ...post.seoTitle, ...override.seoTitle } : post.seoTitle,
+    seoDescription: override.seoDescription ? { ...post.seoDescription, ...override.seoDescription } : post.seoDescription,
+    excerpt: override.excerpt ? { ...post.excerpt, ...override.excerpt } : post.excerpt,
+    content: override.content ? { ...post.content, ...override.content } : post.content,
+  };
+};
+
 export const BLOG_CATEGORIES: Record<BlogCategory, LocalizedValue<string>> = {
   guide: {
     en: 'Guide',
     zh: '指南',
     ru: 'Гайд',
-    es: 'Guia',
+    es: 'Guía',
     ar: 'دليل',
     hi: 'गाइड',
     pt: 'Guia',
@@ -44,7 +70,7 @@ export const BLOG_CATEGORIES: Record<BlogCategory, LocalizedValue<string>> = {
     pt: 'Noticias',
     ja: 'ニュース',
     de: 'Nachrichten',
-    fr: 'Actualites',
+    fr: 'Actualités',
   },
   insight: {
     en: 'Insight',
@@ -65,7 +91,9 @@ export const getLocalizedCategoryLabel = (category: BlogCategory, language: stri
 
 export const getBlogPosts = (): BlogPost[] =>
   cachedBlogPosts ??=
-    ([...BLOG_POSTS] as BlogPost[]).sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+    ([...BLOG_POSTS] as BlogPost[])
+      .map(applyBlogOverride)
+      .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 
 export const getFeaturedBlogPosts = (): BlogPost[] =>
   cachedFeaturedPosts ??= getBlogPosts().filter((post) => post.featured);

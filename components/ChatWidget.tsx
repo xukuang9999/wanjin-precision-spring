@@ -3,17 +3,17 @@ import { MessageSquare, Send, X, Bot, User, Loader2, Sparkles } from 'lucide-rea
 import { ChatMessage } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
 
+const createWelcomeMessage = (text: string): ChatMessage => ({
+  id: 'welcome',
+  role: 'model',
+  text,
+  timestamp: new Date(),
+});
+
 export const ChatWidget: React.FC = () => {
   const { language, t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      id: 'welcome',
-      role: 'model',
-      text: t('chat_welcome'),
-      timestamp: new Date()
-    }
-  ]);
+  const [messages, setMessages] = useState<ChatMessage[]>([createWelcomeMessage(t('chat_welcome'))]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -26,17 +26,15 @@ export const ChatWidget: React.FC = () => {
     scrollToBottom();
   }, [messages, isOpen]);
 
-  // Reset welcome message if language changes and chat hasn't started
   useEffect(() => {
-    if (messages.length === 1 && messages[0].id === 'welcome') {
-      setMessages([{
-        id: 'welcome',
-        role: 'model',
-        text: t('chat_welcome'),
-        timestamp: new Date()
-      }]);
-    }
-  }, [language, t]);
+    setMessages((prev) => {
+      if (prev.length !== 1 || prev[0].id !== 'welcome' || prev[0].text === t('chat_welcome')) {
+        return prev;
+      }
+
+      return [createWelcomeMessage(t('chat_welcome'))];
+    });
+  }, [t]);
 
   const handleSend = async () => {
     if (!inputValue.trim() || isLoading) return;
@@ -45,35 +43,46 @@ export const ChatWidget: React.FC = () => {
       id: Date.now().toString(),
       role: 'user',
       text: inputValue,
-      timestamp: new Date()
+      timestamp: new Date(),
     };
 
-    setMessages(prev => [...prev, userMsg]);
+    setMessages((prev) => [...prev, userMsg]);
     setInputValue('');
     setIsLoading(true);
 
-    // Prepare history for API
-    const history = messages.map(m => ({
-      role: m.role,
-      parts: [{ text: m.text }]
-    }));
+    const history = messages
+      .filter((message) => message.id !== 'welcome')
+      .map((message) => ({
+        role: message.role,
+        parts: [{ text: message.text }],
+      }));
 
-    // Inject language context instruction
-    const langInstruction = `Current User Language: ${language}. Please reply in this language.`;
-    const finalMessage = `${langInstruction} \n\n User Query: ${userMsg.text}`;
+    const languageContext = {
+      role: 'user',
+      parts: [{ text: `Reply in ${language}. Keep answers focused on Wanjin Precision Spring products, manufacturing, and contact details.` }],
+    };
+
+    const finalHistory = [languageContext, ...history];
+
+    const finalMessage = userMsg.text;
 
     try {
       const { chatWithBot } = await import('../services/geminiService');
-      const responseText = await chatWithBot(history, finalMessage);
+      const response = await chatWithBot(finalHistory, finalMessage);
+      let replyText = t('chat_unavailable');
+      if ('text' in response) {
+        replyText = response.text;
+      }
 
       const botMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'model',
-        text: responseText,
-        timestamp: new Date()
+        text: replyText,
+        timestamp: new Date(),
+        isError: response.isError,
       };
 
-      setMessages(prev => [...prev, botMsg]);
+      setMessages((prev) => [...prev, botMsg]);
     } catch (error) {
       console.error('Chat widget send error:', error);
       setMessages(prev => [
@@ -100,11 +109,18 @@ export const ChatWidget: React.FC = () => {
 
   return (
     <>
+      <button
+        type="button"
+        onClick={() => setIsOpen(false)}
+        aria-label={t('chat_close')}
+        className={`fixed inset-0 z-40 bg-slate-950/28 transition duration-300 md:hidden ${isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+      />
+
       {/* Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        aria-label={isOpen ? 'Close AI assistant' : 'Open AI assistant'}
-        className={`fixed bottom-6 right-6 z-50 p-4 rounded-md shadow-2xl transition-all duration-300 transform hover:scale-110 ${isOpen ? 'bg-brand-700 rotate-90 opacity-0 pointer-events-none' : 'bg-brand-500 text-white opacity-100'
+        aria-label={isOpen ? t('chat_close') : t('chat_open')}
+        className={`chat-widget-trigger fixed z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-2xl transition-all duration-300 transform hover:scale-105 md:h-auto md:w-auto md:rounded-md md:p-4 ${isOpen ? 'bg-brand-700 rotate-90 opacity-0 pointer-events-none' : 'bg-brand-500 text-white opacity-100'
           }`}
       >
         <MessageSquare className="w-6 h-6" />
@@ -112,11 +128,14 @@ export const ChatWidget: React.FC = () => {
 
       {/* Chat Window */}
       <div
-        className={`fixed bottom-6 right-6 z-50 w-[90vw] md:w-[400px] h-[500px] bg-white rounded-sm shadow-2xl border border-white/20 flex flex-col transition-all duration-300 transform origin-bottom-right ${isOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0 pointer-events-none'
+        role="dialog"
+        aria-modal={isOpen ? 'true' : undefined}
+        aria-label={t('chat_title')}
+        className={`chat-widget-panel fixed z-50 flex flex-col overflow-hidden border border-white/20 bg-white shadow-2xl transition-all duration-300 transform origin-bottom-right ${isOpen ? 'scale-100 opacity-100' : 'pointer-events-none scale-95 opacity-0'
           }`}
       >
         {/* Header */}
-        <div className="flex justify-between items-center p-4 bg-brand-500 text-white rounded-t-2xl">
+        <div className="flex items-center justify-between rounded-t-[20px] bg-brand-500 p-3.5 text-white md:rounded-t-2xl md:p-4">
           <div className="flex items-center gap-2">
             <div className="p-1.5 bg-white/10 rounded-md">
               <Bot className="w-5 h-5" />
@@ -128,27 +147,39 @@ export const ChatWidget: React.FC = () => {
               </p>
             </div>
           </div>
-          <button onClick={() => setIsOpen(false)} aria-label="Close chat" className="text-slate-300 hover:text-white transition">
+          <button
+            onClick={() => setIsOpen(false)}
+            aria-label={t('chat_close')}
+            className="rounded-full p-2 text-slate-300 transition hover:bg-white/10 hover:text-white"
+          >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50 scrollbar-hide">
+        <div className="scrollbar-hide flex-1 space-y-4 overflow-y-auto bg-slate-50 p-3.5 md:p-4">
           {messages.map((msg) => (
             <div
               key={msg.id}
               className={`flex items-start gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
             >
-              <div className={`w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 ${msg.role === 'user' ? 'bg-slate-200' : 'bg-blue-100'
-                }`}>
-                {msg.role === 'user' ? <User className="w-4 h-4 text-slate-600" /> : <Bot className="w-4 h-4 text-brand-500" />}
+              <div className={`w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 ${
+                msg.role === 'user' ? 'bg-slate-200' : msg.isError ? 'bg-red-100' : 'bg-blue-100'
+              }`}>
+                {msg.role === 'user' ? (
+                  <User className="w-4 h-4 text-slate-600" />
+                ) : (
+                  <Bot className={`w-4 h-4 ${msg.isError ? 'text-red-600' : 'text-brand-500'}`} />
+                )}
               </div>
               <div
-                className={`max-w-[80%] p-3 rounded-sm text-sm leading-relaxed shadow-sm ${msg.role === 'user'
-                    ? 'bg-brand-500 text-white rounded-tr-none'
-                    : 'bg-white text-slate-700 border border-white/10 rounded-tl-none'
-                  }`}
+                className={`max-w-[84%] rounded-[14px] p-3 text-sm leading-relaxed shadow-sm md:max-w-[80%] ${
+                  msg.role === 'user'
+                    ? 'rounded-tr-none bg-brand-500 text-white'
+                    : msg.isError
+                      ? 'rounded-tl-none border border-red-200 bg-red-50 text-red-800'
+                      : 'rounded-tl-none border border-white/10 bg-white text-slate-700'
+                }`}
               >
                 {msg.text}
               </div>
@@ -159,7 +190,7 @@ export const ChatWidget: React.FC = () => {
               <div className="w-8 h-8 bg-blue-100 rounded-md flex items-center justify-center">
                 <Loader2 className="w-4 h-4 text-brand-500 animate-spin" />
               </div>
-              <div className="bg-white px-4 py-2 rounded-sm rounded-tl-none border border-white/10 text-xs text-slate-500 italic">
+              <div className="rounded-[14px] rounded-tl-none border border-white/10 bg-white px-4 py-2 text-xs italic text-slate-500">
                 {t('chat_thinking')}
               </div>
             </div>
@@ -168,7 +199,7 @@ export const ChatWidget: React.FC = () => {
         </div>
 
         {/* Input */}
-        <div className="p-4 bg-white border-t border-white/10 rounded-b-2xl">
+        <div className="rounded-b-[20px] border-t border-white/10 bg-white p-3.5 md:rounded-b-2xl md:p-4">
           <div className="flex gap-2">
             <input
               type="text"
@@ -176,13 +207,13 @@ export const ChatWidget: React.FC = () => {
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder={t('chat_placeholder')}
-              className="flex-1 px-4 py-2.5 bg-slate-50 border border-white/20 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent"
+              className="min-h-11 flex-1 rounded-xl border border-white/20 bg-slate-50 px-4 py-2.5 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-slate-900"
             />
             <button
               onClick={handleSend}
               disabled={!inputValue.trim() || isLoading}
-              aria-label="Send message"
-              className="p-2.5 bg-brand-500 text-white rounded-md hover:bg-brand-600 disabled:opacity-50 disabled:cursor-not-allowed transition"
+              aria-label={t('chat_send')}
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-500 text-white transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <Send className="w-5 h-5" />
             </button>

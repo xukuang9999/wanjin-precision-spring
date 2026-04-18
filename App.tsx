@@ -1,20 +1,23 @@
-import React, { Suspense, lazy, useEffect, useState } from 'react';
+import React, { Suspense, lazy, startTransition, useEffect, useState } from 'react';
+import { AppErrorBoundary } from './components/AppErrorBoundary';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { DEFAULT_LANGUAGE, getLocaleStateFromPath, getLocalizedPath, PageView } from './types';
 import { LanguageProvider } from './contexts/LanguageContext';
-import { SeoManager } from './components/SeoManager';
 import { type Language } from './utils/languages';
 import { scheduleIdleTask } from './utils/idle';
+import { pageComponentLoaders } from './utils/pageLoaders';
 import { type TranslationDictionary } from './utils/runtimeTranslations';
 
-const Home = lazy(() => import('./pages/Home').then((module) => ({ default: module.Home })));
-const About = lazy(() => import('./pages/About').then((module) => ({ default: module.About })));
-const Products = lazy(() => import('./pages/Products').then((module) => ({ default: module.Products })));
-const Capacity = lazy(() => import('./pages/Capacity').then((module) => ({ default: module.Capacity })));
-const Factory = lazy(() => import('./pages/Factory').then((module) => ({ default: module.Factory })));
-const Contact = lazy(() => import('./pages/Contact').then((module) => ({ default: module.Contact })));
-const Blog = lazy(() => import('./pages/Blog').then((module) => ({ default: module.Blog })));
+const Home = lazy(pageComponentLoaders[PageView.HOME]);
+const About = lazy(pageComponentLoaders[PageView.ABOUT]);
+const Products = lazy(pageComponentLoaders[PageView.PRODUCTS]);
+const Capacity = lazy(pageComponentLoaders[PageView.CAPACITY]);
+const Factory = lazy(pageComponentLoaders[PageView.FACTORY]);
+const Contact = lazy(pageComponentLoaders[PageView.CONTACT]);
+const Faq = lazy(pageComponentLoaders[PageView.FAQ]);
+const Blog = lazy(pageComponentLoaders[PageView.BLOG]);
+const SeoManager = lazy(() => import('./components/SeoManager').then((module) => ({ default: module.SeoManager })));
 const ChatWidget = lazy(() => import('./components/ChatWidget').then((module) => ({ default: module.ChatWidget })));
 
 const getInitialRouteState = () => {
@@ -54,21 +57,25 @@ function AppContent({
     const syncPageWithLocation = () => {
       const { pathname, hash, search } = window.location;
       if (hash) {
-        const legacyPage = hash.replace('#', '');
-        if (Object.values(PageView).includes(legacyPage as PageView)) {
-          const targetPage = legacyPage as PageView;
+        const legacyPage = hash.replace('#', '').trim().toLowerCase();
+        const targetPage = (Object.values(PageView) as PageView[]).find((page) => page.toLowerCase() === legacyPage);
+        if (targetPage) {
           const targetPath = getLocalizedPath(targetPage, language);
           window.history.replaceState({}, '', targetPath);
-          setLanguage(language);
-          setCurrentPage(targetPage);
+          startTransition(() => {
+            setLanguage(language);
+            setCurrentPage(targetPage);
+          });
           return;
         }
       }
 
       const state = getLocaleStateFromPath(pathname);
-      setLanguage(state.language);
-      setCurrentPage(state.page);
-      setCurrentSlug(state.slug);
+      startTransition(() => {
+        setLanguage(state.language);
+        setCurrentPage(state.page);
+        setCurrentSlug(state.slug);
+      });
     };
 
     window.addEventListener('popstate', syncPageWithLocation);
@@ -84,7 +91,39 @@ function AppContent({
   }, []);
 
   useEffect(() => {
-    return scheduleIdleTask(() => setShouldLoadChat(true), 2200);
+    let cancelled = false;
+    let cancelIdleTask = () => {};
+
+    const loadChatWhenIdle = (timeout: number) => {
+      cancelIdleTask();
+      cancelIdleTask = scheduleIdleTask(() => {
+        if (!cancelled) {
+          setShouldLoadChat(true);
+        }
+      }, timeout);
+    };
+
+    const handleFirstInteraction = () => {
+      detachInteractionListeners();
+      loadChatWhenIdle(900);
+    };
+
+    const detachInteractionListeners = () => {
+      window.removeEventListener('pointerdown', handleFirstInteraction);
+      window.removeEventListener('keydown', handleFirstInteraction);
+      window.removeEventListener('scroll', handleFirstInteraction);
+    };
+
+    window.addEventListener('pointerdown', handleFirstInteraction, { passive: true });
+    window.addEventListener('keydown', handleFirstInteraction);
+    window.addEventListener('scroll', handleFirstInteraction, { passive: true });
+    loadChatWhenIdle(4200);
+
+    return () => {
+      cancelled = true;
+      detachInteractionListeners();
+      cancelIdleTask();
+    };
   }, []);
 
   const navigateTo = (page: PageView, nextLanguage = language, slug?: string, search?: string) => {
@@ -93,9 +132,11 @@ function AppContent({
     if (`${window.location.pathname}${window.location.search}` !== nextUrl) {
       window.history.pushState({}, '', nextUrl);
     }
-    setLanguage(nextLanguage);
-    setCurrentPage(page);
-    setCurrentSlug(page === PageView.BLOG || page === PageView.PRODUCTS ? slug : undefined);
+    startTransition(() => {
+      setLanguage(nextLanguage);
+      setCurrentPage(page);
+      setCurrentSlug(page === PageView.BLOG || page === PageView.PRODUCTS ? slug : undefined);
+    });
     window.scrollTo(0, 0);
   };
 
@@ -113,6 +154,8 @@ function AppContent({
         return <Factory />;
       case PageView.CONTACT:
         return <Contact onNavigate={navigateTo} />;
+      case PageView.FAQ:
+        return <Faq onNavigate={navigateTo} />;
       case PageView.BLOG:
         return <Blog slug={currentSlug} onNavigate={navigateTo} />;
       default:
@@ -121,15 +164,35 @@ function AppContent({
   };
 
   return (
-    <div className="min-h-screen flex flex-col font-sans text-slate-900 bg-slate-50">
-      <SeoManager currentPage={currentPage} productSlug={currentPage === PageView.PRODUCTS ? currentSlug : undefined} blogSlug={currentPage === PageView.BLOG ? currentSlug : undefined} />
+    <div className="min-h-screen flex flex-col font-sans text-slate-900 bg-[linear-gradient(180deg,#f7fbff_0%,#eef4fb_26%,#f8fafc_58%,#ffffff_100%)]">
+      <Suspense fallback={null}>
+        <SeoManager currentPage={currentPage} productSlug={currentPage === PageView.PRODUCTS ? currentSlug : undefined} blogSlug={currentPage === PageView.BLOG ? currentSlug : undefined} />
+      </Suspense>
       <Navbar currentPage={currentPage} currentContentSlug={currentSlug} onNavigate={navigateTo} />
       
       <main className="flex-grow">
-        <Suspense fallback={<div className="min-h-[40vh]" />}>{renderPage()}</Suspense>
+        <Suspense
+          fallback={
+            <div className="page-shell py-28 sm:py-32">
+              <div className="site-soft-panel overflow-hidden rounded-[32px] p-6 sm:p-8">
+                <div className="h-3 w-24 rounded-full bg-slate-200" />
+                <div className="mt-6 h-12 max-w-2xl rounded-[20px] bg-slate-200" />
+                <div className="mt-4 h-6 max-w-3xl rounded-full bg-slate-100" />
+                <div className="mt-3 h-6 max-w-2xl rounded-full bg-slate-100" />
+                <div className="mt-8 grid gap-4 md:grid-cols-3">
+                  {Array.from({ length: 3 }).map((_, index) => (
+                    <div key={index} className="h-40 rounded-[24px] bg-slate-100" />
+                  ))}
+                </div>
+              </div>
+            </div>
+          }
+        >
+          {renderPage()}
+        </Suspense>
       </main>
 
-      <Footer />
+      <Footer onNavigate={navigateTo} />
       {shouldLoadChat ? (
         <Suspense fallback={null}>
           <ChatWidget />
@@ -149,13 +212,15 @@ export default function App({
   const [language, setLanguage] = useState<Language>(initialRouteState.language);
 
   return (
-    <LanguageProvider initialDictionary={initialDictionary} language={language} onLanguageChange={setLanguage}>
-      <AppContent
-        language={language}
-        setLanguage={setLanguage}
-        initialPage={initialRouteState.page}
-        initialSlug={initialRouteState.slug}
-      />
-    </LanguageProvider>
+    <AppErrorBoundary>
+      <LanguageProvider initialDictionary={initialDictionary} language={language} onLanguageChange={setLanguage}>
+        <AppContent
+          language={language}
+          setLanguage={setLanguage}
+          initialPage={initialRouteState.page}
+          initialSlug={initialRouteState.slug}
+        />
+      </LanguageProvider>
+    </AppErrorBoundary>
   );
 }

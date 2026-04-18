@@ -1,6 +1,6 @@
 {
   "catalog_name": "Wanjin Precision Spring Product Catalog",
-  "catalog_version": "2026-03-11",
+  "catalog_version": "2026-03-31",
   "company_name": "Xi'an Wanjin Precision Spring Co., Ltd.",
   "brand_name": "Wanjin Precision Spring",
   "website": "https://wanjinspring.com/",
@@ -97,11 +97,46 @@
         "载荷检测",
         "尺寸检测",
         "按需求进行疲劳相关验证"
-      ]
+      ],
+      "search_terms": [
+        "hot coiling",
+        "large diameter springs",
+        "fatigue life"
+      ],
+      "specifications": [
+        {
+          "order": 1,
+          "title_en": "Hot Coiling and Heavy-Duty Parts",
+          "title_zh": "热卷与重载弹性件",
+          "value_en": "14-50 mm",
+          "value_zh": "14-50 mm",
+          "description_en": "Highlights large-wire hot coiling, heavy-load buffering, and high-load clamping products for power equipment, heavy machinery, and industrial actuation systems.",
+          "description_zh": "强调大线径热卷、重载缓冲和高载荷夹紧类产品，适配电力装备、重型机械和工业执行机构。"
+        },
+        {
+          "order": 2,
+          "title_en": "Heavy-Load Validation",
+          "title_zh": "重载验证思路",
+          "value_en": "5-50 tonf",
+          "value_zh": "5-50 tonf",
+          "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+          "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+        },
+        {
+          "order": 3,
+          "title_en": "Project and Standards Coverage",
+          "title_zh": "项目与标准覆盖",
+          "value_en": "GB / ISO / JIS",
+          "value_zh": "GB / ISO / JIS",
+          "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+          "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+        }
+      ],
+      "specification_count": 3
     },
     {
       "id": "2",
-      "slug": "stacked-disc-spring-assemblies",
+      "slug": "disc-spring-stacks",
       "sort_order": 2,
       "category_en": "Heavy Duty",
       "category_zh": "重型弹簧",
@@ -269,7 +304,42 @@
         "尺寸检测",
         "载荷检测",
         "外观检查"
-      ]
+      ],
+      "search_terms": [
+        "die springs",
+        "tooling",
+        "stamping dies"
+      ],
+      "specifications": [
+        {
+          "order": 1,
+          "title_en": "Cold Coiling and Precision Forming",
+          "title_zh": "冷卷与精密成形",
+          "value_en": "0.1-10 mm",
+          "value_zh": "0.1-10 mm",
+          "description_en": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs.",
+          "description_zh": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+        },
+        {
+          "order": 2,
+          "title_en": "Heavy-Load Validation",
+          "title_zh": "重载验证思路",
+          "value_en": "5-50 tonf",
+          "value_zh": "5-50 tonf",
+          "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+          "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+        },
+        {
+          "order": 3,
+          "title_en": "Project and Standards Coverage",
+          "title_zh": "项目与标准覆盖",
+          "value_en": "GB / ISO / JIS",
+          "value_zh": "GB / ISO / JIS",
+          "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+          "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+        }
+      ],
+      "specification_count": 3
     },
     {
       "id": "5",
@@ -355,7 +425,42 @@
         "尺寸检测",
         "载荷检测",
         "外观检查"
-      ]
+      ],
+      "search_terms": [
+        "compression springs",
+        "spring materials",
+        "cold coiling"
+      ],
+      "specifications": [
+        {
+          "order": 1,
+          "title_en": "Cold Coiling and Precision Forming",
+          "title_zh": "冷卷与精密成形",
+          "value_en": "0.1-10 mm",
+          "value_zh": "0.1-10 mm",
+          "description_en": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs.",
+          "description_zh": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+        },
+        {
+          "order": 2,
+          "title_en": "Heavy-Load Validation",
+          "title_zh": "重载验证思路",
+          "value_en": "5-50 tonf",
+          "value_zh": "5-50 tonf",
+          "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+          "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+        },
+        {
+          "order": 3,
+          "title_en": "Project and Standards Coverage",
+          "title_zh": "项目与标准覆盖",
+          "value_en": "GB / ISO / JIS",
+          "value_zh": "GB / ISO / JIS",
+          "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+          "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+        }
+      ],
+      "specification_count": 3
     },
     {
       "id": "6",
@@ -441,7 +546,42 @@
         "尺寸检测",
         "载荷检测",
         "外观检查"
-      ]
+      ],
+      "search_terms": [
+        "spring materials",
+        "cold coiling",
+        "engineering workflow"
+      ],
+      "specifications": [
+        {
+          "order": 1,
+          "title_en": "Cold Coiling and Precision Forming",
+          "title_zh": "冷卷与精密成形",
+          "value_en": "0.1-10 mm",
+          "value_zh": "0.1-10 mm",
+          "description_en": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs.",
+          "description_zh": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+        },
+        {
+          "order": 2,
+          "title_en": "Project and Standards Coverage",
+          "title_zh": "项目与标准覆盖",
+          "value_en": "GB / ISO / JIS",
+          "value_zh": "GB / ISO / JIS",
+          "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+          "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+        },
+        {
+          "order": 3,
+          "title_en": "Heavy-Load Validation",
+          "title_zh": "重载验证思路",
+          "value_en": "5-50 tonf",
+          "value_zh": "5-50 tonf",
+          "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+          "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+        }
+      ],
+      "specification_count": 3
     },
     {
       "id": "7",
@@ -527,7 +667,42 @@
         "尺寸检测",
         "载荷检测",
         "外观检查"
-      ]
+      ],
+      "search_terms": [
+        "spring design",
+        "precision assembly",
+        "cold coiling"
+      ],
+      "specifications": [
+        {
+          "order": 1,
+          "title_en": "Cold Coiling and Precision Forming",
+          "title_zh": "冷卷与精密成形",
+          "value_en": "0.1-10 mm",
+          "value_zh": "0.1-10 mm",
+          "description_en": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs.",
+          "description_zh": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+        },
+        {
+          "order": 2,
+          "title_en": "Project and Standards Coverage",
+          "title_zh": "项目与标准覆盖",
+          "value_en": "GB / ISO / JIS",
+          "value_zh": "GB / ISO / JIS",
+          "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+          "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+        },
+        {
+          "order": 3,
+          "title_en": "Heavy-Load Validation",
+          "title_zh": "重载验证思路",
+          "value_en": "5-50 tonf",
+          "value_zh": "5-50 tonf",
+          "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+          "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+        }
+      ],
+      "specification_count": 3
     },
     {
       "id": "8",
@@ -613,7 +788,42 @@
         "尺寸检测",
         "载荷检测",
         "外观检查"
-      ]
+      ],
+      "search_terms": [
+        "wave springs",
+        "compact assemblies",
+        "preload control"
+      ],
+      "specifications": [
+        {
+          "order": 1,
+          "title_en": "Cold Coiling and Precision Forming",
+          "title_zh": "冷卷与精密成形",
+          "value_en": "0.1-10 mm",
+          "value_zh": "0.1-10 mm",
+          "description_en": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs.",
+          "description_zh": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+        },
+        {
+          "order": 2,
+          "title_en": "Project and Standards Coverage",
+          "title_zh": "项目与标准覆盖",
+          "value_en": "GB / ISO / JIS",
+          "value_zh": "GB / ISO / JIS",
+          "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+          "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+        },
+        {
+          "order": 3,
+          "title_en": "Heavy-Load Validation",
+          "title_zh": "重载验证思路",
+          "value_en": "5-50 tonf",
+          "value_zh": "5-50 tonf",
+          "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+          "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+        }
+      ],
+      "specification_count": 3
     },
     {
       "id": "9",
@@ -699,11 +909,46 @@
         "尺寸检测",
         "按需求进行接触力验证",
         "外观检查"
-      ]
+      ],
+      "search_terms": [
+        "contact springs",
+        "electrical reliability",
+        "precision assembly"
+      ],
+      "specifications": [
+        {
+          "order": 1,
+          "title_en": "Cold Coiling and Precision Forming",
+          "title_zh": "冷卷与精密成形",
+          "value_en": "0.1-10 mm",
+          "value_zh": "0.1-10 mm",
+          "description_en": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs.",
+          "description_zh": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+        },
+        {
+          "order": 2,
+          "title_en": "Project and Standards Coverage",
+          "title_zh": "项目与标准覆盖",
+          "value_en": "GB / ISO / JIS",
+          "value_zh": "GB / ISO / JIS",
+          "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+          "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+        },
+        {
+          "order": 3,
+          "title_en": "Heavy-Load Validation",
+          "title_zh": "重载验证思路",
+          "value_en": "5-50 tonf",
+          "value_zh": "5-50 tonf",
+          "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+          "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+        }
+      ],
+      "specification_count": 3
     },
     {
       "id": "10",
-      "slug": "retaining-rings-snap-rings",
+      "slug": "retaining-rings",
       "sort_order": 9,
       "category_en": "Custom",
       "category_zh": "定制弹簧",
@@ -789,7 +1034,7 @@
     },
     {
       "id": "11",
-      "slug": "custom-special-shaped-springs",
+      "slug": "custom-wire-forms",
       "sort_order": 10,
       "category_en": "Custom",
       "category_zh": "定制弹簧",
@@ -957,7 +1202,42 @@
         "力值行程验证",
         "尺寸检测",
         "按需求进行循环寿命相关验证"
-      ]
+      ],
+      "search_terms": [
+        "constant force springs",
+        "motion control",
+        "long travel"
+      ],
+      "specifications": [
+        {
+          "order": 1,
+          "title_en": "Cold Coiling and Precision Forming",
+          "title_zh": "冷卷与精密成形",
+          "value_en": "0.1-10 mm",
+          "value_zh": "0.1-10 mm",
+          "description_en": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs.",
+          "description_zh": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+        },
+        {
+          "order": 2,
+          "title_en": "Project and Standards Coverage",
+          "title_zh": "项目与标准覆盖",
+          "value_en": "GB / ISO / JIS",
+          "value_zh": "GB / ISO / JIS",
+          "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+          "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+        },
+        {
+          "order": 3,
+          "title_en": "Heavy-Load Validation",
+          "title_zh": "重载验证思路",
+          "value_en": "5-50 tonf",
+          "value_zh": "5-50 tonf",
+          "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+          "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+        }
+      ],
+      "specification_count": 3
     },
     {
       "id": "13",
@@ -1043,7 +1323,42 @@
         "尺寸检测",
         "载荷检测",
         "外观检查"
-      ]
+      ],
+      "search_terms": [
+        "spring materials",
+        "precision assembly",
+        "batch production"
+      ],
+      "specifications": [
+        {
+          "order": 1,
+          "title_en": "Cold Coiling and Precision Forming",
+          "title_zh": "冷卷与精密成形",
+          "value_en": "0.1-10 mm",
+          "value_zh": "0.1-10 mm",
+          "description_en": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs.",
+          "description_zh": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+        },
+        {
+          "order": 2,
+          "title_en": "Project and Standards Coverage",
+          "title_zh": "项目与标准覆盖",
+          "value_en": "GB / ISO / JIS",
+          "value_zh": "GB / ISO / JIS",
+          "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+          "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+        },
+        {
+          "order": 3,
+          "title_en": "Heavy-Load Validation",
+          "title_zh": "重载验证思路",
+          "value_en": "5-50 tonf",
+          "value_zh": "5-50 tonf",
+          "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+          "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+        }
+      ],
+      "specification_count": 3
     },
     {
       "id": "15",
@@ -1129,11 +1444,46 @@
         "尺寸检测",
         "按需求进行接触力验证",
         "外观检查"
-      ]
+      ],
+      "search_terms": [
+        "contact springs",
+        "precision assembly",
+        "material selection"
+      ],
+      "specifications": [
+        {
+          "order": 1,
+          "title_en": "Cold Coiling and Precision Forming",
+          "title_zh": "冷卷与精密成形",
+          "value_en": "0.1-10 mm",
+          "value_zh": "0.1-10 mm",
+          "description_en": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs.",
+          "description_zh": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+        },
+        {
+          "order": 2,
+          "title_en": "Project and Standards Coverage",
+          "title_zh": "项目与标准覆盖",
+          "value_en": "GB / ISO / JIS",
+          "value_zh": "GB / ISO / JIS",
+          "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+          "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+        },
+        {
+          "order": 3,
+          "title_en": "Heavy-Load Validation",
+          "title_zh": "重载验证思路",
+          "value_en": "5-50 tonf",
+          "value_zh": "5-50 tonf",
+          "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+          "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+        }
+      ],
+      "specification_count": 3
     },
     {
       "id": "16",
-      "slug": "power-clock-springs",
+      "slug": "power-springs",
       "sort_order": 14,
       "category_en": "Custom",
       "category_zh": "定制弹簧",
@@ -1237,7 +1587,7 @@
         "定制端部",
         "经久耐用"
       ],
-      "image_url": "https://wanjinspring.com/products/variable-force-spring.png",
+      "image_url": "https://wanjinspring.com/products/variable-force-spring.jpg",
       "page_url": "https://wanjinspring.com/products",
       "page_url_zh": "https://wanjinspring.com/zh/products",
       "application_areas_en": [
@@ -1301,7 +1651,42 @@
         "力值行程验证",
         "尺寸检测",
         "按需求进行循环寿命相关验证"
-      ]
+      ],
+      "search_terms": [
+        "motion control",
+        "long travel",
+        "spring selection"
+      ],
+      "specifications": [
+        {
+          "order": 1,
+          "title_en": "Cold Coiling and Precision Forming",
+          "title_zh": "冷卷与精密成形",
+          "value_en": "0.1-10 mm",
+          "value_zh": "0.1-10 mm",
+          "description_en": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs.",
+          "description_zh": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+        },
+        {
+          "order": 2,
+          "title_en": "Project and Standards Coverage",
+          "title_zh": "项目与标准覆盖",
+          "value_en": "GB / ISO / JIS",
+          "value_zh": "GB / ISO / JIS",
+          "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+          "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+        },
+        {
+          "order": 3,
+          "title_en": "Heavy-Load Validation",
+          "title_zh": "重载验证思路",
+          "value_en": "5-50 tonf",
+          "value_zh": "5-50 tonf",
+          "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+          "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+        }
+      ],
+      "specification_count": 3
     },
     {
       "id": "18",
@@ -1323,7 +1708,7 @@
         "结构紧凑",
         "扭矩稳定"
       ],
-      "image_url": "https://wanjinspring.com/products/spiral-spring.jpg",
+      "image_url": "https://wanjinspring.com/products/power-spring.jpg",
       "page_url": "https://wanjinspring.com/products",
       "page_url_zh": "https://wanjinspring.com/zh/products",
       "application_areas_en": [
@@ -1387,11 +1772,46 @@
         "力值行程验证",
         "尺寸检测",
         "按需求进行循环寿命相关验证"
-      ]
+      ],
+      "search_terms": [
+        "motion control",
+        "long travel",
+        "batch production"
+      ],
+      "specifications": [
+        {
+          "order": 1,
+          "title_en": "Cold Coiling and Precision Forming",
+          "title_zh": "冷卷与精密成形",
+          "value_en": "0.1-10 mm",
+          "value_zh": "0.1-10 mm",
+          "description_en": "Covers compression, extension, torsion, wire forms, and other precision elastic parts within the cold-forming window for standard and high-consistency programs.",
+          "description_zh": "覆盖压簧、拉簧、扭簧、异形线成型和多类精密弹性件的冷卷窗口，适合标准件与高一致性项目。"
+        },
+        {
+          "order": 2,
+          "title_en": "Project and Standards Coverage",
+          "title_zh": "项目与标准覆盖",
+          "value_en": "GB / ISO / JIS",
+          "value_zh": "GB / ISO / JIS",
+          "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+          "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+        },
+        {
+          "order": 3,
+          "title_en": "Heavy-Load Validation",
+          "title_zh": "重载验证思路",
+          "value_en": "5-50 tonf",
+          "value_zh": "5-50 tonf",
+          "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+          "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+        }
+      ],
+      "specification_count": 3
     },
     {
       "id": "19",
-      "slug": "contact-clips-leaf-type-elastic-parts",
+      "slug": "contact-clips",
       "sort_order": 17,
       "category_en": "Precision",
       "category_zh": "精密弹簧",
@@ -1409,7 +1829,7 @@
         "防锈处理",
         "小批量定制"
       ],
-      "image_url": "https://wanjinspring.com/products/contact-clips.jpg",
+      "image_url": "https://wanjinspring.com/products/contact-spring.jpg",
       "page_url": "https://wanjinspring.com/products",
       "page_url_zh": "https://wanjinspring.com/zh/products",
       "application_areas_en": [
@@ -1477,7 +1897,7 @@
     },
     {
       "id": "20",
-      "slug": "multi-turn-wave-spring-assemblies",
+      "slug": "multi-turn-wave-springs",
       "sort_order": 18,
       "category_en": "Precision",
       "category_zh": "精密弹簧",
@@ -1645,7 +2065,42 @@
         "载荷位移验证",
         "尺寸检测",
         "组件装配验证"
-      ]
+      ],
+      "search_terms": [
+        "disc springs",
+        "power equipment",
+        "high load"
+      ],
+      "specifications": [
+        {
+          "order": 1,
+          "title_en": "Hot Coiling and Heavy-Duty Parts",
+          "title_zh": "热卷与重载弹性件",
+          "value_en": "14-50 mm",
+          "value_zh": "14-50 mm",
+          "description_en": "Highlights large-wire hot coiling, heavy-load buffering, and high-load clamping products for power equipment, heavy machinery, and industrial actuation systems.",
+          "description_zh": "强调大线径热卷、重载缓冲和高载荷夹紧类产品，适配电力装备、重型机械和工业执行机构。"
+        },
+        {
+          "order": 2,
+          "title_en": "Heavy-Load Validation",
+          "title_zh": "重载验证思路",
+          "value_en": "5-50 tonf",
+          "value_zh": "5-50 tonf",
+          "description_en": "The capability wording is aligned with public patent information that points to large high-pressure spring strength and fatigue validation in the 5 to 50 tons-force range.",
+          "description_zh": "页面能力表达已结合公开专利资料，突出大型高压弹簧强度与疲劳试验的重载验证区间。"
+        },
+        {
+          "order": 3,
+          "title_en": "Project and Standards Coverage",
+          "title_zh": "项目与标准覆盖",
+          "value_en": "GB / ISO / JIS",
+          "value_zh": "GB / ISO / JIS",
+          "description_en": "Positioned for power equipment, industrial control, machinery manufacturing, and broad industrial programs under GB, ISO, and JIS reference standards.",
+          "description_zh": "面向电力装备、工业控制、机械制造和通用工业项目，按 GB、ISO、JIS 等标准体系组织产品能力表达。"
+        }
+      ],
+      "specification_count": 3
     }
   ]
 }

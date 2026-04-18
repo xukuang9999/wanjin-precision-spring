@@ -6,6 +6,8 @@ interface IdleDeadline {
 }
 
 interface Window {
+  dataLayer?: unknown[];
+  gtag?: (...args: unknown[]) => void;
   requestIdleCallback?: (
     callback: (deadline: IdleDeadline) => void,
     options?: { timeout?: number }
